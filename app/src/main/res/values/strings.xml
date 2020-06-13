@@ -4,4 +4,5 @@
     <string name="title_home">Home</string>
     <string name="title_routines">Routines</string>
     <string name="title_settings">Settings</string>
+    <string name="themeSwitch">Dark mode</string>
 </resources>
