@@ -2,13 +2,10 @@ package ar.edu.itba.hci.ui.devices;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.NavigationUI;
-
 import android.os.Bundle;
 
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 
 import ar.edu.itba.hci.R;
 public class DevicesActivity extends AppCompatActivity {

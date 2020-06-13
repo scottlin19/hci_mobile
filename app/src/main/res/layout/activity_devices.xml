@@ -11,15 +11,107 @@
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="@color/colorPrimary"
         android:elevation="4dp"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="@string/title_devices"
-
-        app:titleMarginStart="40dp"
         app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/title_devices"
+        app:titleMarginStart="40dp" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:stretchColumns="*" >
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="1">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:elevation="8dp"
+
+                app:cardBackgroundColor="@color/colorPrimary"
+
+                app:cardCornerRadius="30dp"
+                app:contentPadding="10dp">
+
+                <TextView
+                    android:id="@+id/categ_security"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/title_category_security"
+                    android:drawableTop="@drawable/ic_security"
+
+                    android:fontFamily="sans-serif"
+
+                    android:text="@string/title_category_security"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="30sp"
+
+                    android:textStyle="bold"
+                    tools:text="@string/title_category_security" />
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:elevation="8dp"
+
+                app:cardBackgroundColor="@color/colorPrimary"
+
+                app:cardCornerRadius="30dp"
+                app:contentPadding="10dp">
+
+                <TextView
+                    android:id="@+id/categ_speakers"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/title_category_speaker"
+                    android:drawableTop="@drawable/ic_speaker"
+
+                    android:fontFamily="sans-serif"
+
+                    android:text="@string/title_category_speaker"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="30sp"
+
+                    android:textStyle="bold"
+                    tools:text="@string/title_category_speaker" />
+            </androidx.cardview.widget.CardView>
+
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </TableLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
