@@ -29,6 +29,13 @@ public class SettingsFragment extends Fragment {
 
         themeSwitch = root.findViewById(R.id.theme_switch);
 
+        themeSwitchHandler();
+
+        return root;
+    }
+
+    public void themeSwitchHandler() {
+
         int switchValue = requireActivity().getSharedPreferences("smarthome.darkmode", MODE_PRIVATE).getInt("smarthome.darkmode", -1);
 
         if(switchValue == -1 || switchValue == AppCompatDelegate.MODE_NIGHT_NO) {
@@ -53,8 +60,6 @@ public class SettingsFragment extends Fragment {
                 editor.apply();
             }
         });
-
-        return root;
     }
 
 }
