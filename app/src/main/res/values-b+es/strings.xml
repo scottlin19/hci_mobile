@@ -11,4 +11,8 @@
     <string name="title_category_lamp">Lámparas</string>
     <string name="title_category_speaker">Parlantes</string>
     <string name="title_category_ac">Aire acondicionado</string>
+    <string name="favoriteTitle">Favoritos</string>
+    <string name="appearanceTitle">Apariencia</string>
+    <string name="misTitle">Miscelaneos</string>
+    <string name="pastActions">Historial de acciones</string>
 </resources>

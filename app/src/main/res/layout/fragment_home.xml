@@ -23,18 +23,57 @@
             android:id="@+id/button_rooms"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="-4dp"
+            android:layout_marginTop="-10dp"
+            android:layout_marginRight="-4dp"
             android:backgroundTint="@color/colorPrimary"
             android:minHeight="100dp"
             android:text="@string/title_rooms"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/button_devices"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
+            android:layout_marginLeft="-4dp"
+            android:layout_marginTop="-12dp"
+            android:layout_marginRight="-4dp"
+            android:backgroundTint="@color/colorPrimaryDark"
             android:minHeight="100dp"
             android:text="@string/title_devices"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/favoriteTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:text="@string/favoriteTitle"
+            android:textAlignment="center"
+            android:textSize="24sp" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </TableLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
