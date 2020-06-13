@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Smarti</string>
+    <string name="title_activity_main2">MainActivity</string>
+    <string name="title_home">Inicio</string>
+    <string name="title_routines">Rutinas</string>
+    <string name="title_settings">Configuración</string>
+    <string name="title_rooms">Habitaciones</string>
+    <string name="title_devices">Dispositivos</string>
+    <string name="themeSwitch">Modo Oscuro</string>
+</resources>
