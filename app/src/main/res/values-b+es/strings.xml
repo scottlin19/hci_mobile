@@ -7,4 +7,8 @@
     <string name="title_rooms">Habitaciones</string>
     <string name="title_devices">Dispositivos</string>
     <string name="themeSwitch">Modo Oscuro</string>
+    <string name="favoriteTitle">Favoritos</string>
+    <string name="appearanceTitle">Apariencia</string>
+    <string name="misTitle">Miscelaneos</string>
+    <string name="pastActions">Historial de acciones</string>
 </resources>
