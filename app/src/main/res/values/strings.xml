@@ -8,12 +8,20 @@
     <string name="title_devices">Devices</string>
     <string name="themeSwitch">Dark mode</string>
     <string name="title_category_security">Security</string>
-    <string name="title_category_lamp">Lamps</string>
-    <string name="title_category_speaker">Speakers</string>
-    <string name="title_category_ac">Air Conditioners</string>
+    <string name="title_category_lamps">Lamps</string>
+    <string name="title_category_speakers">Speakers</string>
+    <string name="title_category_acs">A/Cs</string>
+    <string name="title_category_faucets">Faucets</string>
+    <string name="title_category_fridges">Fridges</string>
+    <string name="title_category_ovens">Ovens</string>
+    <string name="title_category_tvs">TVs</string>
+    <string name="title_category_doors">Doors</string>
+    <string name="title_category_vacuums">Vacuums</string>
+    <string name="title_category_blinds">Blinds</string>
+    <string name="title_add">Add</string>
 
 
-</resources>
+
     <string name="favoriteTitle">Favorites</string>
     <string name="appearanceTitle">Appearance</string>
     <string name="misTitle">Miscellaneous</string>

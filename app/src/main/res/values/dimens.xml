@@ -5,4 +5,9 @@
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="icon_large">72dp</dimen>
+    <dimen name="icon_medium">48dp</dimen>
+    <dimen name="icon_small">48dp</dimen>
+    <dimen name="text_medium">20dp</dimen>
+    <dimen name="text_small">18dp</dimen>
 </resources>

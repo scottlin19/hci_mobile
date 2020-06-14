@@ -24,13 +24,213 @@
         app:titleMarginStart="40dp" />
 
     <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="411dp"
+        android:layout_height="513dp"
+        android:shrinkColumns="*"
+        android:stretchColumns="*"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        android:stretchColumns="*" >
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="1">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:elevation="8dp"
+
+                app:cardBackgroundColor="@color/colorPrimary"
+
+                app:cardCornerRadius="30dp"
+                app:contentPadding="10dp">
+
+                <TextView
+                    android:id="@+id/categ_add_device"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/title_add"
+                    android:drawableTop="@drawable/ic_add"
+
+                    android:fontFamily="sans-serif"
+
+                    android:text="@string/title_add"
+                    android:textAlignment="center"
+                    android:textColor="@color/textColorPrimary"
+
+                    android:textSize="@dimen/text_medium"
+
+
+                    android:textStyle="bold"
+                    tools:text="@string/title_add" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:elevation="8dp"
+
+                app:cardBackgroundColor="@color/colorPrimary"
+
+                app:cardCornerRadius="30dp"
+                app:contentPadding="10dp">
+
+                <TextView
+                    android:id="@+id/categ_speakers"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/title_category_speakers"
+                    android:drawableTop="@drawable/ic_speaker"
+
+                    android:fontFamily="sans-serif"
+
+                    android:text="@string/title_category_speakers"
+                    android:textAlignment="center"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="@dimen/text_medium"
+
+
+                    android:textStyle="bold"
+                    tools:text="@string/title_category_speakers" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:elevation="8dp"
+
+                app:cardBackgroundColor="@color/colorPrimary"
+
+                app:cardCornerRadius="30dp"
+                app:contentPadding="10dp">
+
+                <TextView
+                    android:id="@+id/categ_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/title_category_security"
+                    android:drawableTop="@drawable/ic__tv"
+
+                    android:fontFamily="sans-serif"
+
+                    android:text="@string/title_category_tvs"
+                    android:textAlignment="center"
+                    android:textColor="@color/textColorPrimary"
+
+                    android:textSize="@dimen/text_medium"
+
+                    android:textStyle="bold"
+                    tools:text="@string/title_category_tvs" />
+            </androidx.cardview.widget.CardView>
+
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="1">
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:elevation="8dp"
+
+                app:cardBackgroundColor="@color/colorPrimary"
+
+                app:cardCornerRadius="30dp"
+                app:contentPadding="10dp">
+
+                <TextView
+                    android:id="@+id/categ_ac"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/title_category_acs"
+                    android:drawableTop="@drawable/ic_ac_unit"
+
+                    android:fontFamily="sans-serif"
+
+                    android:text="@string/title_category_acs"
+                    android:textAlignment="center"
+                    android:textColor="@color/textColorPrimary"
+
+                    android:textSize="@dimen/text_medium"
+
+
+                    android:textStyle="bold"
+                    tools:text="@string/title_category_acs" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:elevation="8dp"
+
+                app:cardBackgroundColor="@color/colorPrimary"
+
+                app:cardCornerRadius="30dp"
+                app:contentPadding="10dp">
+
+                <TextView
+                    android:id="@+id/categ_faucet"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/title_category_security"
+                    android:drawableTop="@drawable/ic_water_pump"
+
+                    android:fontFamily="sans-serif"
+
+                    android:text="@string/title_category_faucets"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@color/textColorPrimary"
+
+
+                    android:textStyle="bold"
+                    tools:text="@string/title_category_faucets" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:elevation="8dp"
+
+                app:cardBackgroundColor="@color/colorPrimary"
+
+                app:cardCornerRadius="30dp"
+                app:contentPadding="10dp">
+
+                <TextView
+                    android:id="@+id/categ_lamps"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/title_category_lamps"
+                    android:drawableTop="@drawable/ic_lamp"
+
+                    android:fontFamily="sans-serif"
+
+                    android:text="@string/title_category_lamps"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@color/textColorPrimary"
+
+
+                    android:textStyle="bold"
+                    tools:text="@string/title_category_lamps" />
+            </androidx.cardview.widget.CardView>
+
+        </TableRow>
 
 
         <TableRow
@@ -40,6 +240,164 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:elevation="8dp"
+
+                app:cardBackgroundColor="@color/colorPrimary"
+
+                app:cardCornerRadius="30dp"
+                app:contentPadding="10dp">
+
+                <TextView
+                    android:id="@+id/categ_doors"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/title_category_doors"
+                    android:drawableTop="@drawable/ic_door"
+
+                    android:fontFamily="sans-serif"
+
+                    android:text="@string/title_category_faucets"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@color/textColorPrimary"
+
+                    android:textStyle="bold"
+                    tools:text="@string/title_category_doors" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:elevation="8dp"
+
+                app:cardBackgroundColor="@color/colorPrimary"
+
+                app:cardCornerRadius="30dp"
+                app:contentPadding="10dp">
+
+                <TextView
+                    android:id="@+id/categ_fridges"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/title_category_fridges"
+                    android:drawableTop="@drawable/ic_fridge"
+
+                    android:fontFamily="sans-serif"
+
+                    android:text="@string/title_category_fridges"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@color/textColorPrimary"
+
+
+                    android:textStyle="bold"
+                    tools:text="@string/title_category_fridges" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:elevation="8dp"
+
+                app:cardBackgroundColor="@color/colorPrimary"
+
+                app:cardCornerRadius="30dp"
+                app:contentPadding="10dp">
+
+                <TextView
+                    android:id="@+id/categ_ovens"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/title_category_ovens"
+                    android:drawableTop="@drawable/ic_stove"
+
+                    android:fontFamily="sans-serif"
+
+                    android:text="@string/title_category_ovens"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@color/textColorPrimary"
+
+                    android:textStyle="bold"
+                    tools:text="@string/title_category_ovens" />
+            </androidx.cardview.widget.CardView>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="1">
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:elevation="8dp"
+
+                app:cardBackgroundColor="@color/colorPrimary"
+
+                app:cardCornerRadius="30dp"
+                app:contentPadding="10dp">
+
+                <TextView
+                    android:id="@+id/categ_vacuums"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/title_category_vacuums"
+                    android:drawableTop="@drawable/ic_robot_vacuum"
+
+                    android:fontFamily="sans-serif"
+
+                    android:text="@string/title_category_vacuums"
+                    android:textAlignment="center"
+                    android:textColor="@color/textColorPrimary"
+
+                    android:textSize="@dimen/text_medium"
+
+
+                    android:textStyle="bold"
+                    tools:text="@string/title_category_vacuums" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:elevation="8dp"
+
+                app:cardBackgroundColor="@color/colorPrimary"
+
+                app:cardCornerRadius="30dp"
+                app:contentPadding="10dp">
+
+                <TextView
+                    android:id="@+id/categ_blinds"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/title_category_blinds"
+                    android:drawableTop="@drawable/ic_blinds"
+
+                    android:fontFamily="sans-serif"
+
+                    android:text="@string/title_category_blinds"
+                    android:textAlignment="center"
+                    android:textColor="@color/textColorPrimary"
+
+                    android:textSize="@dimen/text_medium"
+
+
+                    android:textStyle="bold"
+                    tools:text="@string/title_category_blinds" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:elevation="8dp"
@@ -60,57 +418,16 @@
 
                     android:text="@string/title_category_security"
                     android:textAlignment="center"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                     android:textColor="@color/textColorPrimary"
-                    android:textSize="30sp"
+
+                    android:textSize="@dimen/text_medium"
+
 
                     android:textStyle="bold"
                     tools:text="@string/title_category_security" />
             </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:elevation="8dp"
-
-                app:cardBackgroundColor="@color/colorPrimary"
-
-                app:cardCornerRadius="30dp"
-                app:contentPadding="10dp">
-
-                <TextView
-                    android:id="@+id/categ_speakers"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@string/title_category_speaker"
-                    android:drawableTop="@drawable/ic_speaker"
-
-                    android:fontFamily="sans-serif"
-
-                    android:text="@string/title_category_speaker"
-                    android:textAlignment="center"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                    android:textColor="@color/textColorPrimary"
-                    android:textSize="30sp"
-
-                    android:textStyle="bold"
-                    tools:text="@string/title_category_speaker" />
-            </androidx.cardview.widget.CardView>
-
 
         </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
     </TableLayout>
 
 
