@@ -102,7 +102,68 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            >
+
+                <androidx.cardview.widget.CardView
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:elevation="8dp"
+
+                app:cardBackgroundColor="@color/colorPrimary"
+
+                app:cardCornerRadius="30dp"
+                app:contentPadding="10dp">
+
+                <TextView
+                    android:id="@+id/categ_ac"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/title_category_ac"
+                    android:drawableTop="@drawable/ic_ac_unit"
+
+                    android:fontFamily="sans-serif"
+
+                    android:text="@string/title_category_ac"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="30sp"
+
+                    android:textStyle="bold"
+                    tools:text="@string/title_category_ac" />
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:elevation="8dp"
+
+                app:cardBackgroundColor="@color/colorPrimary"
+
+                app:cardCornerRadius="30dp"
+                app:contentPadding="10dp">
+
+                <TextView
+                    android:id="@+id/categ_lamps"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/title_category_lamp"
+                    android:drawableTop="@drawable/ic_lamp"
+
+                    android:fontFamily="sans-serif"
+
+                    android:text="@string/title_category_lamp"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="30sp"
+
+                    android:textStyle="bold"
+                    tools:text="@string/title_category_lamp" />
+            </androidx.cardview.widget.CardView>
+        </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
