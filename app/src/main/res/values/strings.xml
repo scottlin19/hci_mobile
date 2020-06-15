@@ -26,6 +26,7 @@
     <string name="appearanceTitle">Appearance</string>
     <string name="misTitle">Miscellaneous</string>
     <string name="pastActions">Past Actions</string>
+    <string name="category_name_default">Category</string>
 </resources>
 
     <!--    <string name="title_activity_devices">ScrollingActivity</string>-->
