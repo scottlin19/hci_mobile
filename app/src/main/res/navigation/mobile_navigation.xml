@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_navigation_routines_to_navigation_home"
             app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_routines_to_navigation_settings"
+            app:destination="@id/navigation_settings" />
     </fragment>
 
     <fragment
@@ -24,11 +27,21 @@
         <action
             android:id="@+id/action_navigation_home_to_navigation_settings"
             app:destination="@id/navigation_settings" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_routines"
+            app:destination="@id/navigation_routines" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_settings"
         android:name="ar.edu.itba.hci.ui.settings.SettingsFragment"
         android:label="@string/title_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_navigation_settings_to_navigation_routines"
+            app:destination="@id/navigation_routines" />
+        <action
+            android:id="@+id/action_navigation_settings_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
 </navigation>
