@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProviders;
 import ar.edu.itba.hci.MainActivity;
 import ar.edu.itba.hci.R;
 import ar.edu.itba.hci.ui.devices.DevicesActivity;
+import ar.edu.itba.hci.ui.rooms.RoomsActivity;
 
 public class HomeFragment extends Fragment {
 
@@ -39,6 +40,14 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(),DevicesActivity.class);
+                startActivity(intent);
+            }
+        });
+        Button rooms_button = (Button) root.findViewById(R.id.button_rooms);
+        rooms_button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), RoomsActivity.class);
                 startActivity(intent);
             }
         });
