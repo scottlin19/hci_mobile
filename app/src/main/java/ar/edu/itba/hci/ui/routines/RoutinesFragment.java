@@ -23,13 +23,15 @@ public class RoutinesFragment extends Fragment {
         routinesViewModel =
                 ViewModelProviders.of(this).get(RoutinesViewModel.class);
         View root = inflater.inflate(R.layout.fragment_routines, container, false);
-        final TextView textView = root.findViewById(R.id.text_routine);
+
+        /*final TextView textView = root.findViewById(R.id.text_routine);
         routinesViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
             }
-        });
+        });*/
+
         return root;
     }
 }
