@@ -11,11 +11,7 @@
         android:theme="@style/LightTheme">
         <activity android:name=".ui.rooms.RoomsActivity"
             android:parentActivityName=".MainActivity"/>
-        <activity android:name=".ui.devices.DeviceListActivity"
-            android:parentActivityName=".ui.devices.DevicesActivity"/>
-        <activity
-            android:name=".ui.devices.DevicesActivity"
-            android:parentActivityName=".MainActivity" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
