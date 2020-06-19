@@ -6,20 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import ar.edu.itba.hci.MainActivity;
 import ar.edu.itba.hci.R;
 
 import ar.edu.itba.hci.ui.devices.DevicesFragment;
-import ar.edu.itba.hci.ui.rooms.RoomsActivity;
+import ar.edu.itba.hci.ui.rooms.RoomsFragment;
 
 public class HomeFragment extends Fragment {
 
@@ -59,8 +55,17 @@ public class HomeFragment extends Fragment {
         rooms_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), RoomsActivity.class);
-                startActivity(intent);
+                RoomsFragment newFragment = new RoomsFragment();
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack so the user can navigate back
+                transaction.replace(R.id.nav_host_fragment, newFragment);
+                transaction.addToBackStack(null);
+
+                // Commit the transaction
+                transaction.commit();
             }
         });
         return root;

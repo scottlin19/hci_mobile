@@ -3,6 +3,7 @@ import java.util.List;
 
 import ar.edu.itba.hci.api.models.Device;
 import ar.edu.itba.hci.api.models.Room;
+import ar.edu.itba.hci.api.models.Routine;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -13,8 +14,6 @@ import retrofit2.http.Path;
 public interface ApiService {
 
     //ROOMS
-
-
     @PUT("rooms/{roomId}")
     @Headers("Content-Type: application/json")
     Call<Result<Boolean>> modifyRoom(@Path("roomId") String roomId, @Body Room room);
@@ -35,6 +34,8 @@ public interface ApiService {
 
     @GET("devices")
     Call<Result<List<Device>>> getDevices();
-    //ROUTINES
 
+    //ROUTINES
+    @GET("routines")
+    Call<Result<List<Routine>>> getRoutines();
 }

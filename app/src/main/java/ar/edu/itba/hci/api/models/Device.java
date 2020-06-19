@@ -3,8 +3,10 @@ package ar.edu.itba.hci.api.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import ar.edu.itba.hci.api.models.devices.states.DeviceState;
 
-public class Device {
+
+public class Device<T extends DeviceState> {
 
     @SerializedName("id")
     @Expose
@@ -13,11 +15,14 @@ public class Device {
     @Expose
     private String name;
     @SerializedName("type")
-    @Expose
+    @Expose(serialize = false)
     private DeviceType type;
+    @SerializedName("room")
+    @Expose(serialize = false)
+    private Room room;
     @SerializedName("state")
-    @Expose
-    private DeviceState state;
+    @Expose(serialize = false)
+    private T state;
     @SerializedName("meta")
     @Expose
     private DeviceMeta meta;
@@ -36,12 +41,13 @@ public class Device {
      * @param state
      * @param type
      */
-    public Device(String id, String name, DeviceType type, DeviceState state, DeviceMeta meta) {
+    public Device(String id, String name, DeviceType type, T state,Room room, DeviceMeta meta) {
         super();
         this.id = id;
         this.name = name;
         this.type = type;
         this.state = state;
+        this.room = room;
         this.meta = meta;
     }
 
@@ -73,7 +79,7 @@ public class Device {
         return state;
     }
 
-    public void setState(DeviceState state) {
+    public void setState(T state) {
         this.state = state;
     }
 
@@ -85,9 +91,15 @@ public class Device {
         this.meta = meta;
     }
 
+    public Room getRoom() { return this.room; }
+
     @Override
     public String toString() {
-       return "Device xd";
+       return "Device: " + name;
     }
 
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
 }

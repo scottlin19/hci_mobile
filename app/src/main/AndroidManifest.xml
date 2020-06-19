@@ -2,20 +2,27 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ar.edu.itba.hci">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/appicon"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/appicon_round"
         android:supportsRtl="true"
-        android:theme="@style/LightTheme"
-        android:networkSecurityConfig="@xml/network_security_config">
-        <activity android:name=".ui.rooms.RoomsActivity"
-            android:parentActivityName=".MainActivity"/>
-
+        android:theme="@style/LightTheme">
+        <activity
+            android:name=".ui.rooms.RoomScreen"
+            android:label="@string/title_activity_room_screen"
+            android:theme="@style/LightTheme.NoActionBar"
+            android:parentActivityName="ar.edu.itba.hci.MainActivity">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.edu.itba.hci.MainActivity" />
+        </activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,3 +33,4 @@
     </application>
 
 </manifest>
+

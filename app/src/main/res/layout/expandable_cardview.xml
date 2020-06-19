@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.alespero.expandablecardview.ExpandableCardView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/profile"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:animationDuration="300"
+
+
+    app:expandOnClick="true"
+    app:startExpanded="false"
+    app:title="Passengers"
+    app:inner_view="@layout/routine_card" />

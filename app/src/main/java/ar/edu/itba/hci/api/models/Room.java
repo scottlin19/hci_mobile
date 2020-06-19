@@ -3,10 +3,13 @@ package ar.edu.itba.hci.api.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Room {
+import java.io.Serializable;
+import java.util.Objects;
+
+public class Room implements Serializable {
 
     @SerializedName("id")
-    @Expose
+    @Expose(serialize = false)
     private String id;
     @SerializedName("name")
     @Expose
@@ -69,5 +72,18 @@ public class Room {
             else
                 return this.getName();
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Room room = (Room) o;
+        return Objects.equals(id, room.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
     }
 }

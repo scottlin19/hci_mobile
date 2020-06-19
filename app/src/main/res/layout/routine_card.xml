@@ -9,54 +9,83 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp">
 
             <TextView
-                android:id="@+id/card_title"
-                android:layout_width="323dp"
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="5sp"
-                android:text="Routine 1"
+                android:text="Routine Name"
                 android:textSize="24sp" />
+
+            <Space
+                android:layout_width="150dp"
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Edit" />
+                android:layout_width="@dimen/icon_large"
+                android:layout_height="30sp"
+                android:background="@color/colorPrimary"
+                android:text="EDIT"
+                android:textColor="#FFFFFF" />
 
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp">
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/ac_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Texto de pruba!!" />
-
+                android:text="Acción 1"
+                android:textSize="18sp" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:id="@+id/ac_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Acción 2"
+                android:textSize="18sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="20dp">
 
             <Space
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="200dp" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:paddingLeft="20dp">
 
             <Button
                 android:id="@+id/button2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Button" />
+                android:layout_width="@dimen/icon_large"
+                android:layout_height="35sp"
+                android:background="@color/colorPrimary"
+                android:text="START NOW"
+                android:textColor="#FFFFFF" />
         </TableRow>
     </TableLayout>
 

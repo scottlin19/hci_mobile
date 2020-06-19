@@ -1,11 +1,15 @@
 package ar.edu.itba.hci.api;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
 import ar.edu.itba.hci.api.models.Device;
 import ar.edu.itba.hci.api.models.Room;
+import ar.edu.itba.hci.api.models.Routine;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,9 +26,14 @@ public class ApiClient {
     private final String BaseURL = "http://10.0.2.2:8080/api/";
 
     private ApiClient() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.excludeFieldsWithoutExposeAnnotation();
+        gsonBuilder.registerTypeAdapter(Device.class,new DeviceDeserializer());
+        Gson gson = gsonBuilder.create();
+
         retrofit = new Retrofit.Builder()
                 .baseUrl(BaseURL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         this.service = retrofit.create(ApiService.class);
     }
@@ -91,6 +100,13 @@ public class ApiClient {
 
     public Call<Result<Boolean>> modifyDevice(Device device, Callback<Result<Boolean>> callback) {
         Call<Result<Boolean>> call = this.service.modifyDevice(device.getId(), device);
+        call.enqueue(callback);
+        return call;
+    }
+
+    //ROUTINES
+    public Call<Result<List<Routine>>> getRoutines(Callback<Result<List<Routine>>> callback){
+        Call<Result<List<Routine>>> call = this.service.getRoutines();
         call.enqueue(callback);
         return call;
     }

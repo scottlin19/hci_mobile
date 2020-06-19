@@ -3,26 +3,31 @@ package ar.edu.itba.hci.api.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class RoomMeta {
+import java.io.Serializable;
 
-    @SerializedName("size")
+public class RoomMeta implements Serializable {
+
+    @SerializedName("icon")
     @Expose
-    private String size;
+    private String icon;
+    @SerializedName("blocked")
+    @Expose
+    private Boolean blocked;
 
-    public RoomMeta(String size) {
-        this.size = size;
+    public String getIcon() {
+        return icon;
     }
 
-    public void setSize(String size) {
-        this.size = size;
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
-    public String getSize() {
-        return this.size;
+    public Boolean getBlocked() {
+        return blocked;
     }
 
-    @Override
-    public String toString() {
-        return this.getSize();
+    public void setBlocked(Boolean blocked) {
+        this.blocked = blocked;
     }
+
 }

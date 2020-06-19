@@ -11,8 +11,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 import ar.edu.itba.hci.R;
+import ar.edu.itba.hci.api.models.Routine;
+import ar.edu.itba.hci.ui.devices.category.RecyclerViewCategoryAdapter;
 
 public class RoutinesFragment extends Fragment {
 
@@ -31,6 +37,11 @@ public class RoutinesFragment extends Fragment {
                 textView.setText(s);
             }
         });*/
+        /*RecyclerView rv = (RecyclerView) root.findViewById(R.id.rv_routines);
+
+        RecyclerViewCategoryAdapter adapter = new RecyclerViewCategoryAdapter(getContext(),);
+        rv.setLayoutManager(new GridLayoutManager(getContext(),3));
+        rv.setAdapter(adapter);*/
 
         return root;
     }

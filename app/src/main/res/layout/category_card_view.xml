@@ -3,19 +3,20 @@
 
 
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cardview_category_id"
-    android:clickable="true"
-    android:foreground="?android:attr/selectableItemBackground"
-    android:layout_width="108dp"
+    android:id="@+id/cardview_category"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
     android:background="@color/colorPrimary"
-
+    android:clickable="true"
     android:elevation="8dp"
+
+    android:foreground="?android:attr/selectableItemBackground"
 
     app:cardBackgroundColor="@color/colorPrimary"
     app:cardCornerRadius="20dp"
     app:cardElevation="8dp"
+    app:contentPadding="8dp"
     app:contentPaddingBottom="8dp"
     app:contentPaddingLeft="4dp"
     app:contentPaddingRight="4dp"
@@ -28,7 +29,7 @@
         android:layout_height="match_parent"
 
 
-        android:drawableTop="@drawable/ic_image"
+        android:drawableBottom="@drawable/ic_image"
 
         android:fontFamily="sans-serif"
         android:text="@string/category_name_default"

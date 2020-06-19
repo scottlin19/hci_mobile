@@ -23,4 +23,7 @@
     <string name="appearanceTitle">Apariencia</string>
     <string name="misTitle">Miscelaneos</string>
     <string name="pastActions">Historial de acciones</string>
+    <string name="edit_room">Editar Habitación</string>
+    <string name="category_name_default">Categoria</string>
+    <string name="device_name_default">Dispositivo</string>
 </resources>

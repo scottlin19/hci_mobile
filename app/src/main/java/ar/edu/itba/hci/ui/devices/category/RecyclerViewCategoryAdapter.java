@@ -1,7 +1,6 @@
 package ar.edu.itba.hci.ui.devices.category;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ar.edu.itba.hci.R;
-import ar.edu.itba.hci.ui.devices.DeviceListActivity;
 
 public class RecyclerViewCategoryAdapter extends RecyclerView.Adapter<RecyclerViewCategoryAdapter.MyViewHolder> {
 
@@ -31,7 +29,7 @@ public class RecyclerViewCategoryAdapter extends RecyclerView.Adapter<RecyclerVi
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
         LayoutInflater inflater = LayoutInflater.from(context);
-        view = inflater.inflate(R.layout.cardview_category,parent,false);
+        view = inflater.inflate(R.layout.category_card_view,parent,false);
 
         return new MyViewHolder(view);
     }
@@ -39,14 +37,11 @@ public class RecyclerViewCategoryAdapter extends RecyclerView.Adapter<RecyclerVi
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
         holder.tv_category_name.setText(data.get(position).getName());
-        holder.tv_category_name.setCompoundDrawablesWithIntrinsicBounds(0,data.get(position).getThumbnail(),0,0);
-        holder.cv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, DeviceListActivity.class);
-                intent.putExtra("category",data.get(position).getName());
-                context.startActivity(intent);
-            }
+        holder.tv_category_name.setCompoundDrawablesWithIntrinsicBounds(0,0,0,data.get(position).getThumbnail());
+        holder.cv.setOnClickListener(view -> {
+           /* Intent intent = new Intent(context, DeviceListActivity.class);
+            intent.putExtra("category",data.get(position));
+            context.startActivity(intent);*/
         });
 
     }
@@ -65,7 +60,7 @@ public class RecyclerViewCategoryAdapter extends RecyclerView.Adapter<RecyclerVi
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_category_name = (TextView) itemView.findViewById(R.id.categ_name);
-            cv = (CardView) itemView.findViewById(R.id.cardview_category_id);
+           cv = (CardView) itemView.findViewById(R.id.cardview_category);
 
         }
     }
