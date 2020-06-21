@@ -27,7 +27,6 @@ public class DevicesFragment extends Fragment {
 
     List<Category> categoryList;
     List<Device> deviceList;
-    Toolbar toolbar;
 
     @Nullable
     @Override
@@ -37,7 +36,7 @@ public class DevicesFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_devices, container, false);
         categoryList = new ArrayList<>();
         deviceList = new ArrayList<>();
-        RecyclerView rv = (RecyclerView) root.findViewById(R.id.rv_category);
+        RecyclerView rv = root.findViewById(R.id.rv_category);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
         rv.setLayoutManager(gridLayoutManager);
 
@@ -57,11 +56,11 @@ public class DevicesFragment extends Fragment {
 
 
 
-        Toolbar toolbar = (Toolbar) root.findViewById(R.id.device_toolbar);
+        Toolbar toolbar = root.findViewById(R.id.device_toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left);
         toolbar.setNavigationOnClickListener(v -> {
 
-
+            getParentFragmentManager().popBackStack();
 
             HomeFragment newFragment = new HomeFragment();
             FragmentTransaction transaction = getParentFragmentManager().beginTransaction();

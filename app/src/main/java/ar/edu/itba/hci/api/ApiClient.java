@@ -17,6 +17,7 @@ import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class ApiClient {
     private Retrofit retrofit;
     private ApiService service;

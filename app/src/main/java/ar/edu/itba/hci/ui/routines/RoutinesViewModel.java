@@ -2,6 +2,7 @@ package ar.edu.itba.hci.ui.routines;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -36,7 +37,7 @@ public class RoutinesViewModel extends ViewModel {
 
         ApiClient.getInstance().getRoutines(new Callback<Result<List<Routine>>>() {
             @Override
-            public void onResponse(Call<Result<List<Routine>>> call, Response<Result<List<Routine>>> response) {
+            public void onResponse(@NonNull Call<Result<List<Routine>>> call, @NonNull Response<Result<List<Routine>>> response) {
                 if (response.isSuccessful()) {
                     Result<List<Routine>> result = response.body();
                     if (result != null) {
@@ -53,10 +54,10 @@ public class RoutinesViewModel extends ViewModel {
             }
 
             @Override
-            public void onFailure(Call<Result<List<Routine>>> call, Throwable t) {
+            public void onFailure(@NonNull Call<Result<List<Routine>>> call, @NonNull Throwable t) {
 
             }
         });
     }
-    public LiveData<List<Routine>> getRoutines(){return routineList;}
+    public LiveData<List<Routine>> getRoutines(){ return routineList; }
 }

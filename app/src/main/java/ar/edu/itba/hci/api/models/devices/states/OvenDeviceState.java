@@ -1,11 +1,14 @@
 package ar.edu.itba.hci.api.models.devices.states;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import ar.edu.itba.hci.api.models.devices.states.DeviceState;
 
-public class OvenDeviceState extends DeviceState {
+public class OvenDeviceState extends DeviceState{
 
     @SerializedName("status")
     @Expose
@@ -46,6 +49,49 @@ public class OvenDeviceState extends DeviceState {
         this.grill = grill;
         this.convection = convection;
     }
+
+    protected OvenDeviceState(Parcel in) {
+        status = in.readString();
+        if (in.readByte() == 0) {
+            temperature = null;
+        } else {
+            temperature = in.readInt();
+        }
+        heat = in.readString();
+        grill = in.readString();
+        convection = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(status);
+        if (temperature == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(temperature);
+        }
+        dest.writeString(heat);
+        dest.writeString(grill);
+        dest.writeString(convection);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<OvenDeviceState> CREATOR = new Creator<OvenDeviceState>() {
+        @Override
+        public OvenDeviceState createFromParcel(Parcel in) {
+            return new OvenDeviceState(in);
+        }
+
+        @Override
+        public OvenDeviceState[] newArray(int size) {
+            return new OvenDeviceState[size];
+        }
+    };
 
     public String getStatus() {
         return status;

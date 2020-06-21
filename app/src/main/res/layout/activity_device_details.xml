@@ -42,22 +42,39 @@
                 android:id="@+id/device_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/device_icon"
+                android:layout_alignTop="@+id/device_icon"
                 android:layout_marginStart="14dp"
                 android:layout_toEndOf="@+id/device_icon"
                 android:text="device name"
                 android:textColor="@android:color/white"
                 android:textSize="30sp" />
 
+            <TextView
+                android:id="@+id/device_room"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/device_name"
+                android:layout_alignStart="@id/device_name"
+                android:layout_alignBottom="@id/device_icon"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="234dp"
+                android:text="device room"
+                android:textColor="@color/textColorPrimary" />
+
         </RelativeLayout>
 
     </LinearLayout>
 
     <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_actions_container"
         android:layout_width="0dp"
-        android:layout_height="589dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout"></androidx.fragment.app.FragmentContainerView>
+        app:layout_constraintTop_toBottomOf="@id/linearLayout"
+        app:layout_constraintVertical_bias="0.0"></androidx.fragment.app.FragmentContainerView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

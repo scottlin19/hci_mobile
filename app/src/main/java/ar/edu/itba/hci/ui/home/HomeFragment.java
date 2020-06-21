@@ -1,6 +1,5 @@
 package ar.edu.itba.hci.ui.home;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
-import ar.edu.itba.hci.MainActivity;
 import ar.edu.itba.hci.R;
-
 import ar.edu.itba.hci.ui.devices.DevicesFragment;
 import ar.edu.itba.hci.ui.rooms.RoomsFragment;
 
@@ -34,38 +31,32 @@ public class HomeFragment extends Fragment {
 //                textView.setText(s);
 //            }
 //        });
-        Button device_button = (Button) root.findViewById(R.id.button_devices);
-        device_button.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
+        Button device_button = root.findViewById(R.id.button_devices);
+        device_button.setOnClickListener(view -> {
 
-                DevicesFragment newFragment = new DevicesFragment();
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            DevicesFragment newFragment = new DevicesFragment();
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
 
 
-                // Replace whatever is in the fragment_container view with this fragment,
-                // and add the transaction to the back stack so the user can navigate back
-                transaction.replace(R.id.nav_host_fragment, newFragment);
-                transaction.addToBackStack(null);
+            // Replace whatever is in the fragment_container view with this fragment,
+            // and add the transaction to the back stack so the user can navigate back
+            transaction.replace(R.id.nav_host_fragment, newFragment);
+            transaction.addToBackStack(null);
 
-                // Commit the transaction
-                transaction.commit();
-            }
+            // Commit the transaction
+            transaction.commit();
         });
-        Button rooms_button = (Button) root.findViewById(R.id.button_rooms);
-        rooms_button.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                RoomsFragment newFragment = new RoomsFragment();
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                // Replace whatever is in the fragment_container view with this fragment,
-                // and add the transaction to the back stack so the user can navigate back
-                transaction.replace(R.id.nav_host_fragment, newFragment);
-                transaction.addToBackStack(null);
-                // Commit the transaction
-                transaction.commit();
+        Button rooms_button = root.findViewById(R.id.button_rooms);
+        rooms_button.setOnClickListener(view -> {
+            RoomsFragment newFragment = new RoomsFragment();
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            // Replace whatever is in the fragment_container view with this fragment,
+            // and add the transaction to the back stack so the user can navigate back
+            transaction.replace(R.id.nav_host_fragment, newFragment);
+            transaction.addToBackStack(null);
+            // Commit the transaction
+            transaction.commit();
 //               ((MainActivity) getActivity()).setCurrentFragment(new RoomsFragment());
-            }
         });
         return root;
     }

@@ -3,6 +3,7 @@ package ar.edu.itba.hci.ui.devices.category;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,14 +50,21 @@ public class RecyclerViewCategoryAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
-        holder.tv_category_name.setText(Utility.capitalizeFirstLetter(categoryData.get(position).getName()));
+
+        String categ_name;
+
+        int id = context.getResources().getIdentifier(categoryData.get(position).getName(), "string", context.getPackageName());
+        if(id == 0) categ_name = "MISSING NAME";
+        else categ_name = context.getResources().getString(id);
+
+        holder.tv_category_name.setText(Utility.capitalizeFirstLetter(categ_name));
         holder.tv_category_name.setCompoundDrawablesWithIntrinsicBounds(0,0,0,categoryData.get(position).getThumbnail());
         holder.cv.setOnClickListener(view -> {
         Bundle bundle = new Bundle();
         this.deviceList = this.deviceList.stream().filter(d ->   d.getType().getName().equals(categoryData.get(position).getName())).collect(Collectors.toList());
            bundle.putParcelableArrayList("devices", (ArrayList<? extends Parcelable>) deviceList);
             System.out.println(deviceList);
-           bundle.putString("category",categoryData.get(position).getName());
+           bundle.putString("category",categ_name);
             DeviceListFragment newFragment = new DeviceListFragment();
             newFragment.setArguments(bundle);
            currFragment.getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,newFragment).commit();

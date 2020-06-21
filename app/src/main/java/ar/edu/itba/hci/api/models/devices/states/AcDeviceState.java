@@ -1,9 +1,12 @@
 package ar.edu.itba.hci.api.models.devices.states;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class AcDeviceState extends DeviceState{
+public class AcDeviceState  extends DeviceState{
 
     @SerializedName("status")
     @Expose
@@ -49,6 +52,31 @@ public class AcDeviceState extends DeviceState{
         this.horizontalSwing = horizontalSwing;
         this.fanSpeed = fanSpeed;
     }
+
+    protected AcDeviceState(Parcel in) {
+        status = in.readString();
+        if (in.readByte() == 0) {
+            temperature = null;
+        } else {
+            temperature = in.readInt();
+        }
+        mode = in.readString();
+        verticalSwing = in.readString();
+        horizontalSwing = in.readString();
+        fanSpeed = in.readString();
+    }
+
+    public static final Creator<AcDeviceState> CREATOR = new Creator<AcDeviceState>() {
+        @Override
+        public AcDeviceState createFromParcel(Parcel in) {
+            return new AcDeviceState(in);
+        }
+
+        @Override
+        public AcDeviceState[] newArray(int size) {
+            return new AcDeviceState[size];
+        }
+    };
 
     public String getStatus() {
         return status;
@@ -96,5 +124,25 @@ public class AcDeviceState extends DeviceState{
 
     public void setFanSpeed(String fanSpeed) {
         this.fanSpeed = fanSpeed;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(status);
+        if (temperature == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeInt(temperature);
+        }
+        parcel.writeString(mode);
+        parcel.writeString(verticalSwing);
+        parcel.writeString(horizontalSwing);
+        parcel.writeString(fanSpeed);
     }
 }

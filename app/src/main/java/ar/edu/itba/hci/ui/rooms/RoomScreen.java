@@ -31,23 +31,25 @@ public class RoomScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_screen);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.room_screen_toolbar);
 
 
-        setSupportActionBar(toolbar);
-        CollapsingToolbarLayout toolBarLayout = findViewById(R.id.toolbar_layout);
-        toolBarLayout.setTitle(room.getName());
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
         if(getIntent().hasExtra("room")){
-            room = (Room) getIntent().getSerializableExtra("room");
+            this.room = getIntent().getParcelableExtra("room");
             System.out.println(room.getMeta().getIcon());
         }
         if(getIntent().hasExtra("devices")){
            deviceList = getIntent().getParcelableArrayListExtra("devices");
             System.out.println("ROOM DEVICES: "+deviceList);
         }
+
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.room_screen_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        CollapsingToolbarLayout toolBarLayout = findViewById(R.id.toolbar_layout);
+        toolBarLayout.setTitle(room.getName());
 
         RecyclerView rv = (RecyclerView) findViewById(R.id.rv_room_screen);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);

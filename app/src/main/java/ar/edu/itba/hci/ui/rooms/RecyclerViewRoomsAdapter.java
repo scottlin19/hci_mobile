@@ -63,7 +63,7 @@ public class RecyclerViewRoomsAdapter extends RecyclerView.Adapter<RecyclerViewR
                     if (response.isSuccessful()) {
                          deviceList = response.body().getResult();
                         Intent intent = new Intent(context, RoomScreen.class);
-                        intent.putExtra("room", rooms.get(position));
+                        intent.putExtra("room", (Parcelable) rooms.get(position));
                         intent.putParcelableArrayListExtra("devices", (ArrayList<? extends Parcelable>) deviceList);
                         context.startActivity(intent);
                     } else {

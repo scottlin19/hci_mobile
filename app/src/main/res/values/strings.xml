@@ -7,17 +7,16 @@
     <string name="title_rooms">Rooms</string>
     <string name="title_devices">Devices</string>
     <string name="themeSwitch">Dark mode</string>
-    <string name="title_category_security">Security</string>
-    <string name="title_category_lamps">Lamps</string>
-    <string name="title_category_speakers">Speakers</string>
-    <string name="title_category_acs">A/Cs</string>
-    <string name="title_category_faucets">Faucets</string>
-    <string name="title_category_fridges">Fridges</string>
-    <string name="title_category_ovens">Ovens</string>
-    <string name="title_category_tvs">TVs</string>
-    <string name="title_category_doors">Doors</string>
-    <string name="title_category_vacuums">Vacuums</string>
-    <string name="title_category_blinds">Blinds</string>
+    <string name="alarm">Alarms</string>
+    <string name="lamp">Lamps</string>
+    <string name="speaker">Speakers</string>
+    <string name="ac" translatable="false">A/Cs</string>
+    <string name="faucet">Faucets</string>
+    <string name="refrigerator">Fridges</string>
+    <string name="oven">Ovens</string>
+    <string name="door">Doors</string>
+    <string name="vacuum">Vacuums</string>
+    <string name="blinds">Blinds</string>
     <string name="title_add">Add</string>
 
 
@@ -33,5 +32,68 @@
     <string name="routine_start_button">START NOW</string>
     <string name="favorite_action">Add to favorites</string>
     <string name="toggle_notifications">Toggle notifications</string>
+    <string name="exec_msg">executed</string>
+    <string name="action_msg">to</string>
+    <string name="no_room">No room</string>
+    <string name="status">Status</string>
+    <string name="on">ON</string>
+    <string name="off">OFF</string>
+    <string name="battery_level">Battery Level</string>
+    <!--VACUUM-->
+    <string name="start">Start</string>
+    <string name="setMode">Set mode</string>
+    <string name="pause">Pause</string>
+    <string name="dock">Dock</string>
+    <string name="recharge">Recharge</string>
+    <string name="setLocation">Set location</string>
+
+    <!-- ALARM-->
+    <string name="changeSecurityCode">Change security code</string>
+    <string name="armStay">Arm stay</string>
+    <string name="armAway">Arm away</string>
+    <string name="disarm">Disarm</string>
+
+    <!--SPEAKER-->
+    <string name="setVolume">Set volume</string>
+    <string name="play">Play</string>
+    <string name="stop">Stop</string>
+    <string name="resume">Resume</string>
+    <string name="nextSong">Next song</string>
+    <string name="previousSong">Previous song</string>
+    <string name="setGenre">Set genre</string>
+
+    <!--OVEN-->
+    <string name="turnOn">Turn on</string>
+    <string name="turnOff">Turn off</string>
+    <string name="setHeat">Set heat</string>
+    <string name="setGrill">Set grill</string>
+    <string name="setConvection">Set convection</string>
+    <string name="setTemperature">Set temperature</string>
+
+    <!-- FAUCET -->
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="dispense">Dispense</string>
+
+    <!--BLINDS-->
+    <string name="setLevel">Set level</string>
+
+    <!--LAMP-->
+    <string name="setColor">Set color</string>
+    <string name="setBrightness">Set brightness</string>
+
+    <!--AC-->
+    <string name="setVerticalSwing">Set vertical swing</string>
+    <string name="setHorizontalSwing">Set horizontal swing</string>
+    <string name="setFanSpeed">Set fan speed</string>
+
+    <!--DOOR-->
+    <string name="lock">Lock</string>
+    <string name="unlock">Unlock</string>
+
+
+    <!--REFRIGERATOR-->
+    <string name="setFreezerTemperature">Set freezer temperature</string>
+
 </resources>
 

@@ -1,9 +1,12 @@
 package ar.edu.itba.hci.api.models.devices.states;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class VacuumDeviceState extends DeviceState {
+public class VacuumDeviceState extends DeviceState{
 
     @SerializedName("status")
     @Expose
@@ -39,6 +42,45 @@ public class VacuumDeviceState extends DeviceState {
         this.batteryLevel = batteryLevel;
         this.location = location;
     }
+
+    protected VacuumDeviceState(Parcel in) {
+        status = in.readString();
+        mode = in.readString();
+        if (in.readByte() == 0) {
+            batteryLevel = null;
+        } else {
+            batteryLevel = in.readInt();
+        }
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(status);
+        dest.writeString(mode);
+        if (batteryLevel == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(batteryLevel);
+        }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<VacuumDeviceState> CREATOR = new Creator<VacuumDeviceState>() {
+        @Override
+        public VacuumDeviceState createFromParcel(Parcel in) {
+            return new VacuumDeviceState(in);
+        }
+
+        @Override
+        public VacuumDeviceState[] newArray(int size) {
+            return new VacuumDeviceState[size];
+        }
+    };
 
     public String getStatus() {
         return status;

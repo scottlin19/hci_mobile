@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 
 import ar.edu.itba.hci.api.models.devices.states.DeviceState;
 
@@ -57,13 +56,16 @@ public class Device<T extends DeviceState> implements Parcelable {
         this.meta = meta;
     }
 
+
     protected Device(Parcel in) {
+        type = in.readParcelable(DeviceType.class.getClassLoader());
+        room = in.readParcelable(Room.class.getClassLoader());
+        Class<?> type = (Class<?>) in.readSerializable();
+        state = in.readParcelable(type.getClassLoader());
+        meta = in.readParcelable(DeviceMeta.class.getClassLoader());
         id = in.readString();
         name = in.readString();
-        type = in.readParcelable(DeviceType.class.getClassLoader());
-        meta = in.readParcelable(DeviceMeta.class.getClassLoader());
     }
-
 
     public static final Creator<Device> CREATOR = new Creator<Device>() {
         @Override
@@ -129,7 +131,14 @@ public class Device<T extends DeviceState> implements Parcelable {
         }else{
             roomS = this.room.getName();
         }
-       return "Device: " + name +" Type: "+getType().getName()+ " Room: " + roomS + " Meta: { "+this.meta.toString()+" } " ;
+       return "Device: " + name +" Type: "+getType().getName() + " Room: " + roomS + " Meta: { "+this.meta.toString()+" } " ;
+    }
+
+
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
     }
 
 
@@ -140,16 +149,13 @@ public class Device<T extends DeviceState> implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-
+        parcel.writeParcelable(type, i);
+        parcel.writeParcelable(room, i);
+        final Class<?> objectsType = state.getClass();
+        parcel.writeSerializable(objectsType);
+        parcel.writeParcelable(state, i);
+        parcel.writeParcelable(meta, i);
         parcel.writeString(id);
         parcel.writeString(name);
-        parcel.writeParcelable(type, i);
-        parcel.writeParcelable(meta, i);
-
-    }
-
-    @Override
-    public int hashCode() {
-        return getId().hashCode();
     }
 }

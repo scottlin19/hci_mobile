@@ -1,5 +1,8 @@
 package ar.edu.itba.hci.api.models.devices.states;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -38,6 +41,48 @@ public class SpeakerDeviceState extends DeviceState {
         this.genre = genre;
         this.song = song;
     }
+
+
+    protected SpeakerDeviceState(Parcel in) {
+        status = in.readString();
+        if (in.readByte() == 0) {
+            volume = null;
+        } else {
+            volume = in.readInt();
+        }
+        genre = in.readString();
+        song = in.readParcelable(SpeakerSong.class.getClassLoader());
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(status);
+        if (volume == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(volume);
+        }
+        dest.writeString(genre);
+        dest.writeParcelable(song, flags);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<SpeakerDeviceState> CREATOR = new Creator<SpeakerDeviceState>() {
+        @Override
+        public SpeakerDeviceState createFromParcel(Parcel in) {
+            return new SpeakerDeviceState(in);
+        }
+
+        @Override
+        public SpeakerDeviceState[] newArray(int size) {
+            return new SpeakerDeviceState[size];
+        }
+    };
 
     public String getStatus() {
         return status;

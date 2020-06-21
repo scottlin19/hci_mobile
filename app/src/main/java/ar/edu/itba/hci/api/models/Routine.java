@@ -1,5 +1,7 @@
 package ar.edu.itba.hci.api.models;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -48,5 +50,11 @@ public class Routine {
 
     public void setExpanded(boolean expanded) {
         this.expanded = expanded;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return getName();
     }
 }

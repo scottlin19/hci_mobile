@@ -7,27 +7,91 @@
     <string name="title_rooms">Habitaciones</string>
     <string name="title_devices">Dispositivos</string>
     <string name="themeSwitch">Modo Oscuro</string>
-    <string name="title_category_security">Seguridad</string>
-    <string name="title_category_lamps">Lámparas</string>
-    <string name="title_category_speakers">Parlantes</string>
-    <string name="title_category_acs">A/Cs</string>
-    <string name="title_category_tvs">TVs</string>
-    <string name="title_category_faucets">Grifos</string>
-    <string name="title_category_fridges">Heladeras</string>
-    <string name="title_category_ovens">Hornos</string>
-    <string name="title_category_doors">Puertas</string>
-    <string name="title_category_vacuums">Aspiradoras</string>
-    <string name="title_category_blinds">Persianas</string>
+    <string name="alarm">Alarmas</string>
+    <string name="lamp">Luces</string>
+    <string name="speaker">Parlantes</string>
+    <string name="faucet">Grifos</string>
+    <string name="refrigerator">Heladeras</string>
+    <string name="oven">Hornos</string>
+    <string name="door">Puertas</string>
+    <string name="vacuum">Aspiradoras</string>
+    <string name="blinds">Persianas</string>
     <string name="title_add">Añadir</string>
     <string name="favoriteTitle">Favoritos</string>
     <string name="appearanceTitle">Apariencia</string>
     <string name="misTitle">Miscelaneos</string>
     <string name="pastActions">Historial de acciones</string>
     <string name="edit_room">Editar Habitación</string>
-    <string name="category_name_default">Categoria</string>
+    <string name="category_name_default">Categoría</string>
     <string name="device_name_default">Dispositivo</string>
     <string name="action_settings">Configuración</string>
     <string name="routine_start_button">EJECUTAR</string>
     <string name="favorite_action">Agregar a favoritos</string>
     <string name="toggle_notifications">Activar notificaciones</string>
+    <string name="exec_msg">ejecutada</string>
+    <string name="action_msg">a</string>
+    <string name="no_room">No tiene habitación</string>
+    <string name="status">Estado</string>
+    <string name="on">ENCENDIDO</string>
+    <string name="off">APAGADO</string>
+    <string name="battery_level">Nivel de Batería</string>
+
+
+    <!--VACUUM-->
+    <string name="start">Comenzar</string>
+    <string name="setMode">Establecer modo</string>
+    <string name="pause">Pausar</string>
+    <string name="dock">Acoplar</string>
+    <string name="recharge">Recargar</string>
+    <string name="setLocation">Establecer ubicación</string>
+
+    <!-- ALARM-->
+    <string name="changeSecurityCode">Establecer código de seguridad</string>
+    <string name="armStay">Modo presente</string>
+    <string name="armAway">Modo ausente</string>
+    <string name="disarm">Desarmar</string>
+
+    <!--SPEAKER-->
+    <string name="setVolume">Cambiar volumen</string>
+    <string name="play">Reproducir</string>
+    <string name="stop">Detener</string>
+    <string name="resume">Continuar</string>
+    <string name="nextSong">Próxima canción</string>
+    <string name="previousSong">Canción anterior</string>
+    <string name="setGenre">Establecer género</string>
+
+    <!--OVEN-->
+    <string name="turnOn">Encender</string>
+    <string name="turnOff">Apagar</string>
+    <string name="setTemperature">Establecer temperatura</string>
+    <string name="setHeat">Establecer calor</string>
+    <string name="setGrill">Establecer parilla</string>
+    <string name="setConvection">Establecer convección</string>
+
+    <!-- FAUCET -->
+    <string name="open">Abrir</string>
+    <string name="close">Cerrar</string>
+    <string name="dispense">Dispensar</string>
+
+    <!--BLINDS-->
+    <string name="setLevel">Establecer nivel</string>
+
+    <!--LAMP-->
+    <string name="setColor">Cambiar color</string>
+    <string name="setBrightness">Establecer brillo</string>
+
+    <!--AC-->
+    <string name="setVerticalSwing">Establecer dirección vertical</string>
+    <string name="setHorizontalSwing">Establecer dirección horizontal</string>
+    <string name="setFanSpeed">Establecer velocidad del ventilador</string>
+
+    <!--DOOR-->
+    <string name="lock">Bloquear</string>
+    <string name="unlock">Desbloquear</string>
+
+
+    <!--REFRIGERATOR-->
+    <string name="setFreezerTemperature">Establecer temperatura del freezer</string>
+
+
 </resources>

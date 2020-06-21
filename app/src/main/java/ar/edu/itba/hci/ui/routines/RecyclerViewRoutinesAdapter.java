@@ -50,7 +50,7 @@ public class RecyclerViewRoutinesAdapter extends RecyclerView.Adapter<RecyclerVi
     public void onBindViewHolder(@NonNull RoutineVH holder, int position) {
         Routine routine = routineList.get(position);
         holder.routineName.setText(routine.getName());
-        ArrayAdapter<RoutineAction> arrayAdapter = new ArrayAdapter<>(context, R.layout.routine_action_list_item, routine.getActions());
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, R.layout.routine_action_list_item, routineActionsAdapter(routine.getActions()));
         holder.routineActionList.setAdapter(arrayAdapter);
 
         setListViewHeightBasedOnChildren(holder.routineActionList);
@@ -109,14 +109,39 @@ public class RecyclerViewRoutinesAdapter extends RecyclerView.Adapter<RecyclerVi
         ApiClient.getInstance().executeRoutine(routine.getId(), new Callback<Result<Object>>() {
             @Override
             public void onResponse(Call<Result<Object>> call, Response<Result<Object>> response) {
-                Toast.makeText(context, String.format("excuted %s", routine.getName()), Toast.LENGTH_SHORT).show();
-                Log.v("Routine excution", String.format("excuted %s", routine.getName()));
+                Toast.makeText(context, String.format("%s %s", routine.getName(), context.getResources().getString(R.string.exec_msg)), Toast.LENGTH_SHORT).show();
+
+                Log.v("Routine execution", String.format("%s %s", routine.getName(), context.getResources().getString(R.string.exec_msg)));
             }
             @Override
             public void onFailure(Call<Result<Object>> call, Throwable t) {
                 Toast.makeText(context, String.format("Error %s", t.getLocalizedMessage()), Toast.LENGTH_SHORT).show();
-                Log.e("Routine excution", t.getLocalizedMessage());
-            }
+                Log.e("Routine execution", t.getLocalizedMessage());
+          }
         });
+    }
+
+    public String[] routineActionsAdapter(@NonNull List<RoutineAction> actions) {
+        String[] parsedActions = new String[actions.size()];
+        StringBuilder actionStr = new StringBuilder();
+        int id, idx = 0;
+        List<String> params;
+
+        for(RoutineAction routineAction : actions) {
+            id = context.getResources().getIdentifier(routineAction.getActionName(), "string", context.getPackageName());
+            if(id == 0) actionStr.append("MISSING_ACTION");
+            else actionStr.append(context.getResources().getString(id));
+
+            actionStr.append(" ").append(routineAction.getDevice().getName());
+
+            if((params = routineAction.getParams()).size() != 0) {
+                actionStr.append(" ").append(context.getResources().getString(R.string.action_msg)).append(" ").append(params.get(0));
+            }
+
+            parsedActions[idx++] = actionStr.toString();
+            actionStr.setLength(0);
+        }
+
+        return parsedActions;
     }
 }

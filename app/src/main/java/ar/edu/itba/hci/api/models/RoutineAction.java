@@ -57,19 +57,4 @@ public class RoutineAction {
     public void setMeta(RoutineMeta meta) {
         this.meta = meta;
     }
-
-    @NonNull
-    @Override
-    public String toString() {
-        String param = "";
-        StringBuilder actionParsed = new StringBuilder();
-        if(!(params == null || params.size() == 0)) param = "to " + params.get(0);
-
-        for (String w : actionName.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])")) {
-            actionParsed.append(w.toLowerCase()).append(" ");
-        }
-        actionParsed.setLength(actionParsed.length() - 1);
-
-        return String.format("Do \"%s\" in %s %s", actionParsed, device.getName(), param);
-    }
 }

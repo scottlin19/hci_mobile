@@ -9,9 +9,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="672dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -24,13 +24,14 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:text="@string/title_settings"
-            android:textSize="24sp" />
+            android:textSize="30sp" />
 
         <TextView
             android:id="@+id/appearanceTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/appearanceTitle" />
+            android:text="@string/appearanceTitle"
+            android:textSize="18sp" />
 
         <View
             android:id="@+id/divider"
@@ -43,14 +44,17 @@
             android:id="@+id/theme_switch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/themeSwitch" />
+            android:text="@string/themeSwitch"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/misTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="@string/misTitle" />
+            android:paddingTop="10dp"
+            android:text="@string/misTitle"
+            android:textSize="18sp" />
 
         <View
             android:id="@+id/divider2"
@@ -67,7 +71,7 @@
             android:text="@string/pastActions"
             android:textAlignment="textStart"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textSize="14sp" />
+            android:textSize="18sp" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

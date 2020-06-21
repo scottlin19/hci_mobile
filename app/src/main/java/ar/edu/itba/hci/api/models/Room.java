@@ -1,5 +1,7 @@
 package ar.edu.itba.hci.api.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.google.gson.annotations.Expose;
@@ -12,7 +14,7 @@ import java.util.Objects;
 
 import ar.edu.itba.hci.R;
 
-public class Room implements Serializable {
+public class Room implements Parcelable {
 
     @SerializedName("id")
     @Expose(serialize = false)
@@ -40,6 +42,25 @@ public class Room implements Serializable {
         this.meta = meta;
 
     }
+
+    protected Room(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        meta = in.readParcelable(RoomMeta.class.getClassLoader());
+    }
+
+
+    public static final Creator<Room> CREATOR = new Creator<Room>() {
+        @Override
+        public Room createFromParcel(Parcel in) {
+            return new Room(in);
+        }
+
+        @Override
+        public Room[] newArray(int size) {
+            return new Room[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -94,5 +115,18 @@ public class Room implements Serializable {
     @Override
     public int hashCode() {
         return getId().hashCode();
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(name);
+        parcel.writeParcelable(meta, i);
     }
 }

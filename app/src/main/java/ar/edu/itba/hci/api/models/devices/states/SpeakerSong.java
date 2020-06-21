@@ -1,9 +1,12 @@
 package ar.edu.itba.hci.api.models.devices.states;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class SpeakerSong extends DeviceState {
+public class SpeakerSong extends DeviceState implements Parcelable {
     @SerializedName("title")
     @Expose
     private String title;
@@ -43,6 +46,40 @@ public class SpeakerSong extends DeviceState {
         this.duration = duration;
         this.progress = progress;
     }
+
+    protected SpeakerSong(Parcel in) {
+        title = in.readString();
+        artist = in.readString();
+        album = in.readString();
+        duration = in.readString();
+        progress = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(artist);
+        dest.writeString(album);
+        dest.writeString(duration);
+        dest.writeString(progress);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<SpeakerSong> CREATOR = new Creator<SpeakerSong>() {
+        @Override
+        public SpeakerSong createFromParcel(Parcel in) {
+            return new SpeakerSong(in);
+        }
+
+        @Override
+        public SpeakerSong[] newArray(int size) {
+            return new SpeakerSong[size];
+        }
+    };
 
     public String getTitle() {
         return title;
