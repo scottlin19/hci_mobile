@@ -24,6 +24,9 @@ public interface ApiService {
     @GET("rooms")
     Call<Result<List<Room>>> getRooms();
 
+    //ROOM DEVICES
+    @GET("rooms/{roomId}/devices")
+    Call<Result<List<Device>>> getRoomDevices(@Path("roomId") String roomId);
     //DEVICES
     @PUT("devices/{deviceId}")
     @Headers("Content-Type: application/json")
@@ -38,4 +41,8 @@ public interface ApiService {
     //ROUTINES
     @GET("routines")
     Call<Result<List<Routine>>> getRoutines();
+
+    @PUT("routines/{routineId}/execute")
+    @Headers("Content-Type: application/json")
+    Call<Result<Object>> executeRoutine(@Path("routineId") String routineId);
 }

@@ -23,13 +23,12 @@ import retrofit2.Response;
 
 public class RoomsViewModel extends ViewModel {
     private MutableLiveData<List<Room>> rooms = null;
-    private MutableLiveData<List<Device>> devices = null;
 
     public LiveData<List<Room>> getRooms(){
         Log.d("GETROOMS","ENTER GETROOMS");
         if(rooms == null){
             rooms = new MutableLiveData<>();
-            loadRooms();
+            load();
             Log.d("FETCH","FETCHED ROOMS IN VIEW MODEL");
             Log.d("AUX",rooms.toString());
 
@@ -37,7 +36,7 @@ public class RoomsViewModel extends ViewModel {
         return rooms;
     }
 
-    private void loadRooms() {
+    private void load() {
         Log.d("LOAD", "LOADING");
 
         ApiClient.getInstance().getRooms(new Callback<Result<List<Room>>>() {
@@ -46,7 +45,7 @@ public class RoomsViewModel extends ViewModel {
                 if (response.isSuccessful()) {
                     Result<List<Room>> result = response.body();
                     if(result != null) {
-                        result.getResult().forEach(room -> Log.d("ROOM", room.toString()));
+                      /*  result.getResult().forEach(room -> Log.d("ROOM", room.toString()));*/
                         rooms.setValue(result.getResult());
                     }
 
@@ -62,6 +61,8 @@ public class RoomsViewModel extends ViewModel {
             }
         });
 
+
+
     }
     private <T> void handleError(Response<T> response) {
         Error error = ApiClient.getInstance().getError(response.errorBody());
@@ -74,30 +75,6 @@ public class RoomsViewModel extends ViewModel {
         Log.e(LOG_TAG, t.toString());
     }
 
-    public LiveData<List<Device>> getDevices(Room room) {
 
-        ApiClient.getInstance().getDevices(new Callback<Result<List<Device>>>() {
 
-            @Override
-            public void onResponse(Call<Result<List<Device>>> call, Response<Result<List<Device>>> response) {
-                if(response.isSuccessful()) {
-                    assert response.body() != null;
-                    List<Device> full_devices = response.body().getResult();
-                    full_devices.stream().filter(d -> d.getRoom().equals(room)).close();
-                    devices.setValue(full_devices);
-                }
-                else {
-                    Log.d("ERROR","error");
-                    handleError(response);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Result<List<Device>>> call, Throwable t) {
-                handleUnexpectedError(t);
-            }
-        });
-
-        return devices;
-    }
 }

@@ -13,11 +13,19 @@
         android:roundIcon="@mipmap/appicon_round"
         android:supportsRtl="true"
         android:theme="@style/LightTheme">
+        <activity android:name=".ui.devices.DeviceDetailsActivity"
+            android:parentActivityName=".MainActivity">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.edu.itba.hci.MainActivity" />
+        </activity>
         <activity
             android:name=".ui.rooms.RoomScreen"
             android:label="@string/title_activity_room_screen"
-            android:theme="@style/LightTheme.NoActionBar"
-            android:parentActivityName="ar.edu.itba.hci.MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/LightTheme.NoActionBar">
+
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -33,4 +41,3 @@
     </application>
 
 </manifest>
-

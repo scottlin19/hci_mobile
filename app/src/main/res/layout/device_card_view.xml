@@ -21,23 +21,29 @@
     app:contentPaddingRight="4dp"
     app:contentPaddingTop="8dp">
 
-    <TextView
-        android:id="@+id/categ_name"
-
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
 
 
-        android:drawableTop="@drawable/ic_image"
 
-        android:fontFamily="sans-serif"
-        android:text="@string/category_name_default"
-        android:textAlignment="center"
-        android:textColor="@color/textColorPrimary"
+        <TextView
+            android:id="@+id/tv_device_name"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:maxLines="1"
+            android:scrollHorizontally="true"
+            android:ellipsize="end"
 
 
-        android:textSize="@dimen/text_medium"
-        android:textStyle="bold" />
+
+            android:fontFamily="sans-serif"
+            android:text="@string/category_name_default"
+            android:textAlignment="center"
+            android:textColor="@color/textColorPrimary"
+
+
+            android:textSize="@dimen/text_small"
+            android:textStyle="bold" />
+
 
 
 </androidx.cardview.widget.CardView>

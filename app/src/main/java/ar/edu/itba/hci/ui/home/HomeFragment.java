@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
+import ar.edu.itba.hci.MainActivity;
 import ar.edu.itba.hci.R;
 
 import ar.edu.itba.hci.ui.devices.DevicesFragment;
@@ -57,15 +58,13 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 RoomsFragment newFragment = new RoomsFragment();
                 FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-
-
                 // Replace whatever is in the fragment_container view with this fragment,
                 // and add the transaction to the back stack so the user can navigate back
                 transaction.replace(R.id.nav_host_fragment, newFragment);
                 transaction.addToBackStack(null);
-
                 // Commit the transaction
                 transaction.commit();
+//               ((MainActivity) getActivity()).setCurrentFragment(new RoomsFragment());
             }
         });
         return root;

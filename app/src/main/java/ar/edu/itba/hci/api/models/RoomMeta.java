@@ -4,6 +4,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
+import ar.edu.itba.hci.R;
 
 public class RoomMeta implements Serializable {
 

@@ -1,92 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="350dp">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp">
 
-    <TableLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TableRow
+        <TextView
+            android:id="@+id/routineName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:text="Routine Name"
+            android:textAlignment="textStart"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/expandableLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:paddingLeft="20dp">
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp">
 
-            <TextView
-                android:id="@+id/textView"
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="63dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ListView
+                android:id="@+id/action_list"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Routine Name"
-                android:textSize="24sp" />
+                android:layout_height="400dp"
+                app:layout_constraintBottom_toTopOf="@+id/divider6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
-            <Space
-                android:layout_width="150dp"
-                android:layout_height="wrap_content" />
+            <View
+                android:id="@+id/divider6"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="55dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <Button
-                android:id="@+id/button"
-                android:layout_width="@dimen/icon_large"
+                android:id="@+id/start_action_button"
+                android:layout_width="100dp"
                 android:layout_height="30sp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
                 android:background="@color/colorPrimary"
-                android:text="EDIT"
-                android:textColor="#FFFFFF" />
+                android:text="@string/routine_start_button"
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-        </TableRow>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:paddingLeft="20dp"
-            android:paddingTop="20dp">
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/ac_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Acción 1"
-                android:textSize="18sp" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="20dp"
-            android:paddingTop="5dp">
-
-            <TextView
-                android:id="@+id/ac_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Acción 2"
-                android:textSize="18sp" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="20dp">
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="200dp" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
-            android:paddingLeft="20dp">
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="@dimen/icon_large"
-                android:layout_height="35sp"
-                android:background="@color/colorPrimary"
-                android:text="START NOW"
-                android:textColor="#FFFFFF" />
-        </TableRow>
-    </TableLayout>
-
-</LinearLayout>
+</androidx.cardview.widget.CardView>

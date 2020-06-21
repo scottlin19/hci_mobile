@@ -23,8 +23,9 @@ public class RoutinesViewModel extends ViewModel {
     public RoutinesViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is routine fragment");
-        routineList = new MutableLiveData<List<Routine>>();
+        routineList = new MutableLiveData<>();
         loadRoutines();
+
     }
 
     public LiveData<String> getText() {
@@ -39,7 +40,7 @@ public class RoutinesViewModel extends ViewModel {
                 if (response.isSuccessful()) {
                     Result<List<Routine>> result = response.body();
                     if (result != null) {
-                        List<Routine> aux = new ArrayList<Routine>();
+                        List<Routine> aux = new ArrayList<>();
                         result.getResult().forEach(routine -> {
                             Log.println(Log.DEBUG, "Routine", routine.toString());
                             aux.add(routine);

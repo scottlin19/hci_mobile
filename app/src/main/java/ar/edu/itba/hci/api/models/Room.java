@@ -1,10 +1,16 @@
 package ar.edu.itba.hci.api.models;
 
+import android.util.Log;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+
+import ar.edu.itba.hci.R;
 
 public class Room implements Serializable {
 
@@ -18,6 +24,8 @@ public class Room implements Serializable {
     @Expose
     private RoomMeta meta;
 
+
+
     public Room() {
     }
 
@@ -30,6 +38,7 @@ public class Room implements Serializable {
         this.id = id;
         this.name = name;
         this.meta = meta;
+
     }
 
     public String getId() {

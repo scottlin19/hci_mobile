@@ -1,9 +1,14 @@
 package ar.edu.itba.hci.api.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class DeviceType {
+import java.io.Serializable;
+
+public class DeviceType implements Parcelable {
 
     @SerializedName("id")
     @Expose
@@ -14,6 +19,28 @@ public class DeviceType {
     @SerializedName("powerUsage")
     @Expose
     private Integer powerUsage;
+
+    protected DeviceType(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        if (in.readByte() == 0) {
+            powerUsage = null;
+        } else {
+            powerUsage = in.readInt();
+        }
+    }
+
+    public static final Creator<DeviceType> CREATOR = new Creator<DeviceType>() {
+        @Override
+        public DeviceType createFromParcel(Parcel in) {
+            return new DeviceType(in);
+        }
+
+        @Override
+        public DeviceType[] newArray(int size) {
+            return new DeviceType[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -37,5 +64,22 @@ public class DeviceType {
 
     public void setPowerUsage(Integer powerUsage) {
         this.powerUsage = powerUsage;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(name);
+        if (powerUsage == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeInt(powerUsage);
+        }
     }
 }

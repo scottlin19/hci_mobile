@@ -1,8 +1,15 @@
 package ar.edu.itba.hci.api.models;
 
+import android.content.res.Resources;
+
+import androidx.annotation.NonNull;
+
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import ar.edu.itba.hci.MainActivity;
+import ar.edu.itba.hci.R;
 
 public class RoutineAction {
 
@@ -14,7 +21,7 @@ public class RoutineAction {
     private String actionName;
     @SerializedName("params")
     @Expose
-    private List<Object> params = null;
+    private List<String> params = null;
     @SerializedName("meta")
     @Expose
     private RoutineMeta meta;
@@ -35,11 +42,11 @@ public class RoutineAction {
         this.actionName = actionName;
     }
 
-    public List<Object> getParams() {
+    public List<String> getParams() {
         return params;
     }
 
-    public void setParams(List<Object> params) {
+    public void setParams(List<String> params) {
         this.params = params;
     }
 
@@ -51,4 +58,18 @@ public class RoutineAction {
         this.meta = meta;
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        String param = "";
+        StringBuilder actionParsed = new StringBuilder();
+        if(!(params == null || params.size() == 0)) param = "to " + params.get(0);
+
+        for (String w : actionName.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])")) {
+            actionParsed.append(w.toLowerCase()).append(" ");
+        }
+        actionParsed.setLength(actionParsed.length() - 1);
+
+        return String.format("Do \"%s\" in %s %s", actionParsed, device.getName(), param);
+    }
 }

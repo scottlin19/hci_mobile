@@ -31,7 +31,7 @@ public class RoomsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_rooms, container, false);
         Log.d("CREATED","CREATED ROOMS FRAGMENT");
-        rv = root.findViewById(R.id.rooms_rv);
+        rv = root.findViewById(R.id.rv_rooms);
         RoomsViewModel roomsViewModel = new ViewModelProvider(this).get(RoomsViewModel.class);
         roomsViewModel.getRooms().observe(getViewLifecycleOwner(), rooms -> {
             this.rooms = rooms;
@@ -45,7 +45,7 @@ public class RoomsFragment extends Fragment {
         });
 
 
-        Toolbar toolbar = root.findViewById(R.id.toolbar);
+        Toolbar toolbar = root.findViewById(R.id.device_toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left);
         toolbar.setNavigationOnClickListener(v -> {
 

@@ -55,11 +55,7 @@ public class ApiClient {
         }
     }
 
-//    public Call<Result<Room>> addRoom(Room room, Callback<Result<Room>> callback) {
-//        Call<Result<Room>> call = this.service.addRoom(room);
-//        call.enqueue(callback);
-//        return call;
-//    }
+    //ROOMS
 
     public Call<Result<Boolean>> modifyRoom(Room room, Callback<Result<Boolean>> callback) {
         Call<Result<Boolean>> call = this.service.modifyRoom(room.getId(), room);
@@ -67,11 +63,6 @@ public class ApiClient {
         return call;
     }
 
-//    public Call<Result<Boolean>> deleteRoom(String roomId, Callback<Result<Boolean>> callback) {
-//        Call<Result<Boolean>> call = this.service.deleteRoom(roomId);
-//        call.enqueue(callback);
-//        return call;
-//    }
 
     public Call<Result<Room>> getRoom(String roomId, Callback<Result<Room>> callback) {
         Call<Result<Room>> call = this.service.getRoom(roomId);
@@ -81,6 +72,12 @@ public class ApiClient {
 
     public Call<Result<List<Room>>> getRooms(Callback<Result<List<Room>>> callback) {
         Call<Result<List<Room>>> call = this.service.getRooms();
+        call.enqueue(callback);
+        return call;
+    }
+    //ROOM DEVICES
+    public Call<Result<List<Device>>> getRoomDevices(String roomId,Callback<Result<List<Device>>> callback){
+        Call<Result<List<Device>>> call = this.service.getRoomDevices(roomId);
         call.enqueue(callback);
         return call;
     }
@@ -110,5 +107,12 @@ public class ApiClient {
         call.enqueue(callback);
         return call;
     }
+
+    public Call<Result<Object>>executeRoutine(String routineId, Callback<Result<Object>> callback){
+        Call<Result<Object>> call = this.service.executeRoutine(routineId);
+        call.enqueue(callback);
+        return call;
+    }
+
 
 }

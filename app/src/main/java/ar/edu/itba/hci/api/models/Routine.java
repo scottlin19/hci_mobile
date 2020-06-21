@@ -6,6 +6,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class Routine {
 
+    private boolean expanded;
+
     @SerializedName("id")
     @Expose
     private String id;
@@ -40,4 +42,11 @@ public class Routine {
         this.actions = actions;
     }
 
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+    }
 }
