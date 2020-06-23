@@ -115,4 +115,14 @@ public class SpeakerDeviceState extends DeviceState {
     public void setSong(SpeakerSong song) {
         this.song = song;
     }
+
+    @Override
+    public String toString() {
+        return "SpeakerDeviceState{" +
+                "status='" + status + '\'' +
+                ", volume=" + volume +
+                ", genre='" + genre + '\'' +
+                ", song=" + song +
+                '}';
+    }
 }

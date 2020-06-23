@@ -44,12 +44,19 @@
     <string name="dock">Acoplar</string>
     <string name="recharge">Recargar</string>
     <string name="setLocation">Establecer ubicación</string>
+    <string name="mode">Modo</string>
+    <string name="location">Ubicación</string>
+    <string name="noBatteryError">No tiene suficiente batería. Por favor recargue su aspiradora</string>
+    <string name="waitChargeError">No tiene suficiente batería. Por favor espere hasta que la batería esté al menos al 5%</string>
 
     <!-- ALARM-->
     <string name="changeSecurityCode">Establecer código de seguridad</string>
     <string name="armStay">Modo presente</string>
     <string name="armAway">Modo ausente</string>
     <string name="disarm">Desarmar</string>
+    <string name="securityCode">Codigo de seguridad</string>
+    <string name="newSecurityCode">Nuevo codigo de seguridad</string>
+    <string name="change">CAMBIAR</string>
 
     <!--SPEAKER-->
     <string name="setVolume">Cambiar volumen</string>
@@ -59,31 +66,61 @@
     <string name="nextSong">Próxima canción</string>
     <string name="previousSong">Canción anterior</string>
     <string name="setGenre">Establecer género</string>
-
+    <string name="genres">Genero</string>
+    <string name="classical">Clasica</string>
+    <string name="country">Country</string>
+    <string name="dance">Dance</string>
+    <string name="pop">Pop</string>
+    <string name="latina">Latina</string>
     <!--OVEN-->
     <string name="turnOn">Encender</string>
     <string name="turnOff">Apagar</string>
-    <string name="setTemperature">Establecer temperatura</string>
+    <string name="setTemperature">Establecer temperatura (°C)</string>
     <string name="setHeat">Establecer calor</string>
     <string name="setGrill">Establecer parilla</string>
     <string name="setConvection">Establecer convección</string>
-
+    <string name="conventional">convencional</string>
+    <string name="bottom">abajo</string>
+    <string name="top">arriba</string>
+    <string name="large">grande</string>
+    <string name="eco">eco</string>
+    <string name="normal">normal</string>
+    <string name="offconvec">apagado</string>
+    <string name="ecoconvec">eco</string>
+    <string name="ecogrill">eco</string>
+    <string name="offgrill">apagado</string>
     <!-- FAUCET -->
     <string name="open">Abrir</string>
     <string name="close">Cerrar</string>
     <string name="dispense">Dispensar</string>
-
+    <string name="dispensing">Dispensando..</string>
     <!--BLINDS-->
     <string name="setLevel">Establecer nivel</string>
+    <string name="closed">Cerrado</string>
+    <string name="opened">Abierto</string>
+    <string name="opening">Abriendo</string>
+    <string name="closing">Cerrando</string>
+    <string name="wait_msg">Espere…</string>
+    <string name="curr_level">Nivel actual</string>
+    <string name="curr_status">Estado actual</string>
 
     <!--LAMP-->
     <string name="setColor">Cambiar color</string>
     <string name="setBrightness">Establecer brillo</string>
+    <string name="color">Color</string>
+    <string name="brigthness">Brillo</string>
 
     <!--AC-->
-    <string name="setVerticalSwing">Establecer dirección vertical</string>
-    <string name="setHorizontalSwing">Establecer dirección horizontal</string>
+    <string name="setVerticalSwing">Establecer desplazamiento vertical</string>
+    <string name="setHorizontalSwing">Establecer desplazamiento horizontal</string>
     <string name="setFanSpeed">Establecer velocidad del ventilador</string>
+    <string name="temperature">Temperatura</string>
+    <string name="verticalSwing">Desplazamiento vertical</string>
+    <string name="horizontalSwing">Desplazamiento horizontal</string>
+    <string name="fanSpeed">Velocidad del ventilador</string>
+    <string name="cool">frío</string>
+    <string name="heat">calor</string>
+    <string name="fan">ventilador</string>
 
     <!--DOOR-->
     <string name="lock">Bloquear</string>

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
+import ar.edu.itba.hci.R;
 import ar.edu.itba.hci.api.ApiClient;
 import ar.edu.itba.hci.api.Result;
 import ar.edu.itba.hci.api.Error;
@@ -22,7 +23,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RoomsViewModel extends ViewModel {
-    private MutableLiveData<List<Room>> rooms = null;
+    private  MutableLiveData<List<Room>> rooms = null;
 
     public LiveData<List<Room>> getRooms(){
         Log.d("GETROOMS","ENTER GETROOMS");
@@ -64,13 +65,13 @@ public class RoomsViewModel extends ViewModel {
 
 
     }
-    private <T> void handleError(Response<T> response) {
+    private  <T> void handleError(Response<T> response) {
         Error error = ApiClient.getInstance().getError(response.errorBody());
 //        String text = getResources().getString(R.string.error_message, error.getDescription().get(0), error.getCode());
 //        Toast.makeText(MainActivity.this, text, Toast.LENGTH_LONG).show();
     }
 
-    private void handleUnexpectedError(Throwable t) {
+    private  void handleUnexpectedError(Throwable t) {
         String LOG_TAG = "edu.itba.example.api";
         Log.e(LOG_TAG, t.toString());
     }

@@ -46,12 +46,20 @@
     <string name="dock">Dock</string>
     <string name="recharge">Recharge</string>
     <string name="setLocation">Set location</string>
+    <string name="mode">Mode</string>
+    <string name="location">Location</string>
+    <string name="noBatteryError">Not enough battery. Please recharge your vacuum.</string>
+    <string name="waitChargeError">Not enough battery. Please wait until battery is at least 5%.</string>
+
 
     <!-- ALARM-->
     <string name="changeSecurityCode">Change security code</string>
     <string name="armStay">Arm stay</string>
     <string name="armAway">Arm away</string>
     <string name="disarm">Disarm</string>
+    <string name="securityCode">Security code</string>
+    <string name="newSecurityCode">New security code</string>
+    <string name="change">CHANGE</string>
 
     <!--SPEAKER-->
     <string name="setVolume">Set volume</string>
@@ -61,6 +69,13 @@
     <string name="nextSong">Next song</string>
     <string name="previousSong">Previous song</string>
     <string name="setGenre">Set genre</string>
+    <string name="genres">Genres</string>
+    <string name="classical">Classical</string>
+    <string name="country">Country</string>
+    <string name="dance">Dance</string>
+    <string name="pop">Pop</string>
+    <string name="latina">Latina</string>
+
 
     <!--OVEN-->
     <string name="turnOn">Turn on</string>
@@ -68,24 +83,49 @@
     <string name="setHeat">Set heat</string>
     <string name="setGrill">Set grill</string>
     <string name="setConvection">Set convection</string>
-    <string name="setTemperature">Set temperature</string>
-
+    <string name="setTemperature">Set temperature (°C)</string>
+    <string name="conventional">conventional</string>
+    <string name="bottom">bottom</string>
+    <string name="top">top</string>
+    <string name="large">large</string>
+    <string name="eco">eco</string>
+    <string name="normal">normal</string>
+    <string name="offconvec">off</string>
+    <string name="ecoconvec">Eco</string>
+    <string name="ecogrill">Eco</string>
+    <string name="offgrill">off</string>
     <!-- FAUCET -->
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="dispense">Dispense</string>
-
+    <string name="dispensing">Dispensing..</string>
     <!--BLINDS-->
     <string name="setLevel">Set level</string>
+    <string name="closed">Closed</string>
+    <string name="opened">Opened</string>
+    <string name="opening">Opening</string>
+    <string name="closing">Closing</string>
+    <string name="wait_msg">Please wait…</string>
+    <string name="curr_level">Current level</string>
+    <string name="curr_status">Current status</string>
 
     <!--LAMP-->
     <string name="setColor">Set color</string>
     <string name="setBrightness">Set brightness</string>
+    <string name="color">Color</string>
+    <string name="brigthness">Brightness</string>
 
     <!--AC-->
     <string name="setVerticalSwing">Set vertical swing</string>
     <string name="setHorizontalSwing">Set horizontal swing</string>
     <string name="setFanSpeed">Set fan speed</string>
+    <string name="temperature">Temperature</string>
+    <string name="verticalSwing">Vertical Swing</string>
+    <string name="horizontalSwing">Horizontal Swing</string>
+    <string name="fanSpeed">Fan speed</string>
+    <string name="cool">cool</string>
+    <string name="heat">heat</string>
+    <string name="fan">fan</string>
 
     <!--DOOR-->
     <string name="lock">Lock</string>
@@ -94,6 +134,12 @@
 
     <!--REFRIGERATOR-->
     <string name="setFreezerTemperature">Set freezer temperature</string>
+    <string name="heatType">Heat type</string>
+    <string name="grillType">Grill type</string>
+    <string name="convectionType">Convection type</string>
+    <string name="mopAction">Mop</string>
+    <string name="vacuumAction">Vacuum</string>
+
 
 </resources>
 

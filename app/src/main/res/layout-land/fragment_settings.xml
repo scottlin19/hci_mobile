@@ -18,7 +18,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/settingsTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
@@ -26,14 +25,12 @@
             android:textSize="30sp" />
 
         <TextView
-            android:id="@+id/appearanceTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/appearanceTitle"
             android:textSize="18sp" />
 
         <View
-            android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="5dp"
@@ -47,7 +44,6 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/misTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -56,14 +52,12 @@
             android:textSize="18sp" />
 
         <View
-            android:id="@+id/divider2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="5dp"
             android:background="?android:attr/listDivider" />
 
         <Button
-            android:id="@+id/pastActions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#00FFFFFF"

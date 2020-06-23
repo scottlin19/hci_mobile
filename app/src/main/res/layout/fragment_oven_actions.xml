@@ -3,7 +3,234 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.devices.actions.OvenActions">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.devices.actions.FaucetActions">
+    <LinearLayout
+        android:padding="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/status_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/status"
+                android:textColor="@color/colorPrimary"
+                android:textSize="25sp" />
 
+            <Space
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/oven_status_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Space
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/state_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="state"
+                android:textSize="20sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="@string/setTemperature"
+                android:textColor="@color/colorPrimary"
+                android:textSize="25sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="59dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/temp_slider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:stepSize="1"
+                android:value="90"
+                android:valueFrom="90"
+                android:valueTo="230" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="@string/heatType"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/heat_btn1"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/conventional"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="9dp"
+                app:cornerRadius="1dp"
+                app:strokeColor="#000000"
+                app:strokeWidth="0.1dp" />
+            <Button
+                android:id="@+id/heat_btn2"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/bottom"
+                android:textColor="@color/textColorPrimary"
+                app:cornerRadius="1dp"
+                app:strokeColor="#000000"
+                app:strokeWidth="0.2dp" />
+            <Button
+                android:id="@+id/heat_btn3"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/top"
+                android:textColor="@color/textColorPrimary"
+                app:cornerRadius="1dp"
+                app:strokeColor="#000000"
+                app:strokeWidth="0.2dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="@string/grillType"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/grill_btn1"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/large"
+                android:textColor="@color/textColorPrimary"
+                app:cornerRadius="1dp"
+                app:strokeColor="#000000"
+                app:strokeWidth="0.1dp" />
+            <Button
+                android:id="@+id/grill_btn2"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/ecogrill"
+                android:textColor="@color/textColorPrimary"
+                app:cornerRadius="1dp"
+                app:strokeColor="#000000"
+                app:strokeWidth="0.2dp" />
+            <Button
+                android:id="@+id/grill_btn3"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/offgrill"
+                android:textColor="@color/textColorPrimary"
+                app:cornerRadius="1dp"
+                app:strokeColor="#000000"
+                app:strokeWidth="0.2dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="@string/convectionType"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/convec_btn1"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/normal"
+                android:textColor="@color/textColorPrimary"
+                app:cornerRadius="1dp"
+                app:strokeColor="#000000"
+                app:strokeWidth="0.1dp" />
+            <Button
+                android:id="@+id/convec_btn2"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/ecoconvec"
+                android:textColor="@color/textColorPrimary"
+                app:cornerRadius="1dp"
+                app:strokeColor="#000000"
+                app:strokeWidth="0.2dp" />
+            <Button
+                android:id="@+id/convec_btn3"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/offconvec"
+                android:textColor="@color/textColorPrimary"
+                app:cornerRadius="1dp"
+                app:strokeColor="#000000"
+                app:strokeWidth="0.2dp" />
+        </LinearLayout>
+    </LinearLayout>
 </FrameLayout>

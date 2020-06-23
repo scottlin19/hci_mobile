@@ -3,10 +3,12 @@ package ar.edu.itba.hci.ui.rooms;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,7 +45,7 @@ public class RoomScreen extends AppCompatActivity {
         }
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.room_screen_toolbar);
+        Toolbar toolbar = findViewById(R.id.room_screen_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -51,7 +53,7 @@ public class RoomScreen extends AppCompatActivity {
         CollapsingToolbarLayout toolBarLayout = findViewById(R.id.toolbar_layout);
         toolBarLayout.setTitle(room.getName());
 
-        RecyclerView rv = (RecyclerView) findViewById(R.id.rv_room_screen);
+        RecyclerView rv = findViewById(R.id.rv_room_screen);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
         rv.setLayoutManager(gridLayoutManager);
         RecyclerViewDeviceAdapter adapter = new RecyclerViewDeviceAdapter(this,deviceList);

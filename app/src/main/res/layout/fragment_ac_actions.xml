@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,5 +8,383 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <include
+                layout="@layout/fragment_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/temperature"
+                android:textColor="@color/colorPrimary"
+                android:textSize="25sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5sp"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_baseline_ac_unit_24" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2">
+
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/temp_slider"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:stepSize="1"
+                        android:value="28"
+                        android:valueFrom="18"
+                        android:valueTo="38"></com.google.android.material.slider.Slider>
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_baseline_wb_sunny_24" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/mode"
+                android:textColor="@color/colorPrimary"
+                android:textSize="25sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/mode_btn1"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/cool"
+                    android:textColor="@color/textColorPrimary"
+                    app:cornerRadius="1dp"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0.2dp" />
+
+                <Button
+                    android:id="@+id/mode_btn2"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/heat"
+                    android:textColor="@color/textColorPrimary"
+                    app:cornerRadius="1dp"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0.2dp" />
+
+                <Button
+                    android:id="@+id/mode_btn3"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/fan"
+                    android:textColor="@color/textColorPrimary"
+                    app:cornerRadius="1dp"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0.2dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/vertical_swing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:text="@string/verticalSwing"
+                android:textColor="@color/colorPrimary"
+                android:textSize="25sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/vs_btn1"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="auto"
+                    android:textColor="@color/textColorPrimary"
+                    app:cornerRadius="1dp"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0.2dp" />
+
+                <Button
+                    android:id="@+id/vs_btn2"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="22°"
+                    android:textColor="@color/textColorPrimary"
+                    app:cornerRadius="1dp"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0.2dp" />
+
+                <Button
+                    android:id="@+id/vs_btn3"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="45°"
+                    android:textColor="@color/textColorPrimary"
+                    app:cornerRadius="1dp"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0.2dp" />
+
+                <Button
+                    android:id="@+id/vs_btn4"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="67°"
+                    android:textColor="@color/textColorPrimary"
+                    app:cornerRadius="1dp"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0.2dp" />
+
+                <Button
+                    android:id="@+id/vs_btn5"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="90°"
+                    android:textColor="@color/textColorPrimary"
+                    app:cornerRadius="1dp"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0.2dp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/horiz_swing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:text="@string/horizontalSwing"
+                android:textColor="@color/colorPrimary"
+                android:textSize="25sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/hs_btn1"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:insetTop="12dp"
+                        android:insetBottom="0dp"
+                        android:text="auto"
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="11sp"
+                        app:cornerRadius="1dp"
+                        app:strokeColor="#000000"
+                        app:strokeWidth="0.2dp" />
+
+                    <Button
+                        android:id="@+id/hs_btn2"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:insetTop="12dp"
+                        android:insetBottom="0dp"
+                        android:text="-90°"
+                        android:textColor="@color/textColorPrimary"
+                        app:cornerRadius="1dp"
+                        app:strokeColor="#000000"
+                        app:strokeWidth="0.2dp" />
+
+                    <Button
+                        android:id="@+id/hs_btn3"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:insetTop="12dp"
+                        android:insetBottom="0dp"
+                        android:text="-45°"
+                        android:textColor="@color/textColorPrimary"
+                        app:cornerRadius="1dp"
+                        app:strokeColor="#000000"
+                        app:strokeWidth="0.2dp" />
+
+                    <Button
+                        android:id="@+id/hs_btn4"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:insetTop="12dp"
+                        android:insetBottom="0dp"
+                        android:text="0°"
+                        android:textColor="@color/textColorPrimary"
+                        app:cornerRadius="1dp"
+                        app:strokeColor="#000000"
+                        app:strokeWidth="0.2dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/hs_btn5"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:insetTop="0dp"
+                        android:insetBottom="12dp"
+                        android:text="45°"
+                        android:textColor="@color/textColorPrimary"
+                        app:cornerRadius="1dp"
+                        app:strokeColor="#000000"
+                        app:strokeWidth="0.2dp" />
+
+                    <Button
+                        android:id="@+id/hs_btn6"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:insetTop="0dp"
+                        android:insetBottom="12dp"
+                        android:text="90°"
+                        android:textColor="@color/textColorPrimary"
+                        app:cornerRadius="1dp"
+                        app:strokeColor="#000000"
+                        app:strokeWidth="0.2dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/fan_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:text="@string/fanSpeed"
+                android:textColor="@color/colorPrimary"
+                android:textSize="25sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/fs_btn1"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="auto"
+                    android:textColor="@color/textColorPrimary"
+                    app:cornerRadius="1dp"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0.2dp" />
+
+                <Button
+                    android:id="@+id/fs_btn2"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="25%"
+                    android:textColor="@color/textColorPrimary"
+                    app:cornerRadius="1dp"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0.2dp" />
+
+                <Button
+                    android:id="@+id/fs_btn3"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="50%"
+                    android:textColor="@color/textColorPrimary"
+                    app:cornerRadius="1dp"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0.2dp" />
+
+                <Button
+                    android:id="@+id/fs_btn4"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="75%"
+                    android:textColor="@color/textColorPrimary"
+                    app:cornerRadius="1dp"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0.2dp" />
+
+                <Button
+                    android:id="@+id/fs_btn5"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="100%"
+                    android:textColor="@color/textColorPrimary"
+                    app:cornerRadius="1dp"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0.2dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
 </FrameLayout>

@@ -46,34 +46,34 @@ public class DeviceDetailsActivity extends AppCompatActivity {
        switch(this.device.getType().getName()){
            case "speaker":
                System.out.println("Speaker actions");
-               actions = new SpeakerActions();
+               actions = SpeakerActions.newInstance(device);
                break;
            case "ac":
-               actions = new AcActions();
+               actions = AcActions.newInstance(device);
                break;
            case "alarm":
-               actions = new AlarmActions();
+               actions = AlarmActions.newInstance(device);
                break;
            case "door":
-               actions = new DoorActions();
+               actions = DoorActions.newInstance(device);
                break;
            case "faucet":
-               actions = new FaucetActions();
+               actions =  FaucetActions.newInstance(device);
                break;
            case "vacuum":
-               actions = new VacuumActions();
+               actions = VacuumActions.newInstance(device);
                break;
            case "refrigerator":
-               actions = new FridgeActions();
+               actions = FridgeActions.newInstance(device);
                break;
            case "lamp":
-               actions = new LampActions();
+               actions = LampActions.newInstance(device);
                break;
            case "oven":
-               actions = new OvenActions();
+               actions = OvenActions.newInstance(device);
                break;
            case "blinds":
-               actions = new BlindsActions();
+               actions = BlindsActions.newInstance(device);
                break;
            default:
                actions = null;

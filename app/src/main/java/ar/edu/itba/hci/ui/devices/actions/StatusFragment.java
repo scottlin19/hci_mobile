@@ -1,5 +1,6 @@
 package ar.edu.itba.hci.ui.devices.actions;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import ar.edu.itba.hci.R;
 
@@ -17,14 +20,16 @@ import ar.edu.itba.hci.R;
  */
 public class StatusFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
+/*    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
-    private String mParam2;
+    private String mParam2;*/
+
+    SwitchMaterial status_switch;
 
     public StatusFragment() {
         // Required empty public constructor
@@ -41,21 +46,21 @@ public class StatusFragment extends Fragment {
     // TODO: Rename and change types and number of parameters
     public static StatusFragment newInstance(String param1, String param2) {
         StatusFragment fragment = new StatusFragment();
-        Bundle args = new Bundle();
+/*        Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        fragment.setArguments(args);*/
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
+/*        if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
+        }*/
+        status_switch = getActivity().findViewById(R.id.switchMaterial);
     }
 
     @Override
@@ -63,5 +68,9 @@ public class StatusFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_status, container, false);
+    }
+
+    public void switchBehavior(View.OnClickListener l) {
+        status_switch.setOnClickListener(l);
     }
 }

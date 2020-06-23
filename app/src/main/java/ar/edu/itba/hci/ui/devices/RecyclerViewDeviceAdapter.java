@@ -50,7 +50,7 @@ public class RecyclerViewDeviceAdapter extends RecyclerView.Adapter<ar.edu.itba.
 
 
             System.out.println("DEVICE BUNDLE: "+data.get(position));
-            intent.putExtra("device",(Parcelable) data.get(position));
+            intent.putExtra("device", data.get(position));
             context.startActivity(intent);
         });
 
@@ -70,9 +70,9 @@ public class RecyclerViewDeviceAdapter extends RecyclerView.Adapter<ar.edu.itba.
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            tv_device_name = (TextView) itemView.findViewById(R.id.tv_device_name);
+            tv_device_name = itemView.findViewById(R.id.tv_device_name);
 
-            cv = (CardView) itemView.findViewById(R.id.cardview_device);
+            cv = itemView.findViewById(R.id.cardview_device);
 
         }
     }

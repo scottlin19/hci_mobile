@@ -1,10 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.devices.actions.FaucetActions">
 
     <LinearLayout
-        ></LinearLayout>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+        <LinearLayout
+            android:id="@+id/status_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/status"
+                android:textColor="@color/colorPrimary"
+                android:textSize="25sp" />
+
+            <Space
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/oven_status_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Space
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/state_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="state"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="@string/dispense"
+                android:textColor="@color/colorPrimary"
+                android:textSize="25sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+            <com.google.android.material.slider.Slider
+                android:layout_width="250dp"
+                android:id="@+id/dispense_slider"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="30dp"
+                android:stepSize="1"
+                android:value="0"
+                android:valueFrom="0"
+                android:valueTo="100" />
+
+            <Spinner
+                android:id="@+id/dispense_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:dropDownWidth="match_parent"
+                android:elevation="8dp"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+            <Button
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:id="@+id/dispense_btn"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:drawableEnd="@drawable/water"
+                android:text="@string/dispense" />
+        <LinearLayout
+            android:id="@+id/dispensing_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/dispensing"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp" />
+                <ProgressBar
+                    android:id="@+id/progress_dispense"
+                    android:layout_width="120dp"
+                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:layout_height="20dp"
+                    android:progressTint="@color/colorPrimary"
+                    />
+        </LinearLayout>
+    </LinearLayout>
 </FrameLayout>

@@ -10,6 +10,7 @@ import java.util.List;
 import ar.edu.itba.hci.api.models.Device;
 import ar.edu.itba.hci.api.models.Room;
 import ar.edu.itba.hci.api.models.Routine;
+import ar.edu.itba.hci.api.models.devices.states.SpeakerDeviceState;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -102,6 +103,15 @@ public class ApiClient {
         return call;
     }
 
+    public Call<Result<SpeakerDeviceState>> getDeviceState(String deviceId, Callback<Result<SpeakerDeviceState>> callback) {
+        Call<Result<SpeakerDeviceState>> call = this.service.getDeviceState(deviceId);
+        call.enqueue(callback);
+        return call;
+    }
+
+
+
+
     //ROUTINES
     public Call<Result<List<Routine>>> getRoutines(Callback<Result<List<Routine>>> callback){
         Call<Result<List<Routine>>> call = this.service.getRoutines();
@@ -114,6 +124,17 @@ public class ApiClient {
         call.enqueue(callback);
         return call;
     }
+
+    public Call<Result<Object>>executeAction(String deviceId, String actionName, Object[] body, Callback<Result<Object>> callback){
+        Call<Result<Object>> call = this.service.executeAction(deviceId,actionName,body);
+        call.enqueue(callback);
+        return call;
+    }
+
+
+
+
+
 
 
 }

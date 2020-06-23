@@ -8,9 +8,9 @@
     tools:context=".ui.rooms.RoomScreen">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_height"
+        android:background="@color/colorPrimary"
         android:fitsSystemWindows="true"
         android:theme="@style/LightTheme.AppBarOverlay"
         app:layout_constraintTop_toTopOf="parent">
@@ -20,16 +20,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
+            app:contentScrim="@color/colorPrimaryDark"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:statusBarScrim="@color/colorPrimaryDark"
             app:toolbarId="@+id/device_toolbar">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/room_screen_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:layout_collapseMode="pin"
                 app:title="room name"
                 app:titleTextColor="@color/textColorPrimary">
 

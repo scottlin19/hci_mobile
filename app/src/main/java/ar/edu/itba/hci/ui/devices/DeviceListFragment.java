@@ -37,13 +37,13 @@ public class DeviceListFragment extends Fragment {
         categoryName = bundle.getString("category");
 
 
-        RecyclerView rv = (RecyclerView) root.findViewById(R.id.rv_device_list);
+        RecyclerView rv = root.findViewById(R.id.rv_device_list);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
         rv.setLayoutManager(gridLayoutManager);
         RecyclerViewDeviceAdapter adapter = new RecyclerViewDeviceAdapter(getContext(),deviceList);
         rv.setAdapter(adapter);
 
-        Toolbar toolbar = (Toolbar) root.findViewById(R.id.device_list_toolbar);
+        Toolbar toolbar = root.findViewById(R.id.device_list_toolbar);
 
         toolbar.setTitle(Utility.capitalizeFirstLetter(categoryName));
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left);

@@ -54,7 +54,7 @@ public class RecyclerViewCategoryAdapter extends RecyclerView.Adapter<RecyclerVi
         String categ_name;
 
         int id = context.getResources().getIdentifier(categoryData.get(position).getName(), "string", context.getPackageName());
-        if(id == 0) categ_name = "MISSING NAME";
+        if(id == 0) categ_name = "MISSING_NAME";
         else categ_name = context.getResources().getString(id);
 
         holder.tv_category_name.setText(Utility.capitalizeFirstLetter(categ_name));
@@ -85,8 +85,8 @@ public class RecyclerViewCategoryAdapter extends RecyclerView.Adapter<RecyclerVi
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            tv_category_name = (TextView) itemView.findViewById(R.id.categ_name);
-           cv = (CardView) itemView.findViewById(R.id.cardview_category);
+            tv_category_name = itemView.findViewById(R.id.categ_name);
+           cv = itemView.findViewById(R.id.cardview_category);
 
         }
     }

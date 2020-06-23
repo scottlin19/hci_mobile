@@ -3,8 +3,12 @@ package ar.edu.itba.hci.api.models.devices.states;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.databinding.BaseObservable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.sql.SQLOutput;
 
 public class SpeakerSong extends DeviceState implements Parcelable {
     @SerializedName("title")
@@ -81,7 +85,8 @@ public class SpeakerSong extends DeviceState implements Parcelable {
         }
     };
 
-    public String getTitle() {
+    public String getTitle(){
+
         return title;
     }
 
@@ -90,6 +95,7 @@ public class SpeakerSong extends DeviceState implements Parcelable {
     }
 
     public String getArtist() {
+
         return artist;
     }
 
@@ -119,5 +125,16 @@ public class SpeakerSong extends DeviceState implements Parcelable {
 
     public void setProgress(String progress) {
         this.progress = progress;
+    }
+
+    @Override
+    public String toString() {
+        return "SpeakerSong{" +
+                "title='" + title + '\'' +
+                ", artist='" + artist + '\'' +
+                ", album='" + album + '\'' +
+                ", duration='" + duration + '\'' +
+                ", progress='" + progress + '\'' +
+                '}';
     }
 }

@@ -103,7 +103,7 @@ public class Device<T extends DeviceState> implements Parcelable {
         this.type = type;
     }
 
-    public DeviceState getState() {
+    public T getState() {
         return state;
     }
 
@@ -152,6 +152,7 @@ public class Device<T extends DeviceState> implements Parcelable {
         parcel.writeParcelable(type, i);
         parcel.writeParcelable(room, i);
         final Class<?> objectsType = state.getClass();
+        System.out.println("DEVICE STATE CLASS= "+ objectsType.getName());
         parcel.writeSerializable(objectsType);
         parcel.writeParcelable(state, i);
         parcel.writeParcelable(meta, i);

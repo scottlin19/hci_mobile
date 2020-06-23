@@ -24,7 +24,7 @@
             android:name=".ui.rooms.RoomScreen"
             android:label="@string/title_activity_room_screen"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/LightTheme.NoActionBar">
+            android:theme="@style/LightTheme">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data

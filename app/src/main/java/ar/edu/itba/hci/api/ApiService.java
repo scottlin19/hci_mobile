@@ -1,9 +1,14 @@
 package ar.edu.itba.hci.api;
 import java.util.List;
+import java.util.Objects;
 
 import ar.edu.itba.hci.api.models.Device;
 import ar.edu.itba.hci.api.models.Room;
 import ar.edu.itba.hci.api.models.Routine;
+import ar.edu.itba.hci.api.models.devices.states.DeviceState;
+import ar.edu.itba.hci.api.models.devices.states.DoorDeviceState;
+import ar.edu.itba.hci.api.models.devices.states.SpeakerDeviceState;
+import ar.edu.itba.hci.api.models.devices.states.SpeakerSong;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -38,6 +43,16 @@ public interface ApiService {
     @GET("devices")
     Call<Result<List<Device>>> getDevices();
 
+    @GET("devices/{deviceId}/state")
+    Call<Result<SpeakerDeviceState>> getDeviceState(@Path("deviceId") String deviceId);
+
+
+
+    @PUT("devices/{deviceId}/{actionName}")
+    @Headers("Content-Type: application/json")
+    Call<Result<Object>> executeAction(@Path("deviceId")String deviceId, @Path("actionName") String actionName, @Body Object[] body);
+
+
     //ROUTINES
     @GET("routines")
     Call<Result<List<Routine>>> getRoutines();
@@ -45,4 +60,7 @@ public interface ApiService {
     @PUT("routines/{routineId}/execute")
     @Headers("Content-Type: application/json")
     Call<Result<Object>> executeRoutine(@Path("routineId") String routineId);
+
+
+
 }
