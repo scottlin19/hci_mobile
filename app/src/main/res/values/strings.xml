@@ -18,7 +18,8 @@
     <string name="vacuum">Vacuums</string>
     <string name="blinds">Blinds</string>
     <string name="title_add">Add</string>
-
+    <string name="unexpected_error">unexpected error</string>
+    <string name="fetch_device_error">can\'t fetch device</string>
 
     <string name="favoriteTitle">Favorites</string>
     <string name="appearanceTitle">Appearance</string>
@@ -34,7 +35,7 @@
     <string name="toggle_notifications">Toggle notifications</string>
     <string name="exec_msg">executed</string>
     <string name="action_msg">to</string>
-    <string name="no_room">No room</string>
+    <string name="no_room">No room associated</string>
     <string name="status">Status</string>
     <string name="on">ON</string>
     <string name="off">OFF</string>
@@ -50,7 +51,9 @@
     <string name="location">Location</string>
     <string name="noBatteryError">Not enough battery. Please recharge your vacuum.</string>
     <string name="waitChargeError">Not enough battery. Please wait until battery is at least 5%.</string>
-
+    <string name="noRoomError">Can\'t dock vacuum without room asigned</string>
+    <string name="mopMode">mop</string>
+    <string name="vacuumMode">vacuum</string>
 
     <!-- ALARM-->
     <string name="changeSecurityCode">Change security code</string>
@@ -94,6 +97,10 @@
     <string name="ecoconvec">Eco</string>
     <string name="ecogrill">Eco</string>
     <string name="offgrill">off</string>
+
+    <string name="heatType">Heat type</string>
+    <string name="grillType">Grill type</string>
+    <string name="convectionType">Convection type</string>
     <!-- FAUCET -->
     <string name="open">Open</string>
     <string name="close">Close</string>
@@ -134,11 +141,14 @@
 
     <!--REFRIGERATOR-->
     <string name="setFreezerTemperature">Set freezer temperature</string>
-    <string name="heatType">Heat type</string>
-    <string name="grillType">Grill type</string>
-    <string name="convectionType">Convection type</string>
-    <string name="mopAction">Mop</string>
-    <string name="vacuumAction">Vacuum</string>
+    <string name="freezerTemp">Freezer Temperature (°C)</string>
+    <string name="fridgeTemp">Refrigerator Temperature (°C)</string>
+    <string name="defaultMode">default</string>
+    <string name="partyMode">party</string>
+    <string name="vacationMode">vacation</string>
+
+
+
 
 
 </resources>

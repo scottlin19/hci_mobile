@@ -103,11 +103,14 @@ public class ApiClient {
         return call;
     }
 
-    public Call<Result<SpeakerDeviceState>> getDeviceState(String deviceId, Callback<Result<SpeakerDeviceState>> callback) {
-        Call<Result<SpeakerDeviceState>> call = this.service.getDeviceState(deviceId);
+    public Call<Result<Object>> getLogs(Device device, Callback<Result<Object>> callback) {
+        Call<Result<Object>> call = this.service.getLogs(device.getId(), null, null);
         call.enqueue(callback);
         return call;
     }
+
+
+
 
 
 

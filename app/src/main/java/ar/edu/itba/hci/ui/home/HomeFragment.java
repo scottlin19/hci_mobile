@@ -5,20 +5,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import ar.edu.itba.hci.R;
+import ar.edu.itba.hci.api.ApiClient;
+import ar.edu.itba.hci.api.Result;
+import ar.edu.itba.hci.api.models.Device;
 import ar.edu.itba.hci.ui.devices.DevicesFragment;
+import ar.edu.itba.hci.ui.devices.RecyclerViewDeviceAdapter;
 import ar.edu.itba.hci.ui.rooms.RoomsFragment;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
-
+    private List<Device> fav_devices;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
@@ -58,8 +72,38 @@ public class HomeFragment extends Fragment {
             transaction.commit();
 //               ((MainActivity) getActivity()).setCurrentFragment(new RoomsFragment());
         });
+
         return root;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        RecyclerView rv = getActivity().findViewById(R.id.rv_fav);
+        fetchFavorites(rv);
+    }
+
+    private void fetchFavorites(RecyclerView rv) {
+        ApiClient.getInstance().getDevices(new Callback<Result<List<Device>>>() {
+            @Override
+            public void onResponse(Call<Result<List<Device>>> call, Response<Result<List<Device>>> response) {
+                if(response.isSuccessful()){
+                    fav_devices = response.body().getResult().stream().filter(device -> device.getMeta().getFavorite()).collect(Collectors.toList());
+                    rv.setLayoutManager(new GridLayoutManager(getContext(),2, GridLayoutManager.VERTICAL, false));
+                    rv.setAdapter(new RecyclerViewDeviceAdapter(getContext(),fav_devices));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result<List<Device>>> call, Throwable t) {
+
+            }
+        });
+    }
 }

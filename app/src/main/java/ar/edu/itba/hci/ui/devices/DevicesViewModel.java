@@ -1,7 +1,9 @@
 package ar.edu.itba.hci.ui.devices;
 
+import android.app.Application;
 import android.util.Log;
 
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -17,19 +19,23 @@ import ar.edu.itba.hci.api.Result;
 import ar.edu.itba.hci.api.models.Device;
 import ar.edu.itba.hci.api.models.DeviceType;
 import ar.edu.itba.hci.api.models.IconAdapter;
+import ar.edu.itba.hci.database.DeviceRepository;
 import ar.edu.itba.hci.ui.devices.category.Category;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DevicesViewModel extends ViewModel {
-    MutableLiveData<List<Category>> categoryList;
-    MutableLiveData<List<Device>> deviceList;
-    Map<String,Category> categoryMap;
+    private MutableLiveData<List<Category>> categoryList;
+    private MutableLiveData<List<Device>> deviceList;
+    private Map<String,Category> categoryMap;
+    private DeviceRepository repo;
     public DevicesViewModel(){
+
         categoryList = new MutableLiveData<>();
         deviceList = new MutableLiveData<>();
         categoryMap = new HashMap<>();
+
 
         load();
 
@@ -48,6 +54,10 @@ public class DevicesViewModel extends ViewModel {
                             Integer icon_id = IconAdapter.getIntIcon(device.getMeta().getIcon());
                             if(icon_id == null){
                                 icon_id = R.drawable.ic_image;
+                            }
+                            if(device.getMeta().getNotifStatus() == null){
+                                device.getMeta().setnotifStatus(true);
+                                updateDevice(device);
                             }
 
                             categoryMap.put(type.getName(),new Category(type.getName(),icon_id));
@@ -70,6 +80,21 @@ public class DevicesViewModel extends ViewModel {
         });
     }
 
+    private void updateDevice(Device device) {
+        ApiClient.getInstance().modifyDevice(device, new Callback<Result<Boolean>>() {
+            @Override
+            public void onResponse(Call<Result<Boolean>> call, Response<Result<Boolean>> response) {
+                if(response.isSuccessful()){
+                    System.out.println("se actualizo el device");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result<Boolean>> call, Throwable t) {
+
+            }
+        });
+    }
 
 
     public LiveData<List<Category>> getCategoryList(){

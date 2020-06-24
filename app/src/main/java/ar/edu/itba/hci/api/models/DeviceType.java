@@ -7,6 +7,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class DeviceType implements Parcelable {
 
@@ -81,5 +82,20 @@ public class DeviceType implements Parcelable {
             parcel.writeByte((byte) 1);
             parcel.writeInt(powerUsage);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DeviceType that = (DeviceType) o;
+        return id.equals(that.id) &&
+                name.equals(that.name) &&
+                powerUsage.equals(that.powerUsage);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, powerUsage);
     }
 }

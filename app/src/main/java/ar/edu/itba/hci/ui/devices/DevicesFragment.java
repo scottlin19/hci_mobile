@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,7 +21,6 @@ import ar.edu.itba.hci.R;
 import ar.edu.itba.hci.api.models.Device;
 import ar.edu.itba.hci.ui.devices.category.Category;
 import ar.edu.itba.hci.ui.devices.category.RecyclerViewCategoryAdapter;
-import ar.edu.itba.hci.ui.home.HomeFragment;
 
 public class DevicesFragment extends Fragment {
 
@@ -53,26 +52,24 @@ public class DevicesFragment extends Fragment {
             rv.setAdapter(adapter);
         });
 
-
-
-
         Toolbar toolbar = root.findViewById(R.id.device_toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_left);
+        toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
         toolbar.setNavigationOnClickListener(v -> {
 
-            getParentFragmentManager().popBackStack();
-
-            HomeFragment newFragment = new HomeFragment();
-            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-
-
-            // Replace whatever is in the fragment_container view with this fragment,
-            // and add the transaction to the back stack so the user can navigate back
-            transaction.replace(R.id.nav_host_fragment, newFragment);
-            transaction.addToBackStack(null);
-
-            // Commit the transaction
-            transaction.commit();
+            FragmentManager fm = getActivity()
+                    .getSupportFragmentManager();
+            fm.popBackStack();
+//            HomeFragment newFragment = new HomeFragment();
+//            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+//
+//
+//            // Replace whatever is in the fragment_container view with this fragment,
+//            // and add the transaction to the back stack so the user can navigate back
+//            transaction.replace(R.id.nav_host_fragment, newFragment);
+//            transaction.addToBackStack(null);
+//
+//            // Commit the transaction
+//            transaction.commit();
         });
 
 

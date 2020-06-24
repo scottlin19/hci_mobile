@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -55,6 +56,9 @@ public class FaucetActions extends Fragment {
     private Handler stateHandler;
     private LinearLayout dispensingLayout;
     private ProgressBar progressDispense;
+    private TextView dispensedQText;
+    private TextView unitText;
+    private TextView qtyText;
     public FaucetActions() {
         // Required empty public constructor
     }
@@ -85,8 +89,17 @@ public class FaucetActions extends Fragment {
 
     public void onStart(){
         super.onStart();
+        dispensedQText = getActivity().findViewById(R.id.dispensed_quantity);
+        qtyText = getActivity().findViewById(R.id.quantity);
+        unitText = getActivity().findViewById(R.id.units_text);
         state = (FaucetDeviceState) device.getState();
         swi = getActivity().findViewById(R.id.oven_status_switch);
+        swi.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return event.getActionMasked() == MotionEvent.ACTION_MOVE;
+            }
+        });
         dispenseButton.setVisibility(View.GONE);
         dispensingLayout = (LinearLayout) getActivity().findViewById(R.id.dispensing_layout);
         progressDispense = (ProgressBar) getActivity().findViewById(R.id.progress_dispense);
@@ -142,6 +155,12 @@ public class FaucetActions extends Fragment {
             statusText.setText(R.string.opened);
             dispenseButton.setVisibility(View.GONE);
             if(state.getUnit() != null) {
+                dispensedQText.setText(String.format("%.2f", state.getDispensedQuantity()));
+                qtyText.setText(String.format("%.2f", state.getQuantity()));
+                unitText.setText(state.getUnit());
+                dispensedQText.setVisibility(View.VISIBLE);
+                qtyText.setVisibility(View.VISIBLE);
+                unitText.setVisibility(View.VISIBLE);
                 dispensingLayout.setVisibility(View.VISIBLE);
                 progressDispense.setProgress((int) ((state.getDispensedQuantity() / (state.getQuantity())) * 100));
             }
@@ -149,6 +168,9 @@ public class FaucetActions extends Fragment {
         }else{
             swi.setChecked(false);
             statusText.setText(R.string.closed);
+            dispensedQText.setVisibility(View.GONE);
+            qtyText.setVisibility(View.GONE);
+            unitText.setVisibility(View.GONE);
             dispenseButton.setVisibility(View.VISIBLE);
             dispensingLayout.setVisibility(View.GONE);
 
@@ -161,7 +183,7 @@ public class FaucetActions extends Fragment {
         View root = inflater.inflate(R.layout.fragment_faucet_actions, container, false);
 
         stateHandler = new Handler();
-        int delay = 50;
+        int delay = 500;
         stateHandler.post(new Runnable(){
             @Override
             public void run(){

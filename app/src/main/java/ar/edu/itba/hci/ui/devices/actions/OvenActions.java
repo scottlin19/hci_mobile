@@ -1,5 +1,7 @@
 package ar.edu.itba.hci.ui.devices.actions;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -7,8 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -21,8 +25,10 @@ import android.widget.TextView;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -30,8 +36,10 @@ import ar.edu.itba.hci.R;
 import ar.edu.itba.hci.api.ApiClient;
 import ar.edu.itba.hci.api.Result;
 import ar.edu.itba.hci.api.models.Device;
+import ar.edu.itba.hci.api.models.devices.OvenDevice;
 import ar.edu.itba.hci.api.models.devices.states.DoorDeviceState;
 import ar.edu.itba.hci.api.models.devices.states.OvenDeviceState;
+import ar.edu.itba.hci.api.models.devices.states.VacuumDeviceState;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -107,6 +115,19 @@ public class OvenActions extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
+        ApiClient.getInstance().getDevice(device.getId(), new Callback<Result<Device>>() {
+            @Override
+            public void onResponse(Call<Result<Device>> call, Response<Result<Device>> response) {
+                device = (OvenDevice) response.body().getResult();
+                state = (OvenDeviceState) device.getState();
+                viewHandler();
+            }
+
+            @Override
+            public void onFailure(Call<Result<Device>> call, Throwable t) {
+                Log.e("update device error", t.getLocalizedMessage());
+            }
+        });
         Slider slider = (Slider) getView().findViewById(R.id.temp_slider);
         slider.setValue(device.getState().getTemperature());
         slider.addOnChangeListener(new Slider.OnChangeListener() {
@@ -202,8 +223,14 @@ public class OvenActions extends Fragment {
     @Override
     public void onStart(){
         super.onStart();
-        state = (OvenDeviceState) device.getState();
         swi = getActivity().findViewById(R.id.oven_status_switch);
+        swi.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return event.getActionMasked() == MotionEvent.ACTION_MOVE;
+            }
+        });
+        state = (OvenDeviceState) device.getState();
         statusText = getActivity().findViewById(R.id.state_text);
         viewHandler();
         swi.setOnClickListener(v -> {

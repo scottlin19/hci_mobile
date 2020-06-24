@@ -3,7 +3,6 @@ package ar.edu.itba.hci.api.models.devices.states;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.databinding.BaseObservable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

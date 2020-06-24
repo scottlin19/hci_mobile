@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/appicon"
@@ -14,30 +14,45 @@
         android:supportsRtl="true"
         android:theme="@style/LightTheme">
         <activity android:name=".ui.devices.DeviceDetailsActivity"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:launchMode="singleTop" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ar.edu.itba.hci.MainActivity" />
+                android:value="ar.edu.itba.hci.MainActivity"
+                />
         </activity>
         <activity
             android:name=".ui.rooms.RoomScreen"
             android:label="@string/title_activity_room_screen"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/LightTheme">
+            android:theme="@style/LightTheme"
+            android:launchMode="singleTop" >
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ar.edu.itba.hci.MainActivity" />
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:name="ar.edu.itba.hci.api.notifications.NotificationBroadcastReceiver" android:exported="false"  android:enabled="true">
+
+            <intent-filter android:priority="1">
+
+                <action android:name="ar.edu.itba.hci.DEVICE_NOTIFICATION"/>
+
+             </intent-filter>
+
+        </receiver>
+
     </application>
 
 </manifest>

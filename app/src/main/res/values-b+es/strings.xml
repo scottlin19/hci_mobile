@@ -14,7 +14,7 @@
     <string name="refrigerator">Heladeras</string>
     <string name="oven">Hornos</string>
     <string name="door">Puertas</string>
-    <string name="vacuum">Aspiradoras</string>
+    <string name="vacuum_device">Aspiradoras</string>
     <string name="blinds">Persianas</string>
     <string name="title_add">Añadir</string>
     <string name="favoriteTitle">Favoritos</string>
@@ -30,11 +30,14 @@
     <string name="toggle_notifications">Activar notificaciones</string>
     <string name="exec_msg">ejecutada</string>
     <string name="action_msg">a</string>
-    <string name="no_room">No tiene habitación</string>
+    <string name="no_room">Sin habitación asociada</string>
     <string name="status">Estado</string>
     <string name="on">ENCENDIDO</string>
     <string name="off">APAGADO</string>
     <string name="battery_level">Nivel de Batería</string>
+    <string name="unexpected_error">error inesperado</string>
+    <string name="fetch_device_error">error actualizando el dispositivo</string>
+
 
 
     <!--VACUUM-->
@@ -48,6 +51,10 @@
     <string name="location">Ubicación</string>
     <string name="noBatteryError">No tiene suficiente batería. Por favor recargue su aspiradora</string>
     <string name="waitChargeError">No tiene suficiente batería. Por favor espere hasta que la batería esté al menos al 5%</string>
+    <string name="noRoomError">No se puede recargar la aspiradora sin que tener un cuarto asignado</string>
+    <string name="mopMode">trapear</string>
+    <string name="vacuumMode">aspirar</string>
+
 
     <!-- ALARM-->
     <string name="changeSecurityCode">Establecer código de seguridad</string>
@@ -129,6 +136,10 @@
 
     <!--REFRIGERATOR-->
     <string name="setFreezerTemperature">Establecer temperatura del freezer</string>
-
+    <string name="freezerTemp">Temperatura del freezer (°C)</string>
+    <string name="fridgeTemp">Temperatura de la heladera (°C)</string>
+    <string name="defaultMode">defecto</string>
+    <string name="partyMode">fiesta</string>
+    <string name="vacationMode">vacación</string>
 
 </resources>

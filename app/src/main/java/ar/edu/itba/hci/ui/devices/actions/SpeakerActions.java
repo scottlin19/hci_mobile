@@ -307,7 +307,7 @@ public class SpeakerActions extends Fragment{
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     String lastSelected =  context.getResources().getString(context.getResources().getIdentifier(device.getState().getGenre(), "string", context.getPackageName()));
-                    String selected = genreList.get(i).toLowerCase();
+                    String selected = genreList.get(i);
                     if(!lastSelected.equals(selected)){
                         Object[] params = {genreList.get(i).toLowerCase()};
                         System.out.println("SELECTED GENRE: "+genreList.get(i));
@@ -315,7 +315,7 @@ public class SpeakerActions extends Fragment{
                             @Override
                             public void onResponse(Call<Result<Object>> call, Response<Result<Object>> response) {
                                 if(response.isSuccessful()){
-
+                                    songProgress.setText("0:00");
                                     System.out.println("GENRE CHANGED: "+response.body().getResult());
 
                                 }

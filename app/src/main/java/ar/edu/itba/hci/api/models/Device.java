@@ -3,31 +3,45 @@ package ar.edu.itba.hci.api.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Embedded;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
 import ar.edu.itba.hci.api.models.devices.states.DeviceState;
 
-
+@Entity
 public class Device<T extends DeviceState> implements Parcelable {
 
+    @Embedded(prefix = "device_type_")
     @SerializedName("type")
     @Expose(serialize = false)
     private DeviceType type;
+
+
+    @Embedded(prefix = "room_")
     @SerializedName("room")
     @Expose(serialize = false)
     private Room room;
+
+    @Embedded(prefix = "device_state_")
     @SerializedName("state")
     @Expose(serialize = false)
     private T state;
+
+    @Embedded(prefix = "meta_")
     @SerializedName("meta")
     @Expose
     private DeviceMeta meta;
 
+    @PrimaryKey
     @SerializedName("id")
     @Expose
     private String id;
+
     @SerializedName("name")
     @Expose
     private String name;
@@ -121,13 +135,15 @@ public class Device<T extends DeviceState> implements Parcelable {
 
     public Room getRoom() { return this.room; }
 
-    public String getRoomName() { return this.room == null ? "No room" : this.room.getName(); }
+    public void setRoom(Room room) { this.room = room; }
+
+    public String getRoomName() { return this.room == null ? null : this.room.getName(); }
 
     @Override
     public String toString() {
         String roomS;
         if(this.room == null){
-            roomS = "No room";
+            roomS = null;
         }else{
             roomS = this.room.getName();
         }
@@ -152,11 +168,13 @@ public class Device<T extends DeviceState> implements Parcelable {
         parcel.writeParcelable(type, i);
         parcel.writeParcelable(room, i);
         final Class<?> objectsType = state.getClass();
-        System.out.println("DEVICE STATE CLASS= "+ objectsType.getName());
+
         parcel.writeSerializable(objectsType);
         parcel.writeParcelable(state, i);
         parcel.writeParcelable(meta, i);
         parcel.writeString(id);
         parcel.writeString(name);
     }
+
+
 }

@@ -4,16 +4,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ar.edu.itba.hci.R;
+import ar.edu.itba.hci.api.ApiClient;
+import ar.edu.itba.hci.api.Result;
 import ar.edu.itba.hci.api.models.Device;
 import ar.edu.itba.hci.api.models.IconAdapter;
-import ar.edu.itba.hci.api.models.Room;
+import ar.edu.itba.hci.api.notifications.NotificationBroadcastReceiver;
 import ar.edu.itba.hci.ui.devices.actions.AcActions;
 import ar.edu.itba.hci.ui.devices.actions.AlarmActions;
 import ar.edu.itba.hci.ui.devices.actions.BlindsActions;
@@ -24,13 +32,43 @@ import ar.edu.itba.hci.ui.devices.actions.LampActions;
 import ar.edu.itba.hci.ui.devices.actions.OvenActions;
 import ar.edu.itba.hci.ui.devices.actions.SpeakerActions;
 import ar.edu.itba.hci.ui.devices.actions.VacuumActions;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DeviceDetailsActivity extends AppCompatActivity {
     private Device device;
+    MenuItem fav_btn;
+    MenuItem noti_btn;
+    private BroadcastReceiver broadcastReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_details);
+
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String message = "Device updated";
+                Toast.makeText(DeviceDetailsActivity.this,message, Toast.LENGTH_LONG).show();
+                abortBroadcast();
+            }
+        };
+        IntentFilter filter = new IntentFilter(NotificationBroadcastReceiver.DEVICE_NOTIFICATION);
+        filter.setPriority(2);
+        registerReceiver(broadcastReceiver,filter);
+
+        init();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
+    }
+
+    private void init(){
         Toolbar toolbar = findViewById(R.id.device_toolbar);
         if(getIntent().hasExtra("device")){
 
@@ -41,46 +79,47 @@ public class DeviceDetailsActivity extends AppCompatActivity {
                 System.out.println("Type: " +this.device.getType());
                 System.out.println("Meta: "+this.device.getMeta());
             }
-        }
-        Fragment actions;
-       switch(this.device.getType().getName()){
-           case "speaker":
-               System.out.println("Speaker actions");
-               actions = SpeakerActions.newInstance(device);
-               break;
-           case "ac":
-               actions = AcActions.newInstance(device);
-               break;
-           case "alarm":
-               actions = AlarmActions.newInstance(device);
-               break;
-           case "door":
-               actions = DoorActions.newInstance(device);
-               break;
-           case "faucet":
-               actions =  FaucetActions.newInstance(device);
-               break;
-           case "vacuum":
-               actions = VacuumActions.newInstance(device);
-               break;
-           case "refrigerator":
-               actions = FridgeActions.newInstance(device);
-               break;
-           case "lamp":
-               actions = LampActions.newInstance(device);
-               break;
-           case "oven":
-               actions = OvenActions.newInstance(device);
-               break;
-           case "blinds":
-               actions = BlindsActions.newInstance(device);
-               break;
-           default:
-               actions = null;
-               break;
+            Fragment actions;
+            switch(this.device.getType().getName()){
+                case "speaker":
+                    System.out.println("Speaker actions");
+                    actions = SpeakerActions.newInstance(device);
+                    break;
+                case "ac":
+                    actions = AcActions.newInstance(device);
+                    break;
+                case "alarm":
+                    actions = AlarmActions.newInstance(device);
+                    break;
+                case "door":
+                    actions = DoorActions.newInstance(device);
+                    break;
+                case "faucet":
+                    actions =  FaucetActions.newInstance(device);
+                    break;
+                case "vacuum":
+                    actions = VacuumActions.newInstance(device);
+                    break;
+                case "refrigerator":
+                    actions = FridgeActions.newInstance(device);
+                    break;
+                case "lamp":
+                    actions = LampActions.newInstance(device);
+                    break;
+                case "oven":
+                    actions = OvenActions.newInstance(device);
+                    break;
+                case "blinds":
+                    actions = BlindsActions.newInstance(device);
+                    break;
+                default:
+                    actions = null;
+                    break;
 
-       }
-       getSupportFragmentManager().beginTransaction().replace(R.id.fragment_actions_container,actions,"ACTIONS").commit();
+            }
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_actions_container,actions,"ACTIONS").commit();
+        }
+
 
 
         setSupportActionBar(toolbar);
@@ -91,13 +130,15 @@ public class DeviceDetailsActivity extends AppCompatActivity {
         textView.setText(device.getName());
         TextView textView1 = findViewById(R.id.device_room);
         if(device != null){
-            textView1.setText(device.getRoomName());
+            String room = device.getRoomName();
+            if(room != null)
+                textView1.setText(device.getRoomName());
+            else textView1.setText(R.string.no_room);
         }
 
         ImageView iv = findViewById(R.id.device_icon);
-        System.out.println(device.getMeta().getIcon());
-        iv.setImageResource(IconAdapter.getIntIcon(device.getMeta().getIcon()));
 
+        iv.setImageResource(IconAdapter.getIntIcon(device.getMeta().getIcon()));
     }
 
     // Menu icons are inflated just as they were with actionbar
@@ -107,5 +148,77 @@ public class DeviceDetailsActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.device_menu, menu);
         return true;
     }
+
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        fav_btn = menu.findItem(R.id.toggle_favorite);
+        changeFavIcon();
+        fav_btn.setChecked(device.getMeta().getFavorite());
+
+        noti_btn = menu.findItem(R.id.action_toggle_notifications);
+        //noti_isChecked = device.getMeta().getNotifStatus();
+        changeNotificationIcon();
+        noti_btn.setChecked(device.getMeta().getNotifStatus());
+        return true;
+    }
+
+    private void changeFavIcon() {
+        if(device.getMeta().getFavorite()){
+            fav_btn.setIcon(R.drawable.ic_baseline_favorite_24);
+        }
+        else{
+            fav_btn.setIcon(R.drawable.ic_baseline_favorite_border_24);
+        }
+    }
+
+    private void changeNotificationIcon() {
+        if(device.getMeta().getNotifStatus()){
+            noti_btn.setIcon(R.drawable.ic_notifications_white_24dp);
+        }
+        else{
+            noti_btn.setIcon(R.drawable.ic_outline_notifications_off_24);
+        }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.toggle_favorite:
+                item.setChecked(!device.getMeta().getFavorite());
+                device.getMeta().setFavorite(item.isChecked());
+                break;
+
+            case R.id.action_toggle_notifications:
+                //noti_isChecked = !item.isChecked();
+
+                item.setChecked(!device.getMeta().getNotifStatus());
+                device.getMeta().setnotifStatus(item.isChecked());
+                break;
+
+            default:
+                return false;
+        }
+
+        ApiClient.getInstance().modifyDevice(device, new Callback<Result<Boolean>>() {
+            @Override
+            public void onResponse(Call<Result<Boolean>> call, Response<Result<Boolean>> response) {
+                if(response.isSuccessful()){
+                    changeNotificationIcon();
+                    changeFavIcon();
+                    System.out.println(response.body().getResult());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result<Boolean>> call, Throwable t) {
+
+                Log.e("TOGGLE ERROR", "error on toggle");
+                Toast.makeText(getBaseContext(), "error on toggle", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return true;
+    }
+
 
 }

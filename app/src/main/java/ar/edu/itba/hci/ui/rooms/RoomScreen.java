@@ -41,7 +41,8 @@ public class RoomScreen extends AppCompatActivity {
         }
         if(getIntent().hasExtra("devices")){
            deviceList = getIntent().getParcelableArrayListExtra("devices");
-            System.out.println("ROOM DEVICES: "+deviceList);
+           deviceList.forEach(d -> d.setRoom(room));
+           System.out.println("ROOM DEVICES: "+deviceList);
         }
 
 

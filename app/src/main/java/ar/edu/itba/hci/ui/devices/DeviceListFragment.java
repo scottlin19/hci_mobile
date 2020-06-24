@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -49,19 +50,9 @@ public class DeviceListFragment extends Fragment {
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left);
         toolbar.setNavigationOnClickListener(v -> {
 
-
-
-            DevicesFragment newFragment = new DevicesFragment();
-            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-
-
-            // Replace whatever is in the fragment_container view with this fragment,
-            // and add the transaction to the back stack so the user can navigate back
-            transaction.replace(R.id.nav_host_fragment, newFragment);
-            transaction.addToBackStack(null);
-
-            // Commit the transaction
-            transaction.commit();
+            FragmentManager fm = getActivity()
+                    .getSupportFragmentManager();
+            fm.popBackStack();
         });
 
         return root;

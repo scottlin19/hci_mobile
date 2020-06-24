@@ -6,7 +6,9 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class VacuumDeviceState extends DeviceState{
+import ar.edu.itba.hci.api.models.devices.states.VacuumLocation;
+
+public class VacuumDeviceState extends  DeviceState{
 
     @SerializedName("status")
     @Expose
@@ -19,7 +21,7 @@ public class VacuumDeviceState extends DeviceState{
     private Integer batteryLevel;
     @SerializedName("location")
     @Expose
-    private Object location;
+    private VacuumLocation location;
 
     /**
      * No args constructor for use in serialization
@@ -35,13 +37,14 @@ public class VacuumDeviceState extends DeviceState{
      * @param status
      * @param batteryLevel
      */
-    public VacuumDeviceState(String status, String mode, Integer batteryLevel, Object location) {
+    public VacuumDeviceState(String status, String mode, Integer batteryLevel, VacuumLocation location) {
         super();
         this.status = status;
         this.mode = mode;
         this.batteryLevel = batteryLevel;
         this.location = location;
     }
+
 
     protected VacuumDeviceState(Parcel in) {
         status = in.readString();
@@ -51,23 +54,7 @@ public class VacuumDeviceState extends DeviceState{
         } else {
             batteryLevel = in.readInt();
         }
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(status);
-        dest.writeString(mode);
-        if (batteryLevel == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeInt(batteryLevel);
-        }
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
+        location = in.readParcelable(VacuumLocation.class.getClassLoader());
     }
 
     public static final Creator<VacuumDeviceState> CREATOR = new Creator<VacuumDeviceState>() {
@@ -106,11 +93,29 @@ public class VacuumDeviceState extends DeviceState{
         this.batteryLevel = batteryLevel;
     }
 
-    public Object getLocation() {
+    public VacuumLocation getLocation() {
         return location;
     }
 
-    public void setLocation(Object location) {
+    public void setLocation(VacuumLocation location) {
         this.location = location;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(status);
+        parcel.writeString(mode);
+        if (batteryLevel == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeInt(batteryLevel);
+        }
+        parcel.writeParcelable(location, i);
     }
 }

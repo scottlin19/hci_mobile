@@ -46,6 +46,8 @@ public interface ApiService {
     @GET("devices/{deviceId}/state")
     Call<Result<SpeakerDeviceState>> getDeviceState(@Path("deviceId") String deviceId);
 
+    @GET("devices/{deviceId}/logs/limit/{limit}/offset/{offset}")
+    Call<Result<Object>> getLogs(@Path("deviceId") String deviceId, @Path("limit") String limit, @Path("offset") String offset);
 
 
     @PUT("devices/{deviceId}/{actionName}")

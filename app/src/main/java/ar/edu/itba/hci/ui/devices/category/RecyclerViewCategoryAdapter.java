@@ -67,7 +67,7 @@ public class RecyclerViewCategoryAdapter extends RecyclerView.Adapter<RecyclerVi
            bundle.putString("category",categ_name);
             DeviceListFragment newFragment = new DeviceListFragment();
             newFragment.setArguments(bundle);
-           currFragment.getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,newFragment).commit();
+           currFragment.getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,newFragment).addToBackStack(null).commit();
         });
 
     }

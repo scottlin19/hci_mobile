@@ -1,6 +1,8 @@
 package ar.edu.itba.hci.ui.devices.actions;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -20,11 +22,15 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ar.edu.itba.hci.R;
 import ar.edu.itba.hci.api.ApiClient;
@@ -53,7 +59,11 @@ public class AlarmActions extends Fragment {
     private Button changeBtn;
     private List<String> statusList;
     private LinearLayout new_code_layout,status_layout;
+    private TextInputLayout newCodeTi;
     private boolean lock;
+    private Map<String,String> statusAdapter;
+    private Map<String,String> actionAdapter;
+    private String secCode;
 
 
 
@@ -83,8 +93,15 @@ public class AlarmActions extends Fragment {
         if (getArguments() != null) {
             device = (Device) getArguments().getParcelable(ARG_PARAM);
             statusList = new ArrayList<>();
-            lock = true;
-            System.out.println("DEVICE STATE CLASS"+ this.device.getState().getClass().toString());
+            statusAdapter = new HashMap<>();
+            actionAdapter = new HashMap<>();
+            statusAdapter.put("disarmed","disarm");
+            statusAdapter.put("armedAway","armAway");
+            statusAdapter.put("armedStay","armStay");
+            actionAdapter.put("disarm","disarmed");
+            actionAdapter.put("armStay","armedStay");
+            actionAdapter.put("armAway","armedAway");
+
         }
     }
 
@@ -120,11 +137,55 @@ public class AlarmActions extends Fragment {
             }
         });
         newSecurityCodeInput = root.findViewById(R.id.new_security_code_input);
+        newSecurityCodeInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.length() != 4){
+                    changeBtn.setEnabled(false);
+                    changeBtn.setClickable(false);
+                    changeBtn.setFocusable(false);
+                    changeBtn.setBackgroundResource(R.drawable.circular_btn_disabled_bg);
+                    if(newCodeTi.getError() != null){
+
+                        newCodeTi.setErrorEnabled(false);
+                    }
+
+                }else{
+                    changeBtn.setEnabled(true);
+                    changeBtn.setClickable(true);
+                    changeBtn.setFocusable(true);
+                    changeBtn.setTextColor(getResources().getColor(R.color.textColorPrimary));
+                    changeBtn.setBackgroundResource(R.drawable.circular_btn_enabled_bg);
+                    String newCode = newSecurityCodeInput.getText().toString();
+                    if(secCode.equals(newCode)){
+                        newCodeTi.setErrorEnabled(true);
+                        changeBtn.setEnabled(false);
+                        changeBtn.setClickable(false);
+                        changeBtn.setFocusable(false);
+                        changeBtn.setBackgroundResource(R.drawable.circular_btn_disabled_bg);
+                        changeBtn.setTextColor(getResources().getColor(R.color.disabledText));
+                        newCodeTi.setError("The security code is the same as the old one");
+                    }
+
+                }
+                System.out.println(charSequence);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         unlockBtn = root.findViewById(R.id.unlock_btn);
         unlockBtn.setOnClickListener(view -> {
-            String code = securityCodeInput.getText().toString();
-            Object[] params = {code,code};
+            secCode = securityCodeInput.getText().toString();
+            Object[] params = {secCode,secCode};
 
             ApiClient.getInstance().executeAction(device.getId(), "changeSecurityCode", params, new Callback<Result<Object>>() {
                 @Override
@@ -132,12 +193,12 @@ public class AlarmActions extends Fragment {
                     if(response.isSuccessful()){
                         Boolean res = (Boolean) response.body().getResult();
                         if(res == true){
-                            System.out.println("Esta bien");
+
                             lock = false;
                             showUnlockedLayouts();
 
                         }else{
-                            System.out.println("Esta mal");
+                            Toast.makeText(getContext(), "Wrong security code, please try again", Toast.LENGTH_LONG).show();
                         }
                     }
                 }
@@ -149,16 +210,47 @@ public class AlarmActions extends Fragment {
             });
         });
 
+        newCodeTi = root.findViewById(R.id.new_code_ti_layout);
         showChangeBtn = root.findViewById(R.id.show_code_btn);
         showChangeBtn.setOnClickListener(view -> {
 
             if(this.new_code_layout.getVisibility() == View.VISIBLE){
                 this.new_code_layout.setVisibility(View.GONE);
             }else{
+                changeBtn.setEnabled(false);
+                changeBtn.setClickable(false);
+                changeBtn.setFocusable(false);
+                changeBtn.setBackgroundResource(R.drawable.circular_btn_disabled_bg);
+                changeBtn.setTextColor(getResources().getColor(R.color.disabledText));
                 this.new_code_layout.setVisibility(View.VISIBLE);
+
+
             }
         });
         changeBtn = root.findViewById(R.id.change_btn);
+        changeBtn.setOnClickListener(view -> {
+            String newCode = newSecurityCodeInput.getText().toString();
+            Object[] params = {secCode,newCode};
+            ApiClient.getInstance().executeAction(device.getId(), "changeSecurityCode", params, new Callback<Result<Object>>() {
+                @Override
+                public void onResponse(Call<Result<Object>> call, Response<Result<Object>> response) {
+                    if(response.isSuccessful()){
+                        Boolean res = (Boolean) response.body().getResult();
+                        if(res == true){
+                            secCode = newCode;
+                            Toast.makeText(getContext(), "Your security code was successfuly changed", Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getContext(), "Error changing security code, try again", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Result<Object>> call, Throwable t) {
+                    Log.e("SECURITY CODE INPUT","ERROR: CALL WAS A FAILURE");
+                }
+            });
+        });
 
         new_code_layout = root.findViewById(R.id.new_code_layout);
 
@@ -187,45 +279,54 @@ public class AlarmActions extends Fragment {
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setSelection(statusList.indexOf( context.getResources().getString(context.getResources().getIdentifier(this.device.getState().getStatus(), "string", context.getPackageName()))));
+
+
+        spinner.setSelection(statusList.indexOf( context.getResources().getString(context.getResources().getIdentifier(statusAdapter.get(this.device.getState().getStatus()), "string", context.getPackageName()))));
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Object[] params = {};
+                String lastSelected = context.getResources().getString(context.getResources().getIdentifier(statusAdapter.get(device.getState().getStatus()), "string", context.getPackageName()));
+                String selected = statusList.get(i);
+                if (!lastSelected.equals(selected)){
+                    Object[] params = {securityCodeInput.getText().toString()};
+                    System.out.println("SE MANDA ESTO: "+statusArray[i]);
+                    ApiClient.getInstance().executeAction(device.getId(), statusArray[i], params, new Callback<Result<Object>>() {
+                        @Override
+                        public void onResponse(Call<Result<Object>> call, Response<Result<Object>> response) {
+                            if (response.isSuccessful()) {
 
-                ApiClient.getInstance().executeAction(device.getId(), statusArray[(i)], params, new Callback<Result<Object>>() {
-                    @Override
-                    public void onResponse(Call<Result<Object>> call, Response<Result<Object>> response) {
-                        if(response.isSuccessful()){
+                                device.getState().setStatus(actionAdapter.get(statusArray[i]));
 
-                            System.out.println("STATUS CHANGED: "+response.body().getResult());
-
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<Result<Object>> call, Throwable t) {
-                        Log.e("GENRE CHANGE","ERROR: CALL WAS A FAILURE");
-                    }
-                });
+
+
+                        @Override
+                        public void onFailure(Call<Result<Object>> call, Throwable t) {
+                            Log.e("GENRE CHANGE","ERROR: CALL WAS A FAILURE");
+                        }
+                    });
+                }
             }
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+                }
+                           });
 
-            }
-        });
         return root;
 
     }
+
 
     private void enableImageButton(ImageButton btn){
         btn.setEnabled(true);
         btn.setClickable(true);
         btn.setFocusable(true);
-        btn.setImageResource(R.drawable.ic_lock_enabled);
-        btn.setBackgroundResource(R.drawable.circular_btn_enabled_bg);
 
+        btn.setBackgroundResource(R.drawable.circular_btn_enabled_bg);
+    btn.setImageResource(R.drawable.ic_lock_enabled);
 
     }
 
@@ -236,15 +337,15 @@ public class AlarmActions extends Fragment {
         btn.setFocusable(false);
         btn.setBackgroundResource(R.drawable.circular_btn_disabled_bg);
 
-        btn.setImageResource(lock ? R.drawable.ic_lock_disabled : R.drawable.ic_unlocked);
+      btn.setImageResource(lock ? R.drawable.ic_lock_disabled : R.drawable.ic_unlocked);
     }
 
     private void showUnlockedLayouts(){
 
 
-
-        this.status_layout.setVisibility(View.VISIBLE);
         this.showChangeBtn.setVisibility(View.VISIBLE);
+        this.status_layout.setVisibility(View.VISIBLE);
+
 
         this.securityCodeInput.setFocusable(false);
 

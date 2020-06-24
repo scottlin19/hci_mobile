@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
-            app:theme="@style/ToolbarTheme"
+            app:theme="@style/LightTheme"
             app:title=" " />
 
         <RelativeLayout
@@ -31,8 +31,8 @@
 
             <ImageView
                 android:id="@+id/device_icon"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="16dp"
                 android:importantForAccessibility="no"
@@ -47,7 +47,7 @@
                 android:layout_toEndOf="@+id/device_icon"
                 android:text="device name"
                 android:textColor="@android:color/white"
-                android:textSize="30sp" />
+                android:textSize="36sp" />
 
             <TextView
                 android:id="@+id/device_room"
@@ -59,7 +59,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="6dp"
                 android:text="device room"
-                android:textColor="@color/textColorPrimary" />
+                android:textColor="@color/textColorPrimary"
+                android:textSize="24sp" />
 
         </RelativeLayout>
 
