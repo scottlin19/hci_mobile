@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -48,6 +49,7 @@ import retrofit2.Response;
  * Use the {@link VacuumActions#newInstance} factory method to
  * create an instance of this fragment.
  */
+
 public class VacuumActions extends Fragment {
 
     private final int MODES = 2;
@@ -55,7 +57,7 @@ public class VacuumActions extends Fragment {
     private int[] btn_id = {R.id.mop_btn,R.id.vacuum_btn};
     private Button btn_unfocus;
 
-    private final int[] colors = {Color.RED,Color.GREEN,Color.YELLOW};
+    private final int[] colors = {Color.parseColor("#C51C1C"),Color.parseColor("#48B422"),Color.parseColor("#DDDE12")};
     private final int[] icons = {R.drawable.ic_baseline_battery_alert_24,R.drawable.ic_baseline_battery_full_24,R.drawable.ic_baseline_battery_charging_full_24};
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private ScheduledFuture<?> fetcherHandler;
@@ -228,7 +230,7 @@ public class VacuumActions extends Fragment {
 
         btn_unfocus = btns[j];
         btn_unfocus.setTextColor(Color.BLACK);
-        btn_unfocus.setBackgroundColor(getResources().getColor(R.color.design_default_color_background));
+        btn_unfocus.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.selectedButton));
     }
 
     private String getStringResourceByName(String aString) {
@@ -263,10 +265,10 @@ public class VacuumActions extends Fragment {
     }
 
     private void changeFocus(Button btn_unfocus, Button btn_focus){
-        btn_unfocus.setTextColor(getResources().getColor(R.color.textColorPrimary));
-        btn_unfocus.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        btn_unfocus.setTextColor(ContextCompat.getColor(getContext(),R.color.textColorPrimary));
+        btn_unfocus.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.colorPrimary));
         btn_focus.setTextColor(Color.BLACK);
-        btn_focus.setBackgroundColor(getResources().getColor(R.color.design_default_color_background));
+        btn_focus.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.selectedButton));
         this.btn_unfocus = btn_focus;
     }
 
@@ -334,13 +336,16 @@ public class VacuumActions extends Fragment {
 
         if(!device.getState().getStatus().equals("docked")){
             if(device.getState().getBatteryLevel() > 5) {
-                batteryLevel.setTextColor(Color.GREEN);
+                batteryLevel.setTextColor(colors[1]);
                 batteryLevel.setCompoundDrawablesWithIntrinsicBounds(0, 0, icons[1], 0);
                 errorTextView.setVisibility(View.GONE);
 
             }
             else{
-                batteryLevel.setTextColor(Color.RED);
+                if(device.getState().getBatteryLevel() == 0){
+                    switchMaterial.setChecked(false);
+                }
+                batteryLevel.setTextColor(colors[0]);
                 batteryLevel.setCompoundDrawablesWithIntrinsicBounds(0, 0, icons[0], 0);
                 errorTextView.setText(getResources().getString(R.string.noBatteryError));
                 errorTextView.setVisibility(View.VISIBLE);
@@ -356,7 +361,7 @@ public class VacuumActions extends Fragment {
                 switchMaterial.setClickable(true);
                 errorTextView.setVisibility(View.GONE);
             }
-            batteryLevel.setTextColor(Color.YELLOW);
+            batteryLevel.setTextColor(colors[2]);
             batteryLevel.setCompoundDrawablesWithIntrinsicBounds(0,0,icons[2],0);
         }
 

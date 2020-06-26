@@ -26,8 +26,6 @@ public class DeviceMeta implements Parcelable {
      * No args constructor for use in serialization
      *
      */
-    public DeviceMeta() {
-    }
 
     /**
      *
@@ -107,6 +105,14 @@ public class DeviceMeta implements Parcelable {
 
     public Boolean getBlocked() {
         return blocked;
+    }
+
+    public Boolean getNotif_status() {
+        return notif_status;
+    }
+
+    public void setNotif_status(Boolean notif_status) {
+        this.notif_status = notif_status;
     }
 
     public void setBlocked(Boolean blocked) {

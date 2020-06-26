@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -178,7 +179,7 @@ public class FridgeActions extends Fragment {
 
         btn_unfocus = btns[j];
         btn_unfocus.setTextColor(Color.BLACK);
-        btn_unfocus.setBackgroundColor(getResources().getColor(R.color.design_default_color_background));
+        btn_unfocus.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.selectedButton));
     }
 
     private String getStringResourceByName(String aString) {
@@ -214,10 +215,10 @@ public class FridgeActions extends Fragment {
     }
 
     private void changeFocus(Button btn_unfocus, Button btn_focus){
-        btn_unfocus.setTextColor(getResources().getColor(R.color.textColorPrimary));
-        btn_unfocus.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        btn_unfocus.setTextColor(ContextCompat.getColor(getContext(),R.color.textColorPrimary));
+        btn_unfocus.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.colorPrimary));
         btn_focus.setTextColor(Color.BLACK);
-        btn_focus.setBackgroundColor(getResources().getColor(R.color.design_default_color_background));
+        btn_focus.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.selectedButton));
         this.btn_unfocus = btn_focus;
     }
 }

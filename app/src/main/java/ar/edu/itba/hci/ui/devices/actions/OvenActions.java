@@ -7,9 +7,11 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -67,6 +69,10 @@ public class OvenActions extends Fragment {
     private Button[] convec_btn = new Button[3];
     private int[] convec_btn_id = {R.id.convec_btn1, R.id.convec_btn2, R.id.convec_btn3};
     private Button[] btn_unfocus = new Button[3];
+    Map<String, String> translateMap;
+    private final int REQ_CODE_SPEECH_INPUT = 100;
+    private TextView recognizedText;
+    private Button speechButton;
     public OvenActions() {
         // Required empty public constructor
     }
@@ -93,6 +99,21 @@ public class OvenActions extends Fragment {
         if (getArguments() != null) {
             device = (Device) getArguments().getParcelable(ARG_PARAM);
         }
+
+
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQ_CODE_SPEECH_INPUT &&
+                resultCode == Activity.RESULT_OK &&
+                null != data) {
+
+            ArrayList<String> result = data
+                    .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void viewHandler(){
@@ -109,6 +130,7 @@ public class OvenActions extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_oven_actions, container, false);
+
 
         return root;
     }
@@ -156,13 +178,14 @@ public class OvenActions extends Fragment {
     }
 
     private void initButtons(Button[] btns, int[] btn_ids, int index_focus, String action) {
-        Map<String, String> translateMap = new HashMap<String, String>(){
+         translateMap = new HashMap<String, String>(){
             {
                 put("convencional", "conventional");
                 put("abajo", "bottom");
                 put("arriba", "top");
                 put("grande", "large");
                 put("apagado", "off");
+                put("eco", "eco");
             }
         };
 
@@ -170,42 +193,39 @@ public class OvenActions extends Fragment {
         for(int i = 0; i < 3; i++){
             btns[i] = (Button) getView().findViewById(btn_ids[i]);
             btns[i].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            btns[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Button btn = (Button) getView().findViewById(v.getId());
-                    changeFocus(index_focus, btn);
-                    String aux;
-                    if(translateMap.get(btn.getText().toString()) != null) {
-                        aux = translateMap.get(btn.getText().toString());
-                    }
-                    else{
-                        aux = btn.getText().toString();
-                    }
-                    Object[] params = {aux};
-                    params[0] = btn.getText();
-                    ApiClient.getInstance().executeAction(device.getId(), action, params, new Callback<Result<Object>>() {
-                        @Override
-                        public void onResponse(Call<Result<Object>> call, Response<Result<Object>> response) {
-
-                        }
-
-                        @Override
-                        public void onFailure(Call<Result<Object>> call, Throwable t){
-                            Log.e("Oven update error","Error updating action " + action);
-                        }
-                    });
-
+            btns[i].setOnClickListener((View.OnClickListener) v -> {
+                Button btn = (Button) getView().findViewById(v.getId());
+                changeFocus(index_focus, btn);
+                String aux;
+                if(translateMap.get(btn.getText().toString()) != null) {
+                    aux = translateMap.get(btn.getText().toString());
                 }
+                else{
+                    aux = btn.getText().toString();
+                }
+                Object[] params = {aux};
+                ApiClient.getInstance().executeAction(device.getId(), action, params, new Callback<Result<Object>>() {
+                    @Override
+                    public void onResponse(Call<Result<Object>> call, Response<Result<Object>> response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Result<Object>> call, Throwable t){
+                        Log.e("Oven update error","Error updating action " + action);
+                    }
+                });
+
             });
         }
+        System.out.println("BOTONES DE OVEN" + btns);
     }
 
     private void changeFocus(int i, Button btn_focus){
         btn_unfocus[i].setTextColor(getResources().getColor(R.color.textColorPrimary));
         btn_unfocus[i].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         btn_focus.setTextColor(Color.BLACK);
-        btn_focus.setBackgroundColor(getResources().getColor(R.color.design_default_color_background));
+        btn_focus.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.selectedButton));
         this.btn_unfocus[i] = btn_focus;
     }
     private void setInitialFocused(){
@@ -214,12 +234,33 @@ public class OvenActions extends Fragment {
         getInitialValue(device.getState().getConvection(), 2, convec_btn);
     }
     private void getInitialValue(String btntext, int i, Button[] btns){
+        /*
         btn_unfocus[i] = Arrays.stream(btns).filter(btn -> {
             return btn.getText().equals(btntext);
         }).collect(Collectors.toList()).get(0);
         btn_unfocus[i].setTextColor(Color.BLACK);
-        btn_unfocus[i].setBackgroundColor(getResources().getColor(R.color.design_default_color_background));
+        btn_unfocus[i].setBackgroundColor(ContextCompat.getColor(getContext(),R.color.selectedButton));*/
+
+        String wanted = getStringResourceByName(btntext);
+        System.out.println("wanted: " + wanted);
+
+        int j = 0;
+
+        while(!btns[j].getText().equals(wanted)){
+            System.out.println("reading " + btns[j].getText());
+            j++;
+        }
+
+        btn_unfocus[i] = btns[j];
+        btn_unfocus[i].setTextColor(Color.BLACK);
+        btn_unfocus[i].setBackgroundColor(ContextCompat.getColor(getContext(),R.color.selectedButton));
     }
+
+    private String getStringResourceByName(String aString) {
+        int resId = getResources().getIdentifier(aString, "string", getContext().getPackageName());
+        return getString(resId);
+    }
+
     @Override
     public void onStart(){
         super.onStart();

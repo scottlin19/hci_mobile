@@ -1,5 +1,7 @@
 package ar.edu.itba.hci.api;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -8,6 +10,7 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 
 import ar.edu.itba.hci.api.models.Device;
+import ar.edu.itba.hci.api.models.PastAction;
 import ar.edu.itba.hci.api.models.Room;
 import ar.edu.itba.hci.api.models.Routine;
 import ar.edu.itba.hci.api.models.devices.states.SpeakerDeviceState;
@@ -103,17 +106,11 @@ public class ApiClient {
         return call;
     }
 
-    public Call<Result<Object>> getLogs(Device device, Callback<Result<Object>> callback) {
-        Call<Result<Object>> call = this.service.getLogs(device.getId(), null, null);
+    public Call<Result<List<PastAction>>> getLogs(Integer limit, @Nullable Integer offset, Callback<Result<List<PastAction>>> callback) {
+        Call<Result<List<PastAction>>> call = this.service.getLogs(limit, offset);
         call.enqueue(callback);
         return call;
     }
-
-
-
-
-
-
 
     //ROUTINES
     public Call<Result<List<Routine>>> getRoutines(Callback<Result<List<Routine>>> callback){
@@ -133,11 +130,4 @@ public class ApiClient {
         call.enqueue(callback);
         return call;
     }
-
-
-
-
-
-
-
 }

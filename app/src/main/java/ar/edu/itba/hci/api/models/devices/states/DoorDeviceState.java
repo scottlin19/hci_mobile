@@ -3,13 +3,22 @@ package ar.edu.itba.hci.api.models.devices.states;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Ignore;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 public class DoorDeviceState extends DeviceState {
+
+    @ColumnInfo(name = "status")
     @SerializedName("status")
     @Expose
     private String status;
+
+    @ColumnInfo(name = "lock")
     @SerializedName("lock")
     @Expose
     private String lock;
@@ -18,6 +27,7 @@ public class DoorDeviceState extends DeviceState {
      * No args constructor for use in serialization
      *
      */
+    @Ignore
     public DoorDeviceState() {
     }
 
@@ -31,7 +41,7 @@ public class DoorDeviceState extends DeviceState {
         this.status = status;
         this.lock = lock;
     }
-
+    @Ignore
     protected DoorDeviceState(Parcel in) {
         status = in.readString();
         lock = in.readString();
@@ -63,6 +73,20 @@ public class DoorDeviceState extends DeviceState {
 
     public void setLock(String lock) {
         this.lock = lock;
+    }
+
+    @Override
+    public String[] compare(DeviceState deviceState) {
+        DoorDeviceState param_dev = (DoorDeviceState) deviceState;
+        ArrayList<String> ret_desc = new ArrayList<>();
+
+        if(!getStatus().equals(param_dev.getStatus()))
+            ret_desc.add(String.format("Status changed to: %s", param_dev.getStatus()));
+
+        if(!getLock().equals(param_dev.getLock()))
+            ret_desc.add(String.format("Lock status changed to: %s", param_dev.getLock()));
+
+        return  ret_desc.toArray(new String[0]);
     }
 
     @Override

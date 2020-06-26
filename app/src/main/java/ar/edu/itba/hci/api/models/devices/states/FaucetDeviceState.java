@@ -3,22 +3,33 @@ package ar.edu.itba.hci.api.models.devices.states;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Ignore;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 public class FaucetDeviceState extends DeviceState{
+
+    @ColumnInfo(name = "status")
     @SerializedName("status")
     @Expose
     private String status;
 
+
+    @ColumnInfo(name = "quantity")
     @SerializedName("quantity")
     @Expose
     private Float quantity;
 
+    @ColumnInfo(name = "unit")
     @SerializedName("unit")
     @Expose
     private String unit;
 
+    @ColumnInfo(name = "dispensedQuantity")
     @SerializedName("dispensedQuantity")
     @Expose
     private Float dispensedQuantity;
@@ -28,6 +39,7 @@ public class FaucetDeviceState extends DeviceState{
      * No args constructor for use in serialization
      *
      */
+    @Ignore
     public FaucetDeviceState() {
     }
 
@@ -110,11 +122,52 @@ public class FaucetDeviceState extends DeviceState{
         this.status = status;
     }
 
-    public float getQuantity() {return quantity;}
+    public Float getQuantity() {return quantity;}
 
-    public float getDispensedQuantity() { return dispensedQuantity;}
+    public Float getDispensedQuantity() { return dispensedQuantity;}
 
     public String getUnit() {return unit;}
 
+    @Override
+    public String[] compare(DeviceState deviceState) {
+        FaucetDeviceState param_dev = (FaucetDeviceState) deviceState;
+        ArrayList<String> ret_desc = new ArrayList<>();
 
+        if(!getStatus().equals(param_dev.getStatus()))
+            ret_desc.add(String.format("Status changed to: %s", param_dev.getStatus()));
+
+
+      /*  Float disp_quant =getDispensedQuantity();
+        Float param_dev_disp_quant = param_dev.getDispensedQuantity();
+
+
+        if(!compareDispQuant){
+            ret_desc.add(String.format("Dispensed quantity changed to: %s", param_dev.getDispensedQuantity()));
+        }
+        Float quant =getQuantity();
+        Float param_dev_quant = param_dev.getQuantity();
+        boolean compareQuant = quant == null ? param_dev_quant == null :  Float.compare(quant, param_dev_quant) == 0;
+
+        if(!compareQuant)
+            ret_desc.add(String.format("Quantity changed to: %s", param_dev.getQuantity()));
+        Float unit =getQuantity();
+        Float param_dev_unit = param_dev.getQuantity();
+        boolean compareUnit = quant == null ? param_dev_quant == null :  Float.compare(quant, param_dev_quant) == 0;
+        if(!getUnit().equals(param_dev.getUnit()))
+            ret_desc.add(String.format("Unit changed to: %s", param_dev.getUnit()));*/
+
+        return  ret_desc.toArray(new String[0]);
+    }
+
+    public void setQuantity(Float quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public void setDispensedQuantity(Float dispensedQuantity) {
+        this.dispensedQuantity = dispensedQuantity;
+    }
 }

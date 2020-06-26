@@ -29,4 +29,12 @@ public class Category {
     public void setThumbnail(int img_id) {
         this.thumbnail = img_id;
     }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "name='" + name + '\'' +
+                ", thumbnail=" + thumbnail +
+                '}';
+    }
 }

@@ -3,8 +3,12 @@ package ar.edu.itba.hci.api.models.devices.states;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Ignore;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
 
 public class LampDeviceState extends DeviceState {
     @SerializedName("status")
@@ -21,6 +25,7 @@ public class LampDeviceState extends DeviceState {
      * No args constructor for use in serialization
      *
      */
+    @Ignore
     public LampDeviceState() {
     }
 
@@ -36,7 +41,7 @@ public class LampDeviceState extends DeviceState {
         this.color = color;
         this.brightness = brightness;
     }
-
+    @Ignore
     protected LampDeviceState(Parcel in) {
         status = in.readString();
         color = in.readString();
@@ -100,4 +105,20 @@ public class LampDeviceState extends DeviceState {
         this.brightness = brightness;
     }
 
+    @Override
+    public String[] compare(DeviceState deviceState) {
+        LampDeviceState param_dev = (LampDeviceState) deviceState;
+        ArrayList<String> ret_desc = new ArrayList<>();
+
+        if(!getStatus().equals(param_dev.getStatus()))
+            ret_desc.add(String.format("Status changed to: %s", param_dev.getStatus()));
+
+        if(!getBrightness().equals(param_dev.getBrightness()))
+            ret_desc.add(String.format("Brightness changed to: %s", param_dev.getBrightness()));
+
+        if(!getColor().equals(param_dev.getColor()))
+            ret_desc.add(String.format("Color changed to: %s", param_dev.getColor()));
+
+        return  ret_desc.toArray(new String[0]);
+    }
 }

@@ -11,6 +11,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentContainerView;
@@ -250,29 +251,7 @@ public class AcActions extends Fragment {
 
         btn_unfocus[i] = btns[j];
         btn_unfocus[i].setTextColor(Color.BLACK);
-        btn_unfocus[i].setBackgroundColor(getResources().getColor(R.color.design_default_color_background));
-    }
-
-    @NonNull
-    Resources getLocalizedResources(Context context, Locale desiredLocale) {
-        Configuration conf = context.getResources().getConfiguration();
-        conf = new Configuration(conf);
-        conf.setLocale(desiredLocale);
-        Context localizedContext = context.createConfigurationContext(conf);
-        return localizedContext.getResources();
-    }
-
-    @NonNull
-    Context getLocalizedContext(Context context, Locale desiredLocale) {
-        Configuration conf = context.getResources().getConfiguration();
-        conf = new Configuration(conf);
-        conf.setLocale(desiredLocale);
-        Context localizedContext = context.createConfigurationContext(conf);
-        return localizedContext;
-    }
-    private String getStringResourceFromLocalizedContext(String aString,Context context) {
-        int resId = getResources().getIdentifier(aString, "string", context.getPackageName());
-        return getString(resId);
+        btn_unfocus[i].setBackgroundColor(ContextCompat.getColor(getContext(),R.color.selectedButton));
     }
 
     private String getStringResourceByName(String aString) {
@@ -290,14 +269,14 @@ public class AcActions extends Fragment {
             }
         }).collect(Collectors.toList()).get(0);
         btn_unfocus[i].setTextColor(Color.BLACK);
-        btn_unfocus[i].setBackgroundColor(getResources().getColor(R.color.design_default_color_background));
+        btn_unfocus[i].setBackgroundColor(ContextCompat.getColor(getContext(),R.color.selectedButton));
     }
 
     private void changeFocus(int i, Button btn_focus){
-        btn_unfocus[i].setTextColor(getResources().getColor(R.color.textColorPrimary));
-        btn_unfocus[i].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        btn_unfocus[i].setTextColor(ContextCompat.getColor(getContext(),R.color.textColorPrimary));
+        btn_unfocus[i].setBackgroundColor(ContextCompat.getColor(getContext(),R.color.colorPrimary));
         btn_focus.setTextColor(Color.BLACK);
-        btn_focus.setBackgroundColor(getResources().getColor(R.color.design_default_color_background));
+        btn_focus.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.selectedButton));
         this.btn_unfocus[i] = btn_focus;
     }
 

@@ -37,8 +37,7 @@ public class DeviceDeserializer implements JsonDeserializer<Device>{
             return gson.fromJson(jsonObject,new TypeToken<SpeakerDevice>(){}.getType());
         }else if(deviceType.getId().equals("dbrlsh7o5sn8ur4i")){
             return gson.fromJson(jsonObject,new TypeToken<FaucetDevice>(){}.getType());
-        }else if(deviceType.getId().equals("dbrlsh7o5sn8ur4i")){
-            return gson.fromJson(jsonObject,new TypeToken<FaucetDevice>(){}.getType());
+
         }else if(deviceType.getId().equals("eu0v2xgprrhhg41g")){
             return gson.fromJson(jsonObject,new TypeToken<BlindsDevice>(){}.getType());
         }else if(deviceType.getId().equals("go46xmbqeomjrsjr")){

@@ -50,7 +50,7 @@ public class RecyclerViewDeviceAdapter extends RecyclerView.Adapter<ar.edu.itba.
 
 
             System.out.println("DEVICE BUNDLE: "+data.get(position));
-            intent.putExtra("device", data.get(position));
+            intent.putExtra("device", data.get(position).getId());
             context.startActivity(intent);
         });
 

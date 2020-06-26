@@ -3,8 +3,12 @@ package ar.edu.itba.hci.api.models.devices.states;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Ignore;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
 
 public class BlindsDeviceState extends DeviceState{
     @SerializedName("status")
@@ -21,6 +25,7 @@ public class BlindsDeviceState extends DeviceState{
      * No args constructor for use in serialization
      *
      */
+    @Ignore
     public BlindsDeviceState() {
     }
 
@@ -36,7 +41,7 @@ public class BlindsDeviceState extends DeviceState{
         this.level = level;
         this.currentLevel = currentLevel;
     }
-
+    @Ignore
     protected BlindsDeviceState(Parcel in) {
         status = in.readString();
         if (in.readByte() == 0) {
@@ -85,6 +90,23 @@ public class BlindsDeviceState extends DeviceState{
 
     public void setCurrentLevel(Integer currentLevel) {
         this.currentLevel = currentLevel;
+    }
+
+    @Override
+    public String[] compare(DeviceState deviceState) {
+        BlindsDeviceState param_dev = (BlindsDeviceState) deviceState;
+        ArrayList<String> ret_desc = new ArrayList<>();
+
+        if(!getStatus().equals(param_dev.getStatus()))
+            ret_desc.add(String.format("Status changed to: %s", param_dev.getStatus()));
+
+        if(!getCurrentLevel().equals(param_dev.getCurrentLevel()))
+            ret_desc.add(String.format("Current level changed to: %s", param_dev.getCurrentLevel()));
+
+        if(!getLevel().equals(param_dev.getLevel()))
+            ret_desc.add(String.format("Level changed to: %s", param_dev.getLevel()));
+
+        return ret_desc.toArray(new String[0]);
     }
 
     @Override

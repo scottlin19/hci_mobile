@@ -25,12 +25,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DevicesViewModel extends ViewModel {
+public class DevicesViewModel extends AndroidViewModel {
     private MutableLiveData<List<Category>> categoryList;
     private MutableLiveData<List<Device>> deviceList;
     private Map<String,Category> categoryMap;
-    private DeviceRepository repo;
-    public DevicesViewModel(){
+
+    public DevicesViewModel(Application app){
+        super(app);
+
 
         categoryList = new MutableLiveData<>();
         deviceList = new MutableLiveData<>();

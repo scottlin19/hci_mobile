@@ -3,8 +3,12 @@ package ar.edu.itba.hci.api.models.devices.states;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Ignore;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
 
 import ar.edu.itba.hci.api.models.devices.states.DeviceState;
 
@@ -30,6 +34,7 @@ public class OvenDeviceState extends DeviceState{
      * No args constructor for use in serialization
      *
      */
+    @Ignore
     public OvenDeviceState() {
     }
 
@@ -49,7 +54,7 @@ public class OvenDeviceState extends DeviceState{
         this.grill = grill;
         this.convection = convection;
     }
-
+    @Ignore
     protected OvenDeviceState(Parcel in) {
         status = in.readString();
         if (in.readByte() == 0) {
@@ -133,4 +138,26 @@ public class OvenDeviceState extends DeviceState{
         this.convection = convection;
     }
 
+    @Override
+    public String[] compare(DeviceState deviceState) {
+        OvenDeviceState param_dev = (OvenDeviceState) deviceState;
+        ArrayList<String> ret_desc = new ArrayList<>();
+
+        if(!getStatus().equals(param_dev.getStatus()))
+            ret_desc.add(String.format("Status changed to: %s", param_dev.getStatus()));
+
+        if(!getConvection().equals(param_dev.getConvection()))
+            ret_desc.add(String.format("Convection changed to: %s", param_dev.getConvection()));
+
+        if(!getGrill().equals(param_dev.getGrill()))
+            ret_desc.add(String.format("Grill changed to: %s", param_dev.getGrill()));
+
+        if(!getHeat().equals(param_dev.getHeat()))
+            ret_desc.add(String.format("Heat changed to: %s", param_dev.getHeat()));
+
+        if(!getTemperature().equals(param_dev.getTemperature()))
+            ret_desc.add(String.format("Temperature changed to: %s", param_dev.getTemperature()));
+
+        return ret_desc.toArray(new String[0]);
+    }
 }

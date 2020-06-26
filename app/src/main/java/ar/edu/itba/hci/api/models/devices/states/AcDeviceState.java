@@ -1,10 +1,15 @@
 package ar.edu.itba.hci.api.models.devices.states;
 
 import android.os.Parcel;
-import android.os.Parcelable;
+
+import androidx.room.ColumnInfo;
+import androidx.room.Ignore;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AcDeviceState  extends DeviceState{
 
@@ -31,6 +36,7 @@ public class AcDeviceState  extends DeviceState{
      * No args constructor for use in serialization
      *
      */
+    @Ignore
     public AcDeviceState() {
     }
 
@@ -52,7 +58,7 @@ public class AcDeviceState  extends DeviceState{
         this.horizontalSwing = horizontalSwing;
         this.fanSpeed = fanSpeed;
     }
-
+    @Ignore
     protected AcDeviceState(Parcel in) {
         status = in.readString();
         if (in.readByte() == 0) {
@@ -124,6 +130,32 @@ public class AcDeviceState  extends DeviceState{
 
     public void setFanSpeed(String fanSpeed) {
         this.fanSpeed = fanSpeed;
+    }
+
+    @Override
+    public String[] compare(DeviceState deviceState) {
+        AcDeviceState param_dev = (AcDeviceState) deviceState;
+        ArrayList<String> ret_desc = new ArrayList<>();
+
+        if(!getStatus().equals(param_dev.getStatus()))
+            ret_desc.add(String.format("Status changed to: %s", param_dev.getStatus()));
+
+        if(!getFanSpeed().equals(param_dev.getFanSpeed()))
+            ret_desc.add(String.format("Fan speed changed to: %s", param_dev.getFanSpeed()));
+
+        if(!getHorizontalSwing().equals(param_dev.getHorizontalSwing()))
+            ret_desc.add(String.format("Horizontal Swing changed to: %s", param_dev.getHorizontalSwing()));
+
+        if(!getMode().equals(param_dev.getMode()))
+            ret_desc.add(String.format("Mode changed to: %s", param_dev.getMode()));
+
+        if(!getTemperature().equals(param_dev.getTemperature()))
+            ret_desc.add(String.format("Temperature changed to: %s", param_dev.getTemperature()));
+
+        if(!getVerticalSwing().equals(param_dev.getVerticalSwing()))
+            ret_desc.add(String.format("Vertical swing changed to: %s", param_dev.getVerticalSwing()));
+
+        return ret_desc.toArray(new String[0]);
     }
 
     @Override

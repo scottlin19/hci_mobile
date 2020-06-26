@@ -7,12 +7,16 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import ar.edu.itba.hci.database.DeviceRepository;
-import ar.edu.itba.hci.ui.devices.category.DeviceModel;
 
 public class DeviceModelFactory implements ViewModelProvider.Factory {
 
     private Application app;
     private static DeviceModel model;
+
+    public DeviceModelFactory(Application app){
+        this.app = app;
+    }
+
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {

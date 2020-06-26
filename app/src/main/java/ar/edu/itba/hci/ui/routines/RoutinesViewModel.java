@@ -19,18 +19,12 @@ import retrofit2.Response;
 
 public class RoutinesViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
     MutableLiveData<List<Routine>> routineList;
+
     public RoutinesViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is routine fragment");
         routineList = new MutableLiveData<>();
         loadRoutines();
 
-    }
-
-    public LiveData<String> getText() {
-        return mText;
     }
 
     private void loadRoutines() {

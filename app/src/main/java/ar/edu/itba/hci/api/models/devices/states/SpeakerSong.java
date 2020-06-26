@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 
+import androidx.room.Ignore;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -30,6 +32,7 @@ public class SpeakerSong extends DeviceState implements Parcelable {
      * No args constructor for use in serialization
      *
      */
+    @Ignore
     public SpeakerSong() {
     }
 
@@ -49,7 +52,7 @@ public class SpeakerSong extends DeviceState implements Parcelable {
         this.duration = duration;
         this.progress = progress;
     }
-
+    @Ignore
     protected SpeakerSong(Parcel in) {
         title = in.readString();
         artist = in.readString();
@@ -128,12 +131,6 @@ public class SpeakerSong extends DeviceState implements Parcelable {
 
     @Override
     public String toString() {
-        return "SpeakerSong{" +
-                "title='" + title + '\'' +
-                ", artist='" + artist + '\'' +
-                ", album='" + album + '\'' +
-                ", duration='" + duration + '\'' +
-                ", progress='" + progress + '\'' +
-                '}';
+        return title + " - " + artist;
     }
 }

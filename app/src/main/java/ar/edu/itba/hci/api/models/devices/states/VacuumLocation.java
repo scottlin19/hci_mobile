@@ -3,6 +3,9 @@ package ar.edu.itba.hci.api.models.devices.states;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+import androidx.room.Ignore;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -18,6 +21,7 @@ public class VacuumLocation implements Parcelable {
      * No args constructor for use in serialization
      *
      */
+    @Ignore
     public VacuumLocation() {
     }
 
@@ -31,6 +35,8 @@ public class VacuumLocation implements Parcelable {
         this.id = id;
         this.name = name;
     }
+
+    @Ignore
     protected VacuumLocation(Parcel in) {
         id = in.readString();
         name = in.readString();
@@ -73,5 +79,11 @@ public class VacuumLocation implements Parcelable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return getName();
     }
 }

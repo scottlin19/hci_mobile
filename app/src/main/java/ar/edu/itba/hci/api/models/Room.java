@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import androidx.room.Embedded;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -22,19 +24,13 @@ public class Room implements Parcelable {
     @SerializedName("name")
     @Expose
     private String name;
+    @Embedded(prefix = "room_meta_")
     @SerializedName("meta")
     @Expose
     private RoomMeta meta;
 
 
 
-    public Room() {
-    }
-
-    public Room(String name, RoomMeta meta) {
-        this.name = name;
-        this.meta = meta;
-    }
 
     public Room(String id, String name, RoomMeta meta) {
         this.id = id;

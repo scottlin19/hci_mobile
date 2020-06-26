@@ -14,7 +14,6 @@
     <string name="refrigerator">Heladeras</string>
     <string name="oven">Hornos</string>
     <string name="door">Puertas</string>
-    <string name="vacuum_device">Aspiradoras</string>
     <string name="blinds">Persianas</string>
     <string name="title_add">Añadir</string>
     <string name="favoriteTitle">Favoritos</string>
@@ -42,11 +41,11 @@
 
     <!--VACUUM-->
     <string name="start">Comenzar</string>
-    <string name="setMode">Establecer modo</string>
+    <string name="setMode">Fijar modo</string>
     <string name="pause">Pausar</string>
     <string name="dock">Acoplar</string>
     <string name="recharge">Recargar</string>
-    <string name="setLocation">Establecer ubicación</string>
+    <string name="setLocation">Fijar ubicación</string>
     <string name="mode">Modo</string>
     <string name="location">Ubicación</string>
     <string name="noBatteryError">No tiene suficiente batería. Por favor recargue su aspiradora</string>
@@ -57,7 +56,7 @@
 
 
     <!-- ALARM-->
-    <string name="changeSecurityCode">Establecer código de seguridad</string>
+    <string name="changeSecurityCode">Fijar código de seguridad</string>
     <string name="armStay">Modo presente</string>
     <string name="armAway">Modo ausente</string>
     <string name="disarm">Desarmar</string>
@@ -72,7 +71,7 @@
     <string name="resume">Continuar</string>
     <string name="nextSong">Próxima canción</string>
     <string name="previousSong">Canción anterior</string>
-    <string name="setGenre">Establecer género</string>
+    <string name="setGenre">Fijar género</string>
     <string name="genres">Genero</string>
     <string name="classical">Clasica</string>
     <string name="country">Country</string>
@@ -82,10 +81,10 @@
     <!--OVEN-->
     <string name="turnOn">Encender</string>
     <string name="turnOff">Apagar</string>
-    <string name="setTemperature">Establecer temperatura (°C)</string>
-    <string name="setHeat">Establecer calor</string>
-    <string name="setGrill">Establecer parilla</string>
-    <string name="setConvection">Establecer convección</string>
+    <string name="setTemperature">Fijar temperatura (°C)</string>
+    <string name="setHeat">Fijar calor</string>
+    <string name="setGrill">Fijar parilla</string>
+    <string name="setConvection">Fijar convección</string>
     <string name="conventional">convencional</string>
     <string name="bottom">abajo</string>
     <string name="top">arriba</string>
@@ -102,7 +101,7 @@
     <string name="dispense">Dispensar</string>
     <string name="dispensing">Dispensando..</string>
     <!--BLINDS-->
-    <string name="setLevel">Establecer nivel</string>
+    <string name="setLevel">Fijar nivel</string>
     <string name="closed">Cerrado</string>
     <string name="opened">Abierto</string>
     <string name="opening">Abriendo</string>
@@ -113,14 +112,14 @@
 
     <!--LAMP-->
     <string name="setColor">Cambiar color</string>
-    <string name="setBrightness">Establecer brillo</string>
+    <string name="setBrightness">Fijar brillo</string>
     <string name="color">Color</string>
     <string name="brigthness">Brillo</string>
 
     <!--AC-->
-    <string name="setVerticalSwing">Establecer desplazamiento vertical</string>
-    <string name="setHorizontalSwing">Establecer desplazamiento horizontal</string>
-    <string name="setFanSpeed">Establecer velocidad del ventilador</string>
+    <string name="setVerticalSwing">Fijar desplazamiento vertical</string>
+    <string name="setHorizontalSwing">Fijar desplazamiento horizontal</string>
+    <string name="setFanSpeed">Fijar velocidad del ventilador</string>
     <string name="temperature">Temperatura</string>
     <string name="verticalSwing">Desplazamiento vertical</string>
     <string name="horizontalSwing">Desplazamiento horizontal</string>
@@ -135,11 +134,16 @@
 
 
     <!--REFRIGERATOR-->
-    <string name="setFreezerTemperature">Establecer temperatura del freezer</string>
+    <string name="setFreezerTemperature">Fijar temperatura del freezer</string>
     <string name="freezerTemp">Temperatura del freezer (°C)</string>
     <string name="fridgeTemp">Temperatura de la heladera (°C)</string>
     <string name="defaultMode">defecto</string>
     <string name="partyMode">fiesta</string>
     <string name="vacationMode">vacación</string>
+
+
+    <string name="device">Dispositivo</string>
+    <string name="action">Acción</string>
+    <string name="date">Fecha</string>
 
 </resources>

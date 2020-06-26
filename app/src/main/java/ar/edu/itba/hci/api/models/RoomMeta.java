@@ -24,6 +24,11 @@ public class RoomMeta implements Parcelable {
     @Expose
     private Boolean notif_status;
 
+    public RoomMeta(String icon, Boolean blocked, Boolean notif_status) {
+        this.icon = icon;
+        this.blocked = blocked;
+        this.notif_status = notif_status;
+    }
 
     protected RoomMeta(Parcel in) {
         icon = in.readString();

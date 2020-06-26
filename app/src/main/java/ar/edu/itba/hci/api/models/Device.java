@@ -3,6 +3,7 @@ package ar.edu.itba.hci.api.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -11,10 +12,15 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+
 import ar.edu.itba.hci.api.models.devices.states.DeviceState;
 
-@Entity
+
 public class Device<T extends DeviceState> implements Parcelable {
+
 
     @Embedded(prefix = "device_type_")
     @SerializedName("type")
@@ -27,20 +33,25 @@ public class Device<T extends DeviceState> implements Parcelable {
     @Expose(serialize = false)
     private Room room;
 
+
     @Embedded(prefix = "device_state_")
     @SerializedName("state")
     @Expose(serialize = false)
     private T state;
+
 
     @Embedded(prefix = "meta_")
     @SerializedName("meta")
     @Expose
     private DeviceMeta meta;
 
+
     @PrimaryKey
+    @NotNull
     @SerializedName("id")
     @Expose
     private String id;
+
 
     @SerializedName("name")
     @Expose
@@ -92,6 +103,7 @@ public class Device<T extends DeviceState> implements Parcelable {
             return new Device[size];
         }
     };
+
 
     public String getId() {
         return id;
@@ -151,6 +163,13 @@ public class Device<T extends DeviceState> implements Parcelable {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Device<?> device = (Device<?>) o;
+        return Objects.equals(id, device.id);
+    }
 
     @Override
     public int hashCode() {

@@ -1,6 +1,7 @@
 package ar.edu.itba.hci.ui.devices.category;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -12,6 +13,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -19,7 +23,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ar.edu.itba.hci.R;
-import ar.edu.itba.hci.api.models.Device;
 import ar.edu.itba.hci.ui.Utility;
 import ar.edu.itba.hci.ui.devices.DeviceListFragment;
 
@@ -27,15 +30,15 @@ public class RecyclerViewCategoryAdapter extends RecyclerView.Adapter<RecyclerVi
 
     private Context context;
     private List<Category> categoryData;
-    private List<Device> deviceList;
+
     private Fragment currFragment;
 
-    public RecyclerViewCategoryAdapter(Context context, List<Category> categoryData, List<Device> deviceList, Fragment currFragment) {
+    public RecyclerViewCategoryAdapter(Context context, List<Category> categoryData, Fragment currFragment) {
         this.context = context;
         this.categoryData = categoryData;
-        this.deviceList = deviceList;
-
         this.currFragment = currFragment;
+
+
     }
 
     @NonNull
@@ -60,14 +63,12 @@ public class RecyclerViewCategoryAdapter extends RecyclerView.Adapter<RecyclerVi
         holder.tv_category_name.setText(Utility.capitalizeFirstLetter(categ_name));
         holder.tv_category_name.setCompoundDrawablesWithIntrinsicBounds(0,0,0,categoryData.get(position).getThumbnail());
         holder.cv.setOnClickListener(view -> {
-        Bundle bundle = new Bundle();
-        this.deviceList = this.deviceList.stream().filter(d ->   d.getType().getName().equals(categoryData.get(position).getName())).collect(Collectors.toList());
-           bundle.putParcelableArrayList("devices", (ArrayList<? extends Parcelable>) deviceList);
-            System.out.println(deviceList);
-           bundle.putString("category",categ_name);
+            Bundle bundle = new Bundle();
+            bundle.putString("category",categoryData.get(position).getName());
             DeviceListFragment newFragment = new DeviceListFragment();
             newFragment.setArguments(bundle);
-           currFragment.getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,newFragment).addToBackStack(null).commit();
+            currFragment.getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,newFragment).addToBackStack(null).commit();
+
         });
 
     }

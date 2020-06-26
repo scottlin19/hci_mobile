@@ -1,5 +1,6 @@
 package ar.edu.itba.hci.ui.devices;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,14 +18,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import ar.edu.itba.hci.R;
+import ar.edu.itba.hci.api.ApiClient;
+import ar.edu.itba.hci.api.Result;
 import ar.edu.itba.hci.api.models.Device;
 import ar.edu.itba.hci.ui.Utility;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DeviceListFragment extends Fragment {
     private List<Device> deviceList;
     private String categoryName;
+    private DeviceModel deviceModel;
 
     @Nullable
     @Override
@@ -33,16 +41,38 @@ public class DeviceListFragment extends Fragment {
 
 
         Bundle bundle = getArguments();
-        deviceList = bundle.getParcelableArrayList("devices");
-        System.out.println(deviceList);
         categoryName = bundle.getString("category");
-
+        System.out.println(categoryName);
 
         RecyclerView rv = root.findViewById(R.id.rv_device_list);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
         rv.setLayoutManager(gridLayoutManager);
-        RecyclerViewDeviceAdapter adapter = new RecyclerViewDeviceAdapter(getContext(),deviceList);
-        rv.setAdapter(adapter);
+
+        ApiClient.getInstance().getDevices(new Callback<Result<List<Device>>>() {
+            @Override
+            public void onResponse(Call<Result<List<Device>>> call, Response<Result<List<Device>>> response) {
+                if(response.isSuccessful()){
+                    System.out.println(response.body().getResult());
+                    response.body().getResult().forEach(device -> {
+                        if(device.getMeta().getNotif_status() == null){
+                            device.getMeta().setNotif_status(true);
+                            updateDevice(device);
+                        }
+                    });
+                    deviceList = response.body().getResult().stream().filter(device -> device.getType().getName().equals(categoryName)).collect(Collectors.toList());
+                    System.out.println(deviceList);
+                    RecyclerViewDeviceAdapter adapter = new RecyclerViewDeviceAdapter(getContext(),deviceList);
+                    rv.setAdapter(adapter);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Result<List<Device>>> call, Throwable t) {
+
+            }
+        });
+
 
         Toolbar toolbar = root.findViewById(R.id.device_list_toolbar);
 
@@ -56,6 +86,22 @@ public class DeviceListFragment extends Fragment {
         });
 
         return root;
+    }
+
+    private void updateDevice(Device device) {
+        ApiClient.getInstance().modifyDevice(device, new Callback<Result<Boolean>>() {
+            @Override
+            public void onResponse(Call<Result<Boolean>> call, Response<Result<Boolean>> response) {
+                if(response.isSuccessful()){
+                    System.out.println("notification is successful");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result<Boolean>> call, Throwable t) {
+
+            }
+        });
     }
 
 

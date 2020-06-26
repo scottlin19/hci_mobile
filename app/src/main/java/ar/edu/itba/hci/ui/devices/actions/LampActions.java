@@ -169,7 +169,9 @@ public class LampActions extends Fragment {
         if(state.getStatus().equals("on")) statusSwitch.setChecked(true);
         else statusSwitch.setChecked(false);
         StringBuilder color = new StringBuilder(state.getColor());
+        if(color.charAt(0) != '#') color.reverse().append('#').reverse();
         if(color.length() > 7) color.setLength(7);
+        System.out.println(color);
         colorPicker.selectByHsv(Color.parseColor(color.toString()));
         slider.setValue(state.getBrightness());
     }

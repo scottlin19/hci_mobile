@@ -21,6 +21,12 @@ public class DeviceType implements Parcelable {
     @Expose
     private Integer powerUsage;
 
+    public DeviceType(String id, String name, Integer powerUsage) {
+        this.id = id;
+        this.name = name;
+        this.powerUsage = powerUsage;
+    }
+
     protected DeviceType(Parcel in) {
         id = in.readString();
         name = in.readString();

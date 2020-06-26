@@ -3,8 +3,15 @@ package ar.edu.itba.hci.api.models.devices.states;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Embedded;
+import androidx.room.Ignore;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+
+import ar.edu.itba.hci.api.models.devices.SpeakerDevice;
 
 public class SpeakerDeviceState extends DeviceState {
     @SerializedName("status")
@@ -16,6 +23,7 @@ public class SpeakerDeviceState extends DeviceState {
     @SerializedName("genre")
     @Expose
     private String genre;
+    @Embedded(prefix = "speaker_song_")
     @SerializedName("song")
     @Expose
     private SpeakerSong song;
@@ -24,6 +32,7 @@ public class SpeakerDeviceState extends DeviceState {
      * No args constructor for use in serialization
      *
      */
+    @Ignore
     public SpeakerDeviceState() {
     }
 
@@ -42,7 +51,7 @@ public class SpeakerDeviceState extends DeviceState {
         this.song = song;
     }
 
-
+    @Ignore
     protected SpeakerDeviceState(Parcel in) {
         status = in.readString();
         if (in.readByte() == 0) {
@@ -114,6 +123,26 @@ public class SpeakerDeviceState extends DeviceState {
 
     public void setSong(SpeakerSong song) {
         this.song = song;
+    }
+
+    @Override
+    public String[] compare(DeviceState deviceState) {
+        SpeakerDeviceState param_dev = (SpeakerDeviceState) deviceState;
+        ArrayList<String> ret_desc = new ArrayList<>();
+
+        if(!getStatus().equals(param_dev.getStatus()))
+            ret_desc.add(String.format("Status changed to: %s", param_dev.getStatus()));
+
+        if(!getGenre().equals(param_dev.getGenre()))
+            ret_desc.add(String.format("Genre changed to: %s", param_dev.getGenre()));
+
+        if((getSong() == null && param_dev.getSong() != null) || (getSong() != null && !getSong().equals(param_dev.getSong())))
+            ret_desc.add(String.format("Song changed to: %s", param_dev.getSong()));
+
+        if(!getVolume().equals(param_dev.getVolume()))
+            ret_desc.add(String.format("Volume changed to: %s", param_dev.getVolume()));
+
+        return  ret_desc.toArray(new String[0]);
     }
 
     @Override

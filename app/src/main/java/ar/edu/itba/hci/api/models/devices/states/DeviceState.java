@@ -4,5 +4,8 @@ import android.os.Parcelable;
 
 public abstract class DeviceState implements Parcelable {
 
+    public String[] compare(DeviceState deviceState) {
+        return null;
+    }
 
 }

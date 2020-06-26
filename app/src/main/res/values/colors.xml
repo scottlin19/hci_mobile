@@ -6,4 +6,5 @@
     <color name="textColorPrimary">#FFFFFF</color>
     <color name="colorRed">#ff0000</color>
     <color name="disabledText">#ADADAD</color>
+    <color name="selectedButton">#c1dba9</color>
 </resources>

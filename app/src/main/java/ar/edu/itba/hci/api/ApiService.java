@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Objects;
 
 import ar.edu.itba.hci.api.models.Device;
+import ar.edu.itba.hci.api.models.PastAction;
 import ar.edu.itba.hci.api.models.Room;
 import ar.edu.itba.hci.api.models.Routine;
 import ar.edu.itba.hci.api.models.devices.states.DeviceState;
@@ -46,8 +47,8 @@ public interface ApiService {
     @GET("devices/{deviceId}/state")
     Call<Result<SpeakerDeviceState>> getDeviceState(@Path("deviceId") String deviceId);
 
-    @GET("devices/{deviceId}/logs/limit/{limit}/offset/{offset}")
-    Call<Result<Object>> getLogs(@Path("deviceId") String deviceId, @Path("limit") String limit, @Path("offset") String offset);
+    @GET("devices/logs/limit/{limit}/offset/{offset}")
+    Call<Result<List<PastAction>>> getLogs(@Path("limit") Integer limit, @Path("offset") Integer offset);
 
 
     @PUT("devices/{deviceId}/{actionName}")
