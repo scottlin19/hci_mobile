@@ -7,9 +7,4 @@
         android:title="@string/toggle_notifications"
         android:checkable="true"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/action_edit"
-        android:icon="@drawable/pencil"
-        android:title="@string/edit_room"
-        app:showAsAction="always" />
 </menu>

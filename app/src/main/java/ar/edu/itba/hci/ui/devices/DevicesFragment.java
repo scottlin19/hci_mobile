@@ -1,11 +1,20 @@
 package ar.edu.itba.hci.ui.devices;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+
+import android.provider.MediaStore;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,33 +22,24 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
+
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
+
+import ar.edu.itba.hci.QrScan;
 import ar.edu.itba.hci.R;
 import ar.edu.itba.hci.api.ApiClient;
 import ar.edu.itba.hci.api.Result;
 import ar.edu.itba.hci.api.models.Device;
-import ar.edu.itba.hci.api.models.DeviceType;
+
 import ar.edu.itba.hci.api.models.IconAdapter;
-import ar.edu.itba.hci.api.models.devices.states.AcDeviceState;
-import ar.edu.itba.hci.database.wrapper.AcDeviceWrapper;
-import ar.edu.itba.hci.database.wrapper.DeviceWrapper;
-import ar.edu.itba.hci.database.wrapper.LampDeviceWrapper;
-import ar.edu.itba.hci.database.wrapper.WrapperAdapter;
-import ar.edu.itba.hci.ui.devices.actions.AcActions;
+
 import ar.edu.itba.hci.ui.devices.category.Category;
 import ar.edu.itba.hci.ui.devices.category.RecyclerViewCategoryAdapter;
 import retrofit2.Call;
@@ -51,7 +51,16 @@ public class DevicesFragment extends Fragment {
    List<Category> categoryList;
     Map<String,Boolean> categoryMap;
     Fragment instance;
+    private final static int REQUEST_IMAGE_CAPTURE = 1;
 
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+    }
 
 
 
@@ -63,6 +72,7 @@ public class DevicesFragment extends Fragment {
 
 
         View root = inflater.inflate(R.layout.fragment_devices, container, false);
+
         categoryList = new ArrayList<>();
 
         categoryMap = new HashMap<String,Boolean>(){{
@@ -87,7 +97,32 @@ public class DevicesFragment extends Fragment {
             @Override
             public void onResponse(Call<Result<List<Device>>> call, Response<Result<List<Device>>> response) {
                 if(response.isSuccessful()){
-                    List<Device> deviceList = response.body().getResult();
+                    List<Device> deviceList = new ArrayList<>();
+
+                    System.out.println("DEVICES "+response.body().getResult());
+                    response.body().getResult().forEach(device->{
+
+                        if((device.getMeta().getNotif_status()) == null){
+                            device.getMeta().setNotif_status(true);
+                            ApiClient.getInstance().modifyDevice(device, new Callback<Result<Boolean>>() {
+                                @Override
+                                public void onResponse(Call<Result<Boolean>> call, Response<Result<Boolean>> response) {
+                                    if(response.isSuccessful()){
+                                        deviceList.add(device);
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Result<Boolean>> call, Throwable t) {
+
+                                }
+                            });
+                        }else{
+                            deviceList.add(device);
+                        }
+
+
+                    });
                     deviceList.forEach(device ->{
                         if(categoryMap.get(device.getType().getName()) == false){
                             String categName = device.getType().getName();
@@ -99,9 +134,10 @@ public class DevicesFragment extends Fragment {
                             categoryList.add(new Category(categName,icon_id));
 
                         }
-                        final RecyclerViewCategoryAdapter adapter = new RecyclerViewCategoryAdapter(getContext(), categoryList,instance);
-                        rv.setAdapter(adapter);
+
                     });
+                    final RecyclerViewCategoryAdapter adapter = new RecyclerViewCategoryAdapter(getContext(), categoryList,instance);
+                    rv.setAdapter(adapter);
 
                 }
 
@@ -113,171 +149,25 @@ public class DevicesFragment extends Fragment {
             }
         });
 
-
-        DeviceModel deviceModel = new ViewModelProvider(this, new DeviceModelFactory(getActivity().getApplication())).get(DeviceModel.class);
-        System.out.println("DEVICES FRAGMENT");
-
-       /* deviceModel.getAcDevices().observe(getViewLifecycleOwner(), acDeviceWrappers -> {
-            System.out.println(" ---------AC WRAPPER OBSERVER FUERA DEL  IF---------");
-            if(!acDeviceWrappers.isEmpty() && !checkMap(acDeviceWrappers.get(0).getDeviceType().getName())){
-                System.out.println("----------AC WRAPPER OBSERVER DENTRO DEL IF---------");
-                DeviceWrapper deviceWrapper = acDeviceWrappers.get(0);
-                Integer icon_id = IconAdapter.getIntIcon(deviceWrapper.getDeviceMeta().getIcon());
-                if(icon_id == null){
-                    icon_id = R.drawable.ic_image;
-                }
-                String type = acDeviceWrappers.get(0).getDeviceType().getName();
-                categoryList.getValue().add(new Category(type,icon_id));
-                categoryMap.put(type,true);
-
-                adapter.notifyDataSetChanged();
-
-            }
-        });
-        deviceModel.getAlarmDevices().observe(getViewLifecycleOwner(), alarmDeviceWrappers -> {
-            System.out.println("----------ALARM WRAPPER OBSERVER FUERA DEL  IF---------");
-            if(!alarmDeviceWrappers.isEmpty() && !checkMap(alarmDeviceWrappers.get(0).getDeviceType().getName())){
-                System.out.println("----------ALARM WRAPPER OBSERVER DENTRO DEL IF---------");
-                DeviceWrapper deviceWrapper = alarmDeviceWrappers.get(0);
-                Integer icon_id = IconAdapter.getIntIcon(deviceWrapper.getDeviceMeta().getIcon());
-                if(icon_id == null){
-                    icon_id = R.drawable.ic_image;
-                }
-                String type = alarmDeviceWrappers.get(0).getDeviceType().getName();
-                categoryList.getValue().add(new Category(type,icon_id));
-                categoryMap.put(type,true);
-                adapter.notifyDataSetChanged();
-            }
-        });
-        deviceModel.getBlindsDevices().observe(getViewLifecycleOwner(), blindsDeviceWrappers -> {
-            System.out.println("----------BLIND WRAPPER OBSERVER FUERA DEL  IF---------");
-            if(!blindsDeviceWrappers.isEmpty() && !checkMap(blindsDeviceWrappers.get(0).getDeviceType().getName())){
-                System.out.println("----------BLIND WRAPPER OBSERVER DENTRO DEL IF---------");
-                DeviceWrapper deviceWrapper = blindsDeviceWrappers.get(0);
-                Integer icon_id = IconAdapter.getIntIcon(deviceWrapper.getDeviceMeta().getIcon());
-                if(icon_id == null){
-                    icon_id = R.drawable.ic_image;
-                }
-                String type = blindsDeviceWrappers.get(0).getDeviceType().getName();
-                categoryList.getValue().add(new Category(type,icon_id));
-                categoryMap.put(type,true);
-                adapter.notifyDataSetChanged();
-            }
-        });
-        deviceModel.getDoorDevices().observe(getViewLifecycleOwner(), doorDeviceWrappers -> {
-            System.out.println("----------DOOR WRAPPER OBSERVER FUERA DEL  IF---------");
-            if(!doorDeviceWrappers.isEmpty() && !checkMap(doorDeviceWrappers.get(0).getDeviceType().getName())){
-                System.out.println("----------DOOR WRAPPER OBSERVER DENTRO DEL IF---------");
-                DeviceWrapper deviceWrapper = doorDeviceWrappers.get(0);
-                Integer icon_id = IconAdapter.getIntIcon(deviceWrapper.getDeviceMeta().getIcon());
-                if(icon_id == null){
-                    icon_id = R.drawable.ic_image;
-                }
-                String type = doorDeviceWrappers.get(0).getDeviceType().getName();
-                categoryList.getValue().add(new Category(type,icon_id));
-                adapter.notifyDataSetChanged();
-            }
-        });
-        deviceModel.getFaucetDevices().observe(getViewLifecycleOwner(), faucetDeviceWrappers -> {
-            System.out.println("---------- FAUCET WRAPPER OBSERVER FUERA DEL  IF---------");
-            if(!faucetDeviceWrappers.isEmpty() && !checkMap(faucetDeviceWrappers.get(0).getDeviceType().getName())){
-
-                System.out.println("----------FAUCET WRAPPER OBSERVER DENTRO DEL IF---------");
-                DeviceWrapper deviceWrapper = faucetDeviceWrappers.get(0);
-                Integer icon_id = IconAdapter.getIntIcon(deviceWrapper.getDeviceMeta().getIcon());
-                if(icon_id == null){
-                    icon_id = R.drawable.ic_image;
-                }
-                String type = faucetDeviceWrappers.get(0).getDeviceType().getName();
-                categoryList.getValue().add(new Category(type,icon_id));
-                adapter.notifyDataSetChanged();
-            }
-        });
-        deviceModel.getFridgeDevices().observe(getViewLifecycleOwner(), fridgeDeviceWrappers -> {
-            System.out.println("----------FRIDGE WRAPPER OBSERVER FUERA DEL  IF---------");
-            if(!fridgeDeviceWrappers.isEmpty() && !checkMap(fridgeDeviceWrappers.get(0).getDeviceType().getName())){
-                System.out.println("----------FRIDGE WRAPPER OBSERVER DENTRO DEL IF---------");
-                DeviceWrapper deviceWrapper = fridgeDeviceWrappers.get(0);
-                Integer icon_id = IconAdapter.getIntIcon(deviceWrapper.getDeviceMeta().getIcon());
-                if(icon_id == null){
-                    icon_id = R.drawable.ic_image;
-                }
-                String type = fridgeDeviceWrappers.get(0).getDeviceType().getName();
-                categoryList.getValue().add(new Category(type,icon_id));
-                adapter.notifyDataSetChanged();
-            }
-        });
-        deviceModel.getLampDevices().observe(getViewLifecycleOwner(), lampDeviceWrappers -> {
-            System.out.println("----------LAMP WRAPPER OBSERVER FUERA DEL  IF---------");
-            System.out.println(lampDeviceWrappers);
-            if(!lampDeviceWrappers.isEmpty() && !checkMap(lampDeviceWrappers.get(0).getDeviceType().getName())){
-                System.out.println("----------LAMP WRAPPER OBSERVER DENTRO DEL IF---------");
-                DeviceWrapper deviceWrapper = lampDeviceWrappers.get(0);
-                Integer icon_id = IconAdapter.getIntIcon(deviceWrapper.getDeviceMeta().getIcon());
-                if(icon_id == null){
-                    icon_id = R.drawable.ic_image;
-                }
-                String type = lampDeviceWrappers.get(0).getDeviceType().getName();
-                categoryList.getValue().add(new Category(type,icon_id));
-                adapter.notifyDataSetChanged();
-                System.out.println(categoryList.getValue());
-            }
-
-        });
-
-        deviceModel.getOvenDevices().observe(getViewLifecycleOwner(), ovenDeviceWrappers -> {
-            System.out.println("----------"+" oven"+" WRAPPER OBSERVER FUERA DEL  IF---------");
-            if(!ovenDeviceWrappers.isEmpty() && !checkMap(ovenDeviceWrappers.get(0).getDeviceType().getName())){
-                System.out.println("----------"+" oven"+" WRAPPER OBSERVER DENTRO DEL IF---------");
-                DeviceWrapper deviceWrapper = ovenDeviceWrappers.get(0);
-                Integer icon_id = IconAdapter.getIntIcon(deviceWrapper.getDeviceMeta().getIcon());
-                if(icon_id == null){
-                    icon_id = R.drawable.ic_image;
-                }
-                String type = ovenDeviceWrappers.get(0).getDeviceType().getName();
-                categoryList.getValue().add(new Category(type,icon_id));
-                adapter.notifyDataSetChanged();
-
-
-            }
-        });
-        deviceModel.getSpeakerDevices().observe(getViewLifecycleOwner(), speakerDeviceWrappers -> {
-            System.out.println("----------"+" speaker"+" WRAPPER OBSERVER FUERA DEL  IF---------");
-            if(!speakerDeviceWrappers.isEmpty() && !checkMap(speakerDeviceWrappers.get(0).getDeviceType().getName())){
-                System.out.println("----------"+" speaker"+" WRAPPER OBSERVER DENTRO DEL IF---------");
-                DeviceWrapper deviceWrapper = speakerDeviceWrappers.get(0);
-                Integer icon_id = IconAdapter.getIntIcon(deviceWrapper.getDeviceMeta().getIcon());
-                if(icon_id == null){
-                    icon_id = R.drawable.ic_image;
-                }
-                String type = speakerDeviceWrappers.get(0).getDeviceType().getName();
-                categoryList.getValue().add(new Category(type,icon_id));
-                adapter.notifyDataSetChanged();
-
-
-            }
-        });
-        deviceModel.getVacuumDevices().observe(getViewLifecycleOwner(), vacuumDeviceWrappers -> {
-            System.out.println("----------VACUUM WRAPPER OBSERVER FUERA DEL  IF---------");
-            if(!vacuumDeviceWrappers.isEmpty() && !checkMap(vacuumDeviceWrappers.get(0).getDeviceType().getName())){
-                System.out.println("----------VACUUM WRAPPER OBSERVER DENTRO DEL IF---------");
-                DeviceWrapper deviceWrapper = vacuumDeviceWrappers.get(0);
-                Integer icon_id = IconAdapter.getIntIcon(deviceWrapper.getDeviceMeta().getIcon());
-                if(icon_id == null){
-                    icon_id = R.drawable.ic_image;
-                }
-                String type = vacuumDeviceWrappers.get(0).getDeviceType().getName();
-                categoryList.getValue().add(new Category(type,icon_id));
-                adapter.notifyDataSetChanged();
-
-
-            }
-        });
-*/
-
-
         Toolbar toolbar = root.findViewById(R.id.device_toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+        toolbar.inflateMenu(R.menu.devices_menu);
+        toolbar.setOnMenuItemClickListener((Toolbar.OnMenuItemClickListener) item -> {
+                    switch (item.getItemId()) {
+
+                        case R.id.qr_scan:
+                            scanQr();
+                            //qr scanning
+                            break;
+
+                        default:
+                            return true;
+                    }
+                    return false;
+                }
+
+        );
+
         toolbar.setNavigationOnClickListener(v -> {
 
             FragmentManager fm = getActivity()
@@ -288,19 +178,49 @@ public class DevicesFragment extends Fragment {
 
 
 
-        deviceModel.fetch();
 
 
         return root;
     }
 
-    private synchronized  boolean checkMap(String name){
-        return categoryMap.get(name);
-    }
+
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+    }
+
+    private void scanQr(){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if(intent.resolveActivity(getActivity().getPackageManager()) != null){
+            getActivity().startActivityForResult(intent,REQUEST_IMAGE_CAPTURE);
+
+           Toast toast =  Toast.makeText(getContext(), getResources().getString(R.string.qr_toast), Toast.LENGTH_LONG);
+           toast.setGravity(Gravity.TOP,0,0);//Corr
+            toast.show();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK){
+            Bundle extras = data.getExtras();
+            if(extras != null){
+                Bitmap imageBitmap = (Bitmap)  extras.get("data");
+                Intent intent = new Intent(getContext(), DeviceDetailsActivity.class);
+                intent.putExtra("image",imageBitmap);
+                getContext().startActivity(intent);
+
+                //getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,newFragment).addToBackStack(null).commit();
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void checkQr(){
 
     }
 }

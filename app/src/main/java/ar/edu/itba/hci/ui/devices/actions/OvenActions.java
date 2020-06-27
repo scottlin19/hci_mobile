@@ -1,15 +1,19 @@
 package ar.edu.itba.hci.ui.devices.actions;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
@@ -23,9 +27,13 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,6 +66,8 @@ public class OvenActions extends Fragment {
     private static final String ARG_PARAM = "device";
 
     // TODO: Rename and change types of parameters
+    private static final int REQUEST_RECORD_AUDIO = 1;
+    private Slider slider;
     private Device<OvenDeviceState> device;
     private OvenDeviceState state;
     private SwitchMaterial swi;
@@ -72,19 +82,156 @@ public class OvenActions extends Fragment {
     Map<String, String> translateMap;
     private final int REQ_CODE_SPEECH_INPUT = 100;
     private TextView recognizedText;
-    private Button speechButton;
+    private FloatingActionButton speechButton;
+    private SpeechRecognizer speechRecognizer;
     public OvenActions() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param device Parameter 1.
-     * @return A new instance of fragment VacuumDetailFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+    private class OvenRecognitionListener implements RecognitionListener {
+
+        @Override
+        public void onReadyForSpeech(Bundle params) {
+
+        }
+
+        @Override
+        public void onBeginningOfSpeech() {
+
+        }
+
+        @Override
+        public void onRmsChanged(float rmsdB) {
+
+        }
+
+        @Override
+        public void onBufferReceived(byte[] buffer) {
+
+        }
+
+        @Override
+        public void onEndOfSpeech() {
+
+        }
+
+        @Override
+        public void onError(int error) {
+            Log.d("ERROR", "error " + error);
+
+            String msg;
+            switch (error) {
+                case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
+                    msg = "No speech input";
+                    break;
+                case SpeechRecognizer.ERROR_NO_MATCH:
+                    msg = "No recognition result matched";
+                    break;
+                case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
+                    msg = "Insufficient permissions";
+                    break;
+                default:
+                    msg = "Wait for speech recognition to end " + error;
+                    break;
+            }
+            System.out.println(msg);
+            speechButton.setColorFilter(ContextCompat.getColor(getContext(),R.color.textColorPrimary));
+            Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onResults(Bundle results) {
+            speechButton.setColorFilter(ContextCompat.getColor(getContext(),R.color.textColorPrimary));
+            ArrayList<String> result = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+            String newStatus = null;
+
+            if(result != null && result.size() > 0) {
+                String action = result.get(0).toLowerCase();
+                if(action.equals(getString(R.string.turnonsst))){
+                    action = "turnOn";
+                    newStatus = "on";
+                }else if(action.equals(getString(R.string.turnoffsst))) {
+                    action = "turnOn";
+                    newStatus = "off";
+                }else if(action.equals(getString(R.string.heatconventionalsst))){
+                    heat_btn[0].performClick();
+                    return;
+                }else if(action.equals(getString(R.string.heatbottomsst))){
+                    heat_btn[1].performClick();
+                    return;
+                }else if(action.equals(getString(R.string.heattopsst))){
+                    heat_btn[2].performClick();
+                    return;
+                }else if(action.equals(getString(R.string.grilllargesst))) {
+                    grill_btn[0].performClick();
+                    return;
+                }else if(action.equals(getString(R.string.grillecosst))) {
+                    grill_btn[1].performClick();
+                    return;
+                }else if(action.equals(getString(R.string.grilloffsst))) {
+                    grill_btn[2].performClick();
+                    return;
+                }else if(action.equals(getString(R.string.convectionnormalsst))) {
+                    convec_btn[0].performClick();
+                    return;
+                }
+                else if(action.equals(getString(R.string.convectionecosst))) {
+                    convec_btn[1].performClick();
+                    return;
+                }else if(action.equals(getString(R.string.convectionoffsst))){
+                    convec_btn[2].performClick();
+                    return;
+                }
+
+                if (action == "turnOn" || action == "turnOff") {
+                    String finalNewStatus = newStatus;
+                    ApiClient.getInstance().executeAction(device.getId(), action, new Object[0], new Callback<Result<Object>>() {
+                        @Override
+                        public void onResponse(Call<Result<Object>> call, Response<Result<Object>> response) {
+                            state.setStatus(finalNewStatus);
+                            viewHandler();
+                        }
+
+                        @Override
+                        public void onFailure(Call<Result<Object>> call, Throwable t) {
+                        }
+                    });
+                } else{
+                    for (int i = 90; i <= 230; i++) {
+                            if (action.equals(getResources().getString(R.string.sstTemperature, i).toLowerCase())) {
+                                slider.setValue(i);
+                                slider.callOnClick();
+                            }
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void onPartialResults(Bundle partialResults) {
+
+        }
+
+        @Override
+        public void onEvent(int eventType, Bundle params) {
+
+        }
+    }
+
+    private void startRecognizer() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE,
+                Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
+        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3);
+        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS,3000);
+        speechButton.setColorFilter(Color.RED);
+        speechRecognizer.startListening(intent);
+
+        System.out.println("funca");
+    }
+
     public static OvenActions newInstance(Device device) {
         OvenActions fragment = new OvenActions();
         Bundle args = new Bundle();
@@ -99,21 +246,22 @@ public class OvenActions extends Fragment {
         if (getArguments() != null) {
             device = (Device) getArguments().getParcelable(ARG_PARAM);
         }
+        speechButton = getActivity().findViewById(R.id.stt_button);
+        if (speechButton != null) {
+            speechButton.setOnClickListener((view) -> {
+                Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+                intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "talk");
 
-
-    }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQ_CODE_SPEECH_INPUT &&
-                resultCode == Activity.RESULT_OK &&
-                null != data) {
-
-            ArrayList<String> result = data
-                    .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                if (intent.resolveActivity(getActivity().getPackageManager()) != null)
+                {
+                    startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+                }
+            });
         }
-        super.onActivityResult(requestCode, resultCode, data);
+
     }
 
     public void viewHandler(){
@@ -137,6 +285,24 @@ public class OvenActions extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
+        this.speechRecognizer = SpeechRecognizer.createSpeechRecognizer(getContext());
+
+        this.speechRecognizer.setRecognitionListener(new OvenActions.OvenRecognitionListener());
+
+        speechButton = getActivity().findViewById(R.id.stt_button);
+        if(speechButton != null) {
+            speechButton.setOnClickListener(v -> {
+                if (ContextCompat.checkSelfPermission(getContext(),
+                        Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{Manifest.permission.RECORD_AUDIO},
+                            REQUEST_RECORD_AUDIO);
+                } else {
+                    startRecognizer();
+                }
+            });
+        }
         ApiClient.getInstance().getDevice(device.getId(), new Callback<Result<Device>>() {
             @Override
             public void onResponse(Call<Result<Device>> call, Response<Result<Device>> response) {
@@ -150,7 +316,7 @@ public class OvenActions extends Fragment {
                 Log.e("update device error", t.getLocalizedMessage());
             }
         });
-        Slider slider = (Slider) getView().findViewById(R.id.temp_slider);
+        slider = (Slider) getView().findViewById(R.id.temp_slider);
         slider.setValue(device.getState().getTemperature());
         slider.addOnChangeListener(new Slider.OnChangeListener() {
             @Override
@@ -192,7 +358,7 @@ public class OvenActions extends Fragment {
 
         for(int i = 0; i < 3; i++){
             btns[i] = (Button) getView().findViewById(btn_ids[i]);
-            btns[i].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            btns[i].setBackgroundColor(ContextCompat.getColor(getContext(),R.color.colorPrimary));
             btns[i].setOnClickListener((View.OnClickListener) v -> {
                 Button btn = (Button) getView().findViewById(v.getId());
                 changeFocus(index_focus, btn);
@@ -222,17 +388,21 @@ public class OvenActions extends Fragment {
     }
 
     private void changeFocus(int i, Button btn_focus){
-        btn_unfocus[i].setTextColor(getResources().getColor(R.color.textColorPrimary));
-        btn_unfocus[i].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        btn_unfocus[i].setTextColor(ContextCompat.getColor(getContext(),R.color.textColorPrimary));
+        btn_unfocus[i].setBackgroundColor(ContextCompat.getColor(getContext(),R.color.colorPrimary));
         btn_focus.setTextColor(Color.BLACK);
         btn_focus.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.selectedButton));
         this.btn_unfocus[i] = btn_focus;
     }
     private void setInitialFocused(){
+        System.out.println(device.getState().getHeat());
+        System.out.println(device.getState().getGrill());
+        System.out.println(device.getState().getConvection());
         getInitialValue(device.getState().getHeat(), 0, heat_btn);
-        getInitialValue(device.getState().getGrill(), 1, grill_btn);
-        getInitialValue(device.getState().getConvection(), 2, convec_btn);
+        getInitialValue(device.getState().getGrill().concat("Mode"), 1, grill_btn);
+        getInitialValue(device.getState().getConvection().concat("Mode"), 2, convec_btn);
     }
+
     private void getInitialValue(String btntext, int i, Button[] btns){
         /*
         btn_unfocus[i] = Arrays.stream(btns).filter(btn -> {
@@ -240,14 +410,12 @@ public class OvenActions extends Fragment {
         }).collect(Collectors.toList()).get(0);
         btn_unfocus[i].setTextColor(Color.BLACK);
         btn_unfocus[i].setBackgroundColor(ContextCompat.getColor(getContext(),R.color.selectedButton));*/
-
+        System.out.println(btntext);
         String wanted = getStringResourceByName(btntext);
-        System.out.println("wanted: " + wanted);
 
         int j = 0;
 
         while(!btns[j].getText().equals(wanted)){
-            System.out.println("reading " + btns[j].getText());
             j++;
         }
 

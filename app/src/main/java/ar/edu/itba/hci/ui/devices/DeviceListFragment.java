@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,7 @@ import retrofit2.Response;
 public class DeviceListFragment extends Fragment {
     private List<Device> deviceList;
     private String categoryName;
-    private DeviceModel deviceModel;
+
 
     @Nullable
     @Override
@@ -47,19 +48,39 @@ public class DeviceListFragment extends Fragment {
         RecyclerView rv = root.findViewById(R.id.rv_device_list);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
         rv.setLayoutManager(gridLayoutManager);
-
+        deviceList = new ArrayList<>();
         ApiClient.getInstance().getDevices(new Callback<Result<List<Device>>>() {
             @Override
             public void onResponse(Call<Result<List<Device>>> call, Response<Result<List<Device>>> response) {
                 if(response.isSuccessful()){
-                    System.out.println(response.body().getResult());
-                    response.body().getResult().forEach(device -> {
-                        if(device.getMeta().getNotif_status() == null){
+
+                    response.body().getResult().forEach(device->{
+
+                        if((device.getMeta().getNotif_status()) == null){
                             device.getMeta().setNotif_status(true);
-                            updateDevice(device);
+                            ApiClient.getInstance().modifyDevice(device, new Callback<Result<Boolean>>() {
+                                @Override
+                                public void onResponse(Call<Result<Boolean>> call, Response<Result<Boolean>> response) {
+                                    if(response.isSuccessful()){
+                                        deviceList.add(device);
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Result<Boolean>> call, Throwable t) {
+
+                                }
+                            });
+                        }else{
+                            deviceList.add(device);
                         }
+
+
                     });
-                    deviceList = response.body().getResult().stream().filter(device -> device.getType().getName().equals(categoryName)).collect(Collectors.toList());
+                    if(deviceList != null){
+                        deviceList = deviceList.stream().filter(device -> device.getType().getName().equals(categoryName)).collect(Collectors.toList());
+                    }
+
                     System.out.println(deviceList);
                     RecyclerViewDeviceAdapter adapter = new RecyclerViewDeviceAdapter(getContext(),deviceList);
                     rv.setAdapter(adapter);
@@ -88,21 +109,7 @@ public class DeviceListFragment extends Fragment {
         return root;
     }
 
-    private void updateDevice(Device device) {
-        ApiClient.getInstance().modifyDevice(device, new Callback<Result<Boolean>>() {
-            @Override
-            public void onResponse(Call<Result<Boolean>> call, Response<Result<Boolean>> response) {
-                if(response.isSuccessful()){
-                    System.out.println("notification is successful");
-                }
-            }
 
-            @Override
-            public void onFailure(Call<Result<Boolean>> call, Throwable t) {
-
-            }
-        });
-    }
 
 
 }

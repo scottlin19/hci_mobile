@@ -1,13 +1,21 @@
 package ar.edu.itba.hci.ui.devices.actions;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -20,9 +28,14 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+
+import java.util.ArrayList;
+import java.util.Locale;
 
 import ar.edu.itba.hci.R;
 import ar.edu.itba.hci.api.ApiClient;
@@ -46,11 +59,14 @@ public class FaucetActions extends Fragment {
     private static final String ARG_PARAM = "device";
 
     // TODO: Rename and change types of parameters
+    final String[] units = {"ml","cl","dl","l","dal","hl","kl"};
     private Device<FaucetDeviceState> device;
+    private FloatingActionButton speechButton;
     private FaucetDeviceState state;
     private SwitchMaterial swi;
     private TextView statusText;
     private String selectedUnit;
+    private static final int REQUEST_RECORD_AUDIO = 1;
     private int amount;
     private Button dispenseButton;
     private Handler stateHandler;
@@ -58,20 +74,121 @@ public class FaucetActions extends Fragment {
     private ProgressBar progressDispense;
     private TextView dispensedQText;
     private TextView unitText;
+    private SpeechRecognizer speechRecognizer;
     private TextView qtyText;
     public FaucetActions() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @return A new instance of fragment SpeakerActions.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FaucetActions newInstance(Device param1) {
+
+
+    private void startRecognizer() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE,
+                Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
+        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3);
+        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS,3000);
+        speechButton.setColorFilter(Color.RED);
+        speechRecognizer.startListening(intent);
+
+        System.out.println("funca");
+    }
+
+    private class FaucetRecognitionListener implements RecognitionListener {
+
+        @Override
+        public void onReadyForSpeech(Bundle params) {
+
+        }
+
+        @Override
+        public void onBeginningOfSpeech() {
+
+        }
+
+        @Override
+        public void onRmsChanged(float rmsdB) {
+
+        }
+
+        @Override
+        public void onBufferReceived(byte[] buffer) {
+
+        }
+
+        @Override
+        public void onEndOfSpeech() {
+
+        }
+
+        @Override
+        public void onError(int error) {
+            Log.d("ERROR", "error " + error);
+
+            String msg;
+            switch (error) {
+                case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
+                    msg = "No speech input";
+                    break;
+                case SpeechRecognizer.ERROR_NO_MATCH:
+                    msg = "No recognition result matched";
+                    break;
+                case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
+                    msg = "Insufficient permissions";
+                    break;
+                default:
+                    msg = "Wait for speech recognition to end " + error;
+                    break;
+            }
+            System.out.println(msg);
+            speechButton.setColorFilter(ContextCompat.getColor(getContext(), R.color.textColorPrimary));
+            Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onResults(Bundle results) {
+            speechButton.setColorFilter(ContextCompat.getColor(getContext(), R.color.textColorPrimary));
+            ArrayList<String> result = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+            String newStatus = null;
+            if (result != null && result.size() > 0) {
+                String action = result.get(0).toLowerCase();
+                if(action.equals(getString(R.string.open))){
+                    newStatus = "opened";
+                }else if(action.equals(getString(R.string.close))){
+                    newStatus = "closed";
+                }else if(action.equals(getString(R.string.dispensesst))){
+                    dispenseButton.performClick();
+                    return;
+                }
+                String finalNewStatus = newStatus;
+                ApiClient.getInstance().executeAction(device.getId(), action, new Object[0], new Callback<Result<Object>>() {
+                    @Override
+                    public void onResponse(Call<Result<Object>> call, Response<Result<Object>> response) {
+                        state.setStatus(finalNewStatus);
+                        viewHandler();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Result<Object>> call, Throwable t) {
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onPartialResults(Bundle partialResults) {
+
+        }
+
+        @Override
+        public void onEvent(int eventType, Bundle params) {
+
+        }
+    }
+
+        public static FaucetActions newInstance(Device param1) {
         FaucetActions fragment = new FaucetActions();
         Bundle args = new Bundle();
         args.putParcelable(ARG_PARAM, param1);
@@ -145,6 +262,24 @@ public class FaucetActions extends Fragment {
                 amount = (int) value;
             }
         });
+        this.speechRecognizer = SpeechRecognizer.createSpeechRecognizer(getContext());
+
+        this.speechRecognizer.setRecognitionListener(new FaucetActions.FaucetRecognitionListener());
+
+        speechButton = getActivity().findViewById(R.id.stt_button);
+        if(speechButton != null) {
+            speechButton.setOnClickListener(v -> {
+                if (ContextCompat.checkSelfPermission(getContext(),
+                        Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{Manifest.permission.RECORD_AUDIO},
+                            REQUEST_RECORD_AUDIO);
+                } else {
+                    startRecognizer();
+                }
+            });
+        }
     }
     public void viewHandler(){
         if(state.getUnit() != null){
@@ -207,7 +342,6 @@ public class FaucetActions extends Fragment {
 
 
         Spinner spinner = (Spinner) root.findViewById(R.id.dispense_spinner);
-        final String[] units = {"ml","cl","dl","l","dal","hl","kl"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_spinner_item, units);
 

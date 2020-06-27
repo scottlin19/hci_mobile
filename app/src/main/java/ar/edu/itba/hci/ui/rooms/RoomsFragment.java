@@ -46,7 +46,7 @@ public class RoomsFragment extends Fragment {
         });
 
 
-        Toolbar toolbar = root.findViewById(R.id.device_toolbar);
+        Toolbar toolbar = root.findViewById(R.id.rooms_toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left);
         toolbar.setNavigationOnClickListener(v -> {
 

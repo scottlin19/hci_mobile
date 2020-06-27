@@ -1,5 +1,6 @@
 package ar.edu.itba.hci.api.models.devices.states;
 
+import android.content.res.Resources;
 import android.os.Parcel;
 
 import androidx.room.ColumnInfo;
@@ -10,6 +11,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
+import ar.edu.itba.hci.R;
+import ar.edu.itba.hci.api.notifications.NotificationBroadcastReceiver;
 
 public class AcDeviceState  extends DeviceState{
 
@@ -133,27 +136,45 @@ public class AcDeviceState  extends DeviceState{
     }
 
     @Override
-    public String[] compare(DeviceState deviceState) {
+    public String[] compare(DeviceState deviceState, Resources resources) {
         AcDeviceState param_dev = (AcDeviceState) deviceState;
         ArrayList<String> ret_desc = new ArrayList<>();
+        String status, change, fanSp, horSw, mode, temp, verSw;
+        int id;
 
-        if(!getStatus().equals(param_dev.getStatus()))
-            ret_desc.add(String.format("Status changed to: %s", param_dev.getStatus()));
+        change = resources.getString(R.string.changed_to);
 
-        if(!getFanSpeed().equals(param_dev.getFanSpeed()))
-            ret_desc.add(String.format("Fan speed changed to: %s", param_dev.getFanSpeed()));
+        if(!getStatus().equals(param_dev.getStatus())) {
+            id = resources.getIdentifier(param_dev.getStatus(), "string", NotificationBroadcastReceiver.PACKAGE_NAME);
+            status = resources.getString(R.string.status);
+            ret_desc.add(String.format("%s %s: %s", status, change, id == 0 ? param_dev.getStatus() : resources.getString(id)));
+        }
 
-        if(!getHorizontalSwing().equals(param_dev.getHorizontalSwing()))
-            ret_desc.add(String.format("Horizontal Swing changed to: %s", param_dev.getHorizontalSwing()));
+        if(!getFanSpeed().equals(param_dev.getFanSpeed())){
+            fanSp = resources.getString(R.string.fanSpeed);
+            ret_desc.add(String.format("%s %s: %s", fanSp, change, param_dev.getFanSpeed()));
+        }
 
-        if(!getMode().equals(param_dev.getMode()))
-            ret_desc.add(String.format("Mode changed to: %s", param_dev.getMode()));
+        if(!getHorizontalSwing().equals(param_dev.getHorizontalSwing())){
+            horSw = resources.getString(R.string.horizontalSwing);
+            ret_desc.add(String.format("%s %s: %s", horSw, change, param_dev.getHorizontalSwing()));
+        }
 
-        if(!getTemperature().equals(param_dev.getTemperature()))
-            ret_desc.add(String.format("Temperature changed to: %s", param_dev.getTemperature()));
+        if(!getMode().equals(param_dev.getMode())){
+            id = resources.getIdentifier(param_dev.getMode(), "string", NotificationBroadcastReceiver.PACKAGE_NAME);
+            mode = resources.getString(R.string.mode);
+            ret_desc.add(String.format("%s %s: %s", mode, change, id == 0 ? param_dev.getMode() : resources.getString(id)));
+        }
 
-        if(!getVerticalSwing().equals(param_dev.getVerticalSwing()))
-            ret_desc.add(String.format("Vertical swing changed to: %s", param_dev.getVerticalSwing()));
+        if(!getTemperature().equals(param_dev.getTemperature())){
+            temp = resources.getString(R.string.temperature);
+            ret_desc.add(String.format("%s %s: %s", temp, change, param_dev.getTemperature()));
+        }
+
+        if(!getVerticalSwing().equals(param_dev.getVerticalSwing())){
+            verSw = resources.getString(R.string.verticalSwing);
+            ret_desc.add(String.format("%s %s: %s", verSw, change, param_dev.getVerticalSwing()));
+        }
 
         return ret_desc.toArray(new String[0]);
     }

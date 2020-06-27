@@ -23,6 +23,7 @@ import ar.edu.itba.hci.api.ApiClient;
 import ar.edu.itba.hci.api.Result;
 import ar.edu.itba.hci.api.models.Routine;
 import ar.edu.itba.hci.api.models.RoutineAction;
+import ar.edu.itba.hci.api.notifications.SharedPreferencesHelper;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -110,7 +111,7 @@ public class RecyclerViewRoutinesAdapter extends RecyclerView.Adapter<RecyclerVi
             @Override
             public void onResponse(Call<Result<Object>> call, Response<Result<Object>> response) {
                 Toast.makeText(context, String.format("%s %s", routine.getName(), context.getResources().getString(R.string.exec_msg)), Toast.LENGTH_SHORT).show();
-
+                SharedPreferencesHelper.refreshSavedPreferences(context.getApplicationContext());
                 Log.v("Routine execution", String.format("%s %s", routine.getName(), context.getResources().getString(R.string.exec_msg)));
             }
             @Override

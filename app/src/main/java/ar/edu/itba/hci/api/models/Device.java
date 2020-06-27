@@ -153,15 +153,14 @@ public class Device<T extends DeviceState> implements Parcelable {
 
     @Override
     public String toString() {
-        String roomS;
-        if(this.room == null){
-            roomS = null;
-        }else{
-            roomS = this.room.getName();
-        }
-       return "Device: " + name +" Type: "+getType().getName() + " Room: " + roomS + " Meta: { "+this.meta.toString()+" } " ;
-    }
+        return "Device{" +
 
+
+                ", meta={ "+meta.getNotifStatus()+"}"+
+                ", id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 
     @Override
     public boolean equals(Object o) {

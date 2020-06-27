@@ -11,6 +11,7 @@
     <string name="lamp">Luces</string>
     <string name="speaker">Parlantes</string>
     <string name="faucet">Grifos</string>
+    <string name="vacuum">Aspiradoras</string>
     <string name="refrigerator">Heladeras</string>
     <string name="oven">Hornos</string>
     <string name="door">Puertas</string>
@@ -31,13 +32,15 @@
     <string name="action_msg">a</string>
     <string name="no_room">Sin habitación asociada</string>
     <string name="status">Estado</string>
-    <string name="on">ENCENDIDO</string>
-    <string name="off">APAGADO</string>
+    <string name="on">encendido</string>
+    <string name="off">apagado</string>
     <string name="battery_level">Nivel de Batería</string>
     <string name="unexpected_error">error inesperado</string>
     <string name="fetch_device_error">error actualizando el dispositivo</string>
+    <string name="sstNotRecognized">No se ha reconocido el comando, pruebe nuevamente.</string>
+    <string name="sstSuccess">Comando ejecutado.</string>
 
-
+    <string name="qr_action">QR Scan</string>
 
     <!--VACUUM-->
     <string name="start">Comenzar</string>
@@ -53,6 +56,8 @@
     <string name="noRoomError">No se puede recargar la aspiradora sin que tener un cuarto asignado</string>
     <string name="mopMode">trapear</string>
     <string name="vacuumMode">aspirar</string>
+    <string name="sstLocation">Cambiar la ubicación %1s</string>
+    <string name="noRoomSelected">no hay habitación asignada</string>
 
 
     <!-- ALARM-->
@@ -60,6 +65,9 @@
     <string name="armStay">Modo presente</string>
     <string name="armAway">Modo ausente</string>
     <string name="disarm">Desarmar</string>
+    <string name="armStaysst">modo presente</string>
+    <string name="armAwaysst">modo ausente</string>
+    <string name="disarmsst">desarmar</string>
     <string name="securityCode">Codigo de seguridad</string>
     <string name="newSecurityCode">Nuevo codigo de seguridad</string>
     <string name="change">CAMBIAR</string>
@@ -67,38 +75,57 @@
     <!--SPEAKER-->
     <string name="setVolume">Cambiar volumen</string>
     <string name="play">Reproducir</string>
-    <string name="stop">Detener</string>
-    <string name="resume">Continuar</string>
+    <string name="stop">Parar</string>
+    <string name="resume">Resumir</string>
     <string name="nextSong">Próxima canción</string>
     <string name="previousSong">Canción anterior</string>
     <string name="setGenre">Fijar género</string>
     <string name="genres">Genero</string>
-    <string name="classical">Clasica</string>
+    <string name="classical">Clásica</string>
     <string name="country">Country</string>
-    <string name="dance">Dance</string>
+    <string name="dance">Danza</string>
     <string name="pop">Pop</string>
     <string name="latina">Latina</string>
+    <string name="sstVolume">establecer el volumen %1$d</string>
+    <string name="sstGenre">establecer el género %1$s</string>
+
+
     <!--OVEN-->
     <string name="turnOn">Encender</string>
     <string name="turnOff">Apagar</string>
     <string name="setTemperature">Fijar temperatura (°C)</string>
+    <string name="heatType">Tipo de calor</string>
+    <string name="grillType">Tipo de parrilla</string>
+    <string name="convectionType">Tipo de convección</string>
     <string name="setHeat">Fijar calor</string>
     <string name="setGrill">Fijar parilla</string>
     <string name="setConvection">Fijar convección</string>
     <string name="conventional">convencional</string>
     <string name="bottom">abajo</string>
     <string name="top">arriba</string>
-    <string name="large">grande</string>
-    <string name="eco">eco</string>
-    <string name="normal">normal</string>
-    <string name="offconvec">apagado</string>
+    <string name="largeMode">grande</string>
+    <string name="ecoMode">eco</string>
+    <string name="normalMode">normal</string>
+    <string name="offMode">apagado</string>
     <string name="ecoconvec">eco</string>
     <string name="ecogrill">eco</string>
     <string name="offgrill">apagado</string>
+    <string name="turnonsst">turn on</string>
+    <string name="turnoffsst">turn off</string>
+    <string name="heatconventionalsst">calor convencional</string>
+    <string name="heatbottomsst">calor abajo</string>
+    <string name="heattopsst">calor arriba</string>
+    <string name="grilllargesst">parrilla grande</string>
+    <string name="grillecosst">parrilla eco</string>
+    <string name="grilloffsst">parrilla apagada</string>
+    <string name="convectionoffsst">convección apagada</string>
+    <string name="convectionnormalsst">convección normal</string>
+    <string name="convectionecosst">convección grande</string>
     <!-- FAUCET -->
     <string name="open">Abrir</string>
     <string name="close">Cerrar</string>
     <string name="dispense">Dispensar</string>
+    <string name="dispensesst">dispensar</string>
     <string name="dispensing">Dispensando..</string>
     <!--BLINDS-->
     <string name="setLevel">Fijar nivel</string>
@@ -109,12 +136,21 @@
     <string name="wait_msg">Espere…</string>
     <string name="curr_level">Nivel actual</string>
     <string name="curr_status">Estado actual</string>
-
+    <string name="setlevelsst">fijar nivel a %1$d</string>
     <!--LAMP-->
     <string name="setColor">Cambiar color</string>
     <string name="setBrightness">Fijar brillo</string>
     <string name="color">Color</string>
     <string name="brigthness">Brillo</string>
+    <string name="red">rojo</string>
+    <string name="blue">azul</string>
+    <string name="green">verde</string>
+    <string name="yellow">amarillo</string>
+    <string name="white">blanco</string>
+    <string name="gamer">violeta</string>
+    <string name="sstColor">establecer el color %1$s</string>
+    <string name="sstBrightness">establecer el brillo %1$d</string>
+
 
     <!--AC-->
     <string name="setVerticalSwing">Fijar desplazamiento vertical</string>
@@ -127,6 +163,17 @@
     <string name="cool">frío</string>
     <string name="heat">calor</string>
     <string name="fan">ventilador</string>
+    <string name="sstTurnOn">prender</string>
+    <string name="sstTurnOff">apagar</string>
+    <string name="sstMode">establecer el modo %1$s</string>
+    <string name="sstTemperature">establecer la temperatura %1$d grados</string>
+    <string name="sstVertSwing">establecer el desplazamiento vertical %1$d grados</string>
+    <string name="sstVertSwingAuto">establecer el desplazamiento vertical automático</string>
+    <string name="sstHorizSwing">establecer el desplazamiento horizontal %1$d grados</string>
+    <string name="sstHorizSwingSymbol">establecer el desplazamiento horizontal %1$d°</string>
+    <string name="sstHorizSwingAuto">establecer el desplazamiento horizontal automático</string>
+    <string name="sstFanSpeed">establecer la velocidad del ventilador %1$d%%</string>
+    <string name="sstFanSpeedAuto">establecer la velocidad del ventilador automático</string>
 
     <!--DOOR-->
     <string name="lock">Bloquear</string>
@@ -138,12 +185,23 @@
     <string name="freezerTemp">Temperatura del freezer (°C)</string>
     <string name="fridgeTemp">Temperatura de la heladera (°C)</string>
     <string name="defaultMode">defecto</string>
-    <string name="partyMode">fiesta</string>
-    <string name="vacationMode">vacación</string>
+    <string name="party">fiesta</string>
+    <string name="vacation">vacación</string>
+    <string name="sstFreezerTemperature">Establecer la temperatura del freezer %1$d grados</string>
+    <string name="sstFreezerTemperatureMinus">Establecer la temperatura del freezer menos %1$d grados</string>
 
 
     <string name="device">Dispositivo</string>
     <string name="action">Acción</string>
     <string name="date">Fecha</string>
+    <string name="low_battery">Batería baja</string>
+    <string name="genre">Género</string>
+    <string name="level">Nivel</string>
+    <string name="lock_status">Estado de bloqueo</string>
+    <string name="unlocked">Desbloqueado</string>
+    <string name="changed_to">cambió a</string>
+    <string name="parameter">Parámetro</string>
 
+    <string name="qr_title">Buscar dispositivos</string>
+    <string name="qr_toast">Por favor saque una foto del código QR del dispositivo</string>
 </resources>

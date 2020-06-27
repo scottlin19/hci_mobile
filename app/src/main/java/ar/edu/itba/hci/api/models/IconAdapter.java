@@ -28,7 +28,26 @@ public class IconAdapter {
         put("mdi-water-pump",R.drawable.ic_water_pump);
     }};
 
+    private static Map<String,Integer> smallIconsMap = new HashMap<String,Integer>(){{
+        put("image", R.drawable.ic_baseline_image_24_small);
+        put("weekend",R.drawable.ic_baseline_weekend_24_small);
+        put("mdi-speaker",R.drawable.ic_speaker_small);
+        put("mdi-blinds",R.drawable.ic_blinds_small);
+        put("mdi-lightbulb-on-outline",R.drawable.ic_lightbulb_on_small);
+        put("mdi-stove",R.drawable.ic_stove_small);
+        put("mdi-air-conditioner",R.drawable.ic_air_conditioner_small);
+        put("mdi-door",R.drawable.ic_door_small);
+        put("mdi-alarm-light-outline",R.drawable.ic_alarm_light_outline_small);
+        put("mdi-robot-vacuum",R.drawable.ic_robot_vacuum_small);
+        put("mdi-fridge-outline",R.drawable.ic_fridge_small);
+        put("mdi-water-pump",R.drawable.ic_water_pump_small);
+    }};
+
     public static Integer getIntIcon(String icon){
       return iconsMap.get(icon);
+    }
+
+    public static Integer getIntSmallIcon(String icon){
+        return smallIconsMap.get(icon);
     }
 }

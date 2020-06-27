@@ -19,7 +19,6 @@ import ar.edu.itba.hci.api.Result;
 import ar.edu.itba.hci.api.models.Device;
 import ar.edu.itba.hci.api.models.DeviceType;
 import ar.edu.itba.hci.api.models.IconAdapter;
-import ar.edu.itba.hci.database.DeviceRepository;
 import ar.edu.itba.hci.ui.devices.category.Category;
 import retrofit2.Call;
 import retrofit2.Callback;

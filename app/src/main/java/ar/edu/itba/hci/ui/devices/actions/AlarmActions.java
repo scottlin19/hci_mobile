@@ -1,12 +1,18 @@
 package ar.edu.itba.hci.ui.devices.actions;
 
-import android.content.Context;
-import android.graphics.Color;
+import android.Manifest;import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;import androidx.core.app.ActivityCompat;import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -24,12 +30,14 @@ import android.widget.ListAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import ar.edu.itba.hci.R;
@@ -54,6 +62,7 @@ public class AlarmActions extends Fragment {
 
     // TODO: Rename and change types of parameters
     private Device<AlarmDeviceState> device;
+    private Spinner spinner;
     private TextInputEditText securityCodeInput,newSecurityCodeInput;
     private ImageButton unlockBtn,showChangeBtn;
     private Button changeBtn;
@@ -64,13 +73,148 @@ public class AlarmActions extends Fragment {
     private Map<String,String> statusAdapter;
     private Map<String,String> actionAdapter;
     private String secCode;
-
-
-
+    private FloatingActionButton speechButton;
+    private SpeechRecognizer speechRecognizer;
+    private static final int REQUEST_RECORD_AUDIO = 1;
     public AlarmActions() {
         // Required empty public constructor
     }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        this.speechRecognizer = SpeechRecognizer.createSpeechRecognizer(getContext());
 
+        this.speechRecognizer.setRecognitionListener(new AlarmActions.AlarmRecognitionListener());
+
+        speechButton = getActivity().findViewById(R.id.stt_button);
+        if (speechButton != null) {
+            speechButton.setOnClickListener(v -> {
+                if (ContextCompat.checkSelfPermission(getContext(),
+                        Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{Manifest.permission.RECORD_AUDIO},
+                            REQUEST_RECORD_AUDIO);
+                } else {
+                    startRecognizer();
+                }
+            });
+        }
+    }
+    private void startRecognizer() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE,
+                Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
+        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3);
+        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS,3000);
+        speechButton.setColorFilter(Color.RED);
+        speechRecognizer.startListening(intent);
+    }
+    private class AlarmRecognitionListener implements RecognitionListener {
+
+        @Override
+        public void onReadyForSpeech(Bundle params) {
+
+        }
+
+        @Override
+        public void onBeginningOfSpeech() {
+
+        }
+
+        @Override
+        public void onRmsChanged(float rmsdB) {
+
+        }
+
+        @Override
+        public void onBufferReceived(byte[] buffer) {
+
+        }
+
+        @Override
+        public void onEndOfSpeech() {
+
+        }
+
+        @Override
+        public void onError(int error) {
+            Log.d("ERROR", "error " + error);
+
+            String msg;
+            switch (error) {
+                case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
+                    msg = "No speech input";
+                    break;
+                case SpeechRecognizer.ERROR_NO_MATCH:
+                    msg = "No recognition result matched";
+                    break;
+                case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
+                    msg = "Insufficient permissions";
+                    break;
+                default:
+                    msg = "Wait for speech recognition to end " + error;
+                    break;
+            }
+            System.out.println(msg);
+            speechButton.setColorFilter(ContextCompat.getColor(getContext(), R.color.textColorPrimary));
+            Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onResults(Bundle results) {
+            ArrayList<String> data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+            speechButton.setColorFilter(ContextCompat.getColor(getContext(), R.color.textColorPrimary));
+            String lower = data.get(0).toLowerCase();
+            String action;
+            if (status_layout.getVisibility() == View.VISIBLE){
+                if(lower.equals(getString(R.string.armStaysst))){
+                    action = "armStay";
+                }else if(lower.equals(getString(R.string.armAwaysst))){
+                    action = "armAway";
+                }else if(lower.equals(getString(R.string.disarmsst))){
+                    action = "disarm";
+                }else{
+                    return;
+                }
+                Object[] params = {securityCodeInput.getText().toString()};
+                ApiClient.getInstance().executeAction(device.getId(), action, params, new Callback<Result<Object>>() {
+                    @Override
+                    public void onResponse(Call<Result<Object>> call, Response<Result<Object>> response) {
+                        if (response.isSuccessful()) {
+                            int selected;
+                            if(action.equals("armStay")){
+                                selected = 0;
+                            }else if(action.equals("armAway")){
+                                selected = 1;
+                            }else{
+                                selected = 2;
+                            }
+                            spinner.setSelection(selected);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Result<Object>> call, Throwable t) {
+                        Log.e("GENRE CHANGE","ERROR: CALL WAS A FAILURE");
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onPartialResults(Bundle partialResults) {
+
+        }
+
+        @Override
+        public void onEvent(int eventType, Bundle params) {
+
+        }
+
+    }
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -258,7 +402,7 @@ public class AlarmActions extends Fragment {
         );
 
 
-        Spinner spinner = (Spinner) root.findViewById(R.id.alarm_state_spinner);
+        spinner = (Spinner) root.findViewById(R.id.alarm_state_spinner);
         final String[] statusArray = {"armStay",
                 "armAway",
                 "disarm",

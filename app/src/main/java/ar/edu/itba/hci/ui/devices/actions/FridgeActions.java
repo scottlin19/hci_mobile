@@ -1,13 +1,20 @@
 package ar.edu.itba.hci.ui.devices.actions;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +22,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.slider.Slider;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import ar.edu.itba.hci.R;
@@ -37,6 +47,11 @@ import retrofit2.Response;
  * create an instance of this fragment.
  */
 public class FridgeActions extends Fragment {
+
+    private static final String TAG = "SpeechRecognizer";
+    private static final int REQUEST_RECORD_AUDIO = 1;
+    private SpeechRecognizer speechRecognizer;
+    private FloatingActionButton sttButton;
 
     FridgeDeviceState state;
     private final int MODES = 3;
@@ -91,7 +106,25 @@ public class FridgeActions extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        updateDevice();
+//        updateDevice();
+
+        this.speechRecognizer = SpeechRecognizer.createSpeechRecognizer(getContext());
+        this.speechRecognizer.setRecognitionListener(new FridgeActions.FridgeRecognitionListener());
+        sttButton = getActivity().findViewById(R.id.stt_button);
+        if(sttButton != null) {
+            sttButton.setOnClickListener(v -> {
+                if (ContextCompat.checkSelfPermission(getContext(),
+                        Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{Manifest.permission.RECORD_AUDIO},
+                            REQUEST_RECORD_AUDIO);
+                } else {
+                    startRecognizer();
+                }
+            });
+        }
+
         freezer_slider = (Slider) getView().findViewById(R.id.freezer_slider);
         freezer_slider.setValue(device.getState().getFreezerTemperature());
         freezer_slider.addOnChangeListener(new Slider.OnChangeListener() {
@@ -117,6 +150,18 @@ public class FridgeActions extends Fragment {
         getInitialMode(device.getState().getMode());
 
     }
+
+        private void startRecognizer() {
+            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE,
+                    Locale.getDefault());
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                    RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
+            intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3);
+            intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS,3000);
+            sttButton.setColorFilter(Color.RED);
+            speechRecognizer.startListening(intent);
+        }
 
     private void updateDevice() {
         System.out.println("updating");
@@ -220,5 +265,132 @@ public class FridgeActions extends Fragment {
         btn_focus.setTextColor(Color.BLACK);
         btn_focus.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.selectedButton));
         this.btn_unfocus = btn_focus;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        speechRecognizer.destroy();
+    }
+
+    private class FridgeRecognitionListener implements RecognitionListener{
+
+        private String[] sstModes = {
+                getResources().getString(R.string.sstMode,getResources().getString(R.string.defaultMode)).toLowerCase(),
+                getResources().getString(R.string.sstMode,getResources().getString(R.string.vacation)).toLowerCase(),
+                getResources().getString(R.string.sstMode,getResources().getString(R.string.party)).toLowerCase()
+        };
+
+        @Override
+        public void onReadyForSpeech(Bundle params) {
+
+        }
+
+        @Override
+        public void onBeginningOfSpeech() {
+
+        }
+
+        @Override
+        public void onRmsChanged(float rmsdB) {
+
+        }
+
+        @Override
+        public void onBufferReceived(byte[] buffer) {
+
+        }
+
+        @Override
+        public void onEndOfSpeech() {
+
+        }
+
+        @Override
+        public void onError(int error) {
+            Log.d(TAG, "error " + error);
+
+            String msg;
+            switch (error) {
+                case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
+                    msg = "No speech input";
+                    break;
+                case SpeechRecognizer.ERROR_NO_MATCH:
+                    msg = "No recognition result matched";
+                    break;
+                case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
+                    msg = "Insufficient permissions";
+                    break;
+                default:
+                    msg = "Unexpected error " + error;
+                    break;
+            }
+            System.out.println(msg);
+            sttButton.setColorFilter(ContextCompat.getColor(getContext(),R.color.textColorPrimary));
+            Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onResults(Bundle results) {
+            Log.d(TAG, "onResults " + results);
+            ArrayList<String> data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+            sttButton.setColorFilter(ContextCompat.getColor(getContext(),R.color.textColorPrimary));
+            String lower = data.get(0).toLowerCase();
+            System.out.println(lower);
+            if(!compareSSTButton(lower,sstModes,MODES)
+                    && !compareSSTFreezerTemp(lower)
+                    && !compareSSTTemp(lower)){
+                Toast.makeText(getContext(),getResources().getString(R.string.sstNotRecognized), Toast.LENGTH_SHORT).show();
+            }
+
+            else {
+                Toast.makeText(getContext(), getResources().getString(R.string.sstSuccess), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        private boolean compareSSTFreezerTemp(String toFind) {
+            for(int i = -20 ; i <= -8 ; i++){
+                if(toFind.equals(getResources().getString(R.string.sstFreezerTemperature,i).toLowerCase()) || toFind.equals(getResources().getString(R.string.sstFreezerTemperatureMinus,-i).toLowerCase())){
+
+                    freezer_slider.setValue(i);
+                    freezer_slider.callOnClick();
+                    return true;
+                }
+            }
+
+
+            return false;
+        }
+
+        private boolean compareSSTTemp(String toFind) {
+            for(int i = 2 ; i <= 8 ; i++){
+                if(toFind.equals(getResources().getString(R.string.sstTemperature,i).toLowerCase())){
+                    fridge_slider.setValue(i);
+                    fridge_slider.callOnClick();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private boolean compareSSTButton(String toFind, String[] sstStrings, int amount) {
+            for (int i = 0; i < amount ; i++){
+                if(toFind.equals(sstStrings[i])){
+                    btns[i].callOnClick();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public void onPartialResults(Bundle partialResults) {
+
+        }
+
+        @Override
+        public void onEvent(int eventType, Bundle params) {
+
+        }
     }
 }

@@ -286,7 +286,7 @@
 
                     <Button
                         android:id="@+id/hs_btn5"
-                        android:layout_width="100dp"
+                        android:layout_width="98dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:insetTop="0dp"
@@ -299,7 +299,7 @@
 
                     <Button
                         android:id="@+id/hs_btn6"
-                        android:layout_width="100dp"
+                        android:layout_width="98dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:insetTop="0dp"

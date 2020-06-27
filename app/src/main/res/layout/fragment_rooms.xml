@@ -7,7 +7,7 @@
     tools:context=".ui.rooms.RoomsFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/device_toolbar"
+        android:id="@+id/rooms_toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -29,6 +29,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/device_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/rooms_toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

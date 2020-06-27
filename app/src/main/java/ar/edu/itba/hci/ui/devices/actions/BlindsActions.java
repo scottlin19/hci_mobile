@@ -1,6 +1,13 @@
 package ar.edu.itba.hci.ui.devices.actions;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +16,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
+import java.util.ArrayList;
+import java.util.Locale;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -36,7 +49,9 @@ import retrofit2.Response;
 public class BlindsActions extends Fragment {
 
     private static final String ARG_PARAM = "device";
-
+    private static final int REQUEST_RECORD_AUDIO = 1;
+    private SpeechRecognizer speechRecognizer;
+    private FloatingActionButton speechButton;
     private Device device;
     private BlindsDeviceState state;
     private SwitchMaterial switchMaterial;
@@ -65,6 +80,106 @@ public class BlindsActions extends Fragment {
         return fragment;
     }
 
+    private class BlindsRecognitionListener implements RecognitionListener {
+
+        @Override
+        public void onReadyForSpeech(Bundle params) {
+
+        }
+
+        @Override
+        public void onBeginningOfSpeech() {
+
+        }
+
+        @Override
+        public void onRmsChanged(float rmsdB) {
+
+        }
+
+        @Override
+        public void onBufferReceived(byte[] buffer) {
+
+        }
+
+        @Override
+        public void onEndOfSpeech() {
+
+        }
+
+        @Override
+        public void onError(int error) {
+            Log.d("ERROR", "error " + error);
+
+            String msg;
+            switch (error) {
+                case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
+                    msg = "No speech input";
+                    break;
+                case SpeechRecognizer.ERROR_NO_MATCH:
+                    msg = "No recognition result matched";
+                    break;
+                case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
+                    msg = "Insufficient permissions";
+                    break;
+                default:
+                    msg = "Wait for speech recognition to end " + error;
+                    break;
+            }
+            System.out.println(msg);
+            speechButton.setColorFilter(ContextCompat.getColor(getContext(), R.color.textColorPrimary));
+            Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onResults(Bundle results) {
+            ArrayList<String> data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+            speechButton.setColorFilter(ContextCompat.getColor(getContext(), R.color.textColorPrimary));
+            String lower = data.get(0).toLowerCase();
+
+            if (lower.equals(getString(R.string.open)) || lower.equals(getString(R.string.close))) {
+                ApiClient.getInstance().executeAction(device.getId(), lower, new Object[0], new Callback<Result<Object>>() {
+                    @Override
+                    public void onResponse(Call<Result<Object>> call, Response<Result<Object>> response) {
+                        switchMaterial.performClick();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Result<Object>> call, Throwable t) {
+                    }
+                });
+            } else {
+                for (int i = 0; i <= 100; i++) {
+                    if (lower.equals(getResources().getString(R.string.setlevelsst, i).toLowerCase())) {
+                        slider.setValue(i);
+                        slider.callOnClick();
+                        Integer[] body = new Integer[1];
+                        body[0] = (int) slider.getValue();
+                        ApiClient.getInstance().executeAction(device.getId(), "setLevel", body, new Callback<Result<Object>>() {
+                            @Override
+                            public void onResponse(@NonNull Call<Result<Object>> call,@NonNull Response<Result<Object>> response) {
+                                updateDevice();
+                            }
+
+                            @Override
+                            public void onFailure(@NonNull Call<Result<Object>> call,@NonNull Throwable t) {
+                                Log.e("Slider level", t.getLocalizedMessage());
+                            }
+                        });
+                    }
+                }
+            }
+        }
+        @Override
+        public void onPartialResults(Bundle partialResults) {
+
+        }
+
+        @Override
+        public void onEvent(int eventType, Bundle params) {
+
+        }
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +188,39 @@ public class BlindsActions extends Fragment {
 
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        this.speechRecognizer = SpeechRecognizer.createSpeechRecognizer(getContext());
+
+        this.speechRecognizer.setRecognitionListener(new BlindsActions.BlindsRecognitionListener());
+
+        speechButton = getActivity().findViewById(R.id.stt_button);
+        if (speechButton != null) {
+            speechButton.setOnClickListener(v -> {
+                if (ContextCompat.checkSelfPermission(getContext(),
+                        Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{Manifest.permission.RECORD_AUDIO},
+                            REQUEST_RECORD_AUDIO);
+                } else {
+                    startRecognizer();
+                }
+            });
+        }
+    }
+    private void startRecognizer() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE,
+                Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
+        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3);
+        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS,3000);
+        speechButton.setColorFilter(Color.RED);
+        speechRecognizer.startListening(intent);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

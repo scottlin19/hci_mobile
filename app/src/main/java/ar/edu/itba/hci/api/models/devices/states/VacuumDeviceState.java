@@ -1,5 +1,6 @@
 package ar.edu.itba.hci.api.models.devices.states;
 
+import android.content.res.Resources;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -10,9 +11,13 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
+import ar.edu.itba.hci.MainActivity;
+import ar.edu.itba.hci.R;
 import ar.edu.itba.hci.api.models.devices.VacuumDevice;
 import ar.edu.itba.hci.api.models.devices.states.VacuumLocation;
+import ar.edu.itba.hci.api.notifications.NotificationBroadcastReceiver;
 
 public class VacuumDeviceState extends  DeviceState{
 
@@ -129,21 +134,37 @@ public class VacuumDeviceState extends  DeviceState{
     }
 
     @Override
-    public String[] compare(DeviceState deviceState) {
+    public String[] compare(DeviceState deviceState, Resources resources) {
         VacuumDeviceState param_dev = (VacuumDeviceState) deviceState;
         ArrayList<String> ret_desc = new ArrayList<>();
+        String status, change, batt, location, mode;
+        int id;
 
-        if(!getStatus().equals(param_dev.getStatus()))
-            ret_desc.add(String.format("Status changed to: %s", param_dev.getStatus()));
+        change = resources.getString(R.string.changed_to);
 
-        if(param_dev.getBatteryLevel() <= 5)
-            ret_desc.add(String.format("Low battery %%%s", param_dev.getBatteryLevel()));
+        if(!getStatus().equals(param_dev.getStatus())) {
+            id = resources.getIdentifier(param_dev.getStatus(), "string", NotificationBroadcastReceiver.PACKAGE_NAME);
+            status = resources.getString(R.string.status);
+            ret_desc.add(String.format("%s %s: %s", status, change, id == 0 ? param_dev.getStatus() : resources.getString(id)));
+        }
 
-        if((getLocation() == null && param_dev.getLocation() != null ) || (getLocation()!= null && !getLocation().equals(param_dev.getLocation())))
-            ret_desc.add(String.format("Location changed to: %s", param_dev.getLocation()));
+        if(param_dev.getBatteryLevel() <= 5) {
+            batt = resources.getString(R.string.low_battery);
+            ret_desc.add(String.format("%s: %%%s", batt, param_dev.getBatteryLevel()));
+        }
+            VacuumLocation vl = getLocation(), param_dev_vl = param_dev.getLocation();
+            boolean compareLocation = Objects.equals(vl, param_dev_vl);
 
-        if(!getMode().equals(param_dev.getMode()))
-            ret_desc.add(String.format("Mode changed to: %s", param_dev.getMode()));
+        if(compareLocation == false){
+            location = resources.getString(R.string.location);
+            ret_desc.add(String.format("%s %s: %s", location, change, param_dev.getLocation()));
+        }
+
+        if(!getMode().equals(param_dev.getMode())){
+            id = resources.getIdentifier(param_dev.getMode(), "string", NotificationBroadcastReceiver.PACKAGE_NAME);
+            mode = resources.getString(R.string.mode);
+            ret_desc.add(String.format("%s %s: %s", mode, change, id == 0 ? param_dev.getMode() : resources.getString(id)));
+        }
 
         return  ret_desc.toArray(new String[0]);
     }

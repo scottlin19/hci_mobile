@@ -84,6 +84,8 @@ public class DeviceMeta implements Parcelable {
         return "DeviceMeta{" +
                 "icon='" + icon + '\'' +
                 ", favorite=" + favorite +
+                ", blocked=" + blocked +
+                ", notif_status=" + notif_status +
                 '}';
     }
 

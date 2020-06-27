@@ -1,5 +1,6 @@
 package ar.edu.itba.hci.api.models.devices.states;
 
+import android.content.res.Resources;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -10,6 +11,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+
+import ar.edu.itba.hci.MainActivity;
+import ar.edu.itba.hci.R;
+import ar.edu.itba.hci.api.notifications.NotificationBroadcastReceiver;
 
 public class DoorDeviceState extends DeviceState {
 
@@ -76,15 +81,24 @@ public class DoorDeviceState extends DeviceState {
     }
 
     @Override
-    public String[] compare(DeviceState deviceState) {
+    public String[] compare(DeviceState deviceState, Resources resources) {
         DoorDeviceState param_dev = (DoorDeviceState) deviceState;
         ArrayList<String> ret_desc = new ArrayList<>();
+        String status, change, lockSt;
 
-        if(!getStatus().equals(param_dev.getStatus()))
-            ret_desc.add(String.format("Status changed to: %s", param_dev.getStatus()));
+        change = resources.getString(R.string.changed_to);
 
-        if(!getLock().equals(param_dev.getLock()))
-            ret_desc.add(String.format("Lock status changed to: %s", param_dev.getLock()));
+        if(!getStatus().equals(param_dev.getStatus())) {
+            int id = resources.getIdentifier(param_dev.getStatus(), "string", NotificationBroadcastReceiver.PACKAGE_NAME);
+            status = resources.getString(R.string.status);
+            ret_desc.add(String.format("%s %s: %s", status, change, id == 0 ? param_dev.getStatus() : resources.getString(id)));
+        }
+
+        if(!getLock().equals(param_dev.getLock())) {
+            int id = resources.getIdentifier(param_dev.getLock(), "string", NotificationBroadcastReceiver.PACKAGE_NAME);
+            lockSt = resources.getString(R.string.lock_status);
+            ret_desc.add(String.format("%s %s: %s", lockSt, change, id == 0 ? param_dev.getLock() : resources.getString(id)));
+        }
 
         return  ret_desc.toArray(new String[0]);
     }

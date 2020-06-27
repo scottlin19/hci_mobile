@@ -40,6 +40,17 @@
     <string name="on">ON</string>
     <string name="off">OFF</string>
     <string name="battery_level">Battery Level</string>
+    <string name="low_battery">Low Battery</string>
+
+
+    <string name="sstNotRecognized">Couldn\'t recognize your command, please try again.</string>
+    <string name="sstSuccess">Command executed.</string>
+    <string name="sstTurnOn">turn on</string>
+    <string name="sstTurnOff">turn off</string>
+    <string name="sstMode">set mode to %1$s</string>
+    <string name="sstTemperature">set temperature to %1$d degrees</string>
+
+
     <!--VACUUM-->
     <string name="start">Start</string>
     <string name="setMode">Set mode</string>
@@ -52,14 +63,19 @@
     <string name="noBatteryError">Not enough battery. Please recharge your vacuum.</string>
     <string name="waitChargeError">Not enough battery. Please wait until battery is at least 5%.</string>
     <string name="noRoomError">Can\'t dock vacuum without room asigned</string>
+    <string name="noRoomSelected">no room select</string>
     <string name="mopMode">mop</string>
     <string name="vacuumMode">vacuum</string>
+    <string name="sstLocation">Change location to %1s</string>
 
     <!-- ALARM-->
     <string name="changeSecurityCode">Change security code</string>
     <string name="armStay">Arm stay</string>
     <string name="armAway">Arm away</string>
     <string name="disarm">Disarm</string>
+    <string name="armStaysst">arm stay</string>
+    <string name="armAwaysst">arm away</string>
+    <string name="disarmsst">disarm</string>
     <string name="securityCode">Security code</string>
     <string name="newSecurityCode">New security code</string>
     <string name="change">CHANGE</string>
@@ -78,6 +94,9 @@
     <string name="dance">Dance</string>
     <string name="pop">Pop</string>
     <string name="latina">Latina</string>
+    <string name="genre">Genre</string>
+    <string name="sstVolume">set volume %1$d</string>
+    <string name="sstGenre">set genre %1$s</string>
 
 
     <!--OVEN-->
@@ -90,21 +109,33 @@
     <string name="conventional">conventional</string>
     <string name="bottom">bottom</string>
     <string name="top">top</string>
-    <string name="large">large</string>
-    <string name="eco">eco</string>
-    <string name="normal">normal</string>
-    <string name="offconvec">off</string>
-    <string name="ecoconvec">Eco</string>
-    <string name="ecogrill">Eco</string>
+    <string name="largeMode">large</string>
+    <string name="ecoMode">eco</string>
+    <string name="normalMode">normal</string>
+    <string name="offMode">off</string>
+    <string name="ecoconvec">eco</string>
+    <string name="ecogrill">eco</string>
     <string name="offgrill">off</string>
-
     <string name="heatType">Heat type</string>
     <string name="grillType">Grill type</string>
     <string name="convectionType">Convection type</string>
+    <string name="turnonsst">turn on</string>
+    <string name="turnoffsst">turn off</string>
+    <string name="heatconventionalsst">heat conventional</string>
+    <string name="heatbottomsst">heat bottom</string>
+    <string name="heattopsst">heat top</string>
+    <string name="grilllargesst">grill large</string>
+    <string name="grillecosst">grill eco</string>
+    <string name="grilloffsst">grill off</string>
+    <string name="convectionoffsst">convection large</string>
+    <string name="convectionnormalsst">convection normal</string>
+    <string name="convectionecosst">convection large</string>
+
     <!-- FAUCET -->
-    <string name="open">Open</string>
-    <string name="close">Close</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
     <string name="dispense">Dispense</string>
+    <string name="dispensesst">dispense</string>
     <string name="dispensing">Dispensing..</string>
     <!--BLINDS-->
     <string name="setLevel">Set level</string>
@@ -115,12 +146,22 @@
     <string name="wait_msg">Please wait…</string>
     <string name="curr_level">Current level</string>
     <string name="curr_status">Current status</string>
-
+    <string name="level">Level</string>
+    <string name="setlevelsst">set level to %1$d</string>
     <!--LAMP-->
     <string name="setColor">Set color</string>
     <string name="setBrightness">Set brightness</string>
     <string name="color">Color</string>
     <string name="brigthness">Brightness</string>
+    <string name="red">red</string>
+    <string name="blue">blue</string>
+    <string name="green">green</string>
+    <string name="yellow">yellow</string>
+    <string name="white">white</string>
+    <string name="gamer">purple</string>
+    <string name="sstColor">set color %1$s</string>
+    <string name="sstBrightness">set color %1$d</string>
+
 
     <!--AC-->
     <string name="setVerticalSwing">Set vertical swing</string>
@@ -133,118 +174,46 @@
     <string name="cool">cool</string>
     <string name="heat">heat</string>
     <string name="fan">fan</string>
+    <string name="sstVertSwing">set vertical swing to %1$d degrees</string>
+    <string name="sstVertSwingAuto">set vertical swing to auto</string>
+    <string name="sstHorizSwing">set horizontal swing to %1$d degrees</string>
+    <string name="sstHorizSwingSymbol">set horizontal swing to %1$d°</string>
+    <string name="sstHorizSwingAuto">set horizontal swing to auto</string>
+    <string name="sstFanSpeed">set fan speed to %1$d%%</string>
+    <string name="sstFanSpeedAuto">set fan speed to auto</string>
+
 
     <!--DOOR-->
     <string name="lock">Lock</string>
     <string name="unlock">Unlock</string>
+    <string name="lock_status">Lock status</string>
+    <string name="unlocked">Unlocked</string>
 
 
     <!--REFRIGERATOR-->
     <string name="setFreezerTemperature">Set freezer temperature</string>
     <string name="freezerTemp">Freezer Temperature (°C)</string>
-    <string name="fridgeTemp">Refrigerator Temperature (°C)</string>
+    <string name="fridgeTemp">Fridge Temperature (°C)</string>
     <string name="defaultMode">default</string>
-    <string name="partyMode">party</string>
-    <string name="vacationMode">vacation</string>
+    <string name="party">party</string>
+    <string name="vacation">vacation</string>
+    <string name="sstFreezerTemperature">set freezer temperature to %1$d degrees</string>
+    <string name="sstFreezerTemperatureMinus">set freezer temperature to minus %1$d degrees</string>
 
     <string name="device">Device</string>
     <string name="action">Action</string>
     <string name="date">Date</string>
 
-
+    <string name="changed_to">changed to</string>
 
 
     <string name="title_activity_past_actions" translatable="false">ScrollingActivity</string>
-    <string name="large_text" translatable="false">
-        "Material is the metaphor.\n\n"
-
-        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
-        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
-        "technologically advanced and open to imagination and magic.\n"
-        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
-        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
-        "flexibility of the material creates new affordances that supercede those in the physical "
-        "world, without breaking the rules of physics.\n"
-        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
-        "interact, and exist in space and in relation to each other. Realistic lighting shows "
-        "seams, divides space, and indicates moving parts.\n\n"
-
-        "Bold, graphic, intentional.\n\n"
-
-        "The foundational elements of print based design typography, grids, space, scale, color, "
-        "and use of imagery guide visual treatments. These elements do far more than please the "
-        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
-        "imagery, large scale typography, and intentional white space create a bold and graphic "
-        "interface that immerse the user in the experience.\n"
-        "An emphasis on user actions makes core functionality immediately apparent and provides "
-        "waypoints for the user.\n\n"
-
-        "Motion provides meaning.\n\n"
-
-        "Motion respects and reinforces the user as the prime mover. Primary user actions are "
-        "inflection points that initiate motion, transforming the whole design.\n"
-        "All action takes place in a single environment. Objects are presented to the user without "
-        "breaking the continuity of experience even as they transform and reorganize.\n"
-        "Motion is meaningful and appropriate, serving to focus attention and maintain continuity. "
-        "Feedback is subtle yet clear. Transitions are efﬁcient yet coherent.\n\n"
-
-        "3D world.\n\n"
-
-        "The material environment is a 3D space, which means all objects have x, y, and z "
-        "dimensions. The z-axis is perpendicularly aligned to the plane of the display, with the "
-        "positive z-axis extending towards the viewer. Every sheet of material occupies a single "
-        "position along the z-axis and has a standard 1dp thickness.\n"
-        "On the web, the z-axis is used for layering and not for perspective. The 3D world is "
-        "emulated by manipulating the y-axis.\n\n"
-
-        "Light and shadow.\n\n"
-
-        "Within the material environment, virtual lights illuminate the scene. Key lights create "
-        "directional shadows, while ambient light creates soft shadows from all angles.\n"
-        "Shadows in the material environment are cast by these two light sources. In Android "
-        "development, shadows occur when light sources are blocked by sheets of material at "
-        "various positions along the z-axis. On the web, shadows are depicted by manipulating the "
-        "y-axis only. The following example shows the card with a height of 6dp.\n\n"
-
-        "Resting elevation.\n\n"
-
-        "All material objects, regardless of size, have a resting elevation, or default elevation "
-        "that does not change. If an object changes elevation, it should return to its resting "
-        "elevation as soon as possible.\n\n"
-
-        "Component elevations.\n\n"
-
-        "The resting elevation for a component type is consistent across apps (e.g., FAB elevation "
-        "does not vary from 6dp in one app to 16dp in another app).\n"
-        "Components may have different resting elevations across platforms, depending on the depth "
-        "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"
-
-        "Responsive elevation and dynamic elevation offsets.\n\n"
-
-        "Some component types have responsive elevation, meaning they change elevation in response "
-        "to user input (e.g., normal, focused, and pressed) or system events. These elevation "
-        "changes are consistently implemented using dynamic elevation offsets.\n"
-        "Dynamic elevation offsets are the goal elevation that a component moves towards, relative "
-        "to the component’s resting state. They ensure that elevation changes are consistent "
-        "across actions and component types. For example, all components that lift on press have "
-        "the same elevation change relative to their resting elevation.\n"
-        "Once the input event is completed or cancelled, the component will return to its resting "
-        "elevation.\n\n"
-
-        "Avoiding elevation interference.\n\n"
-
-        "Components with responsive elevations may encounter other components as they move between "
-        "their resting elevations and dynamic elevation offsets. Because material cannot pass "
-        "through other material, components avoid interfering with one another any number of ways, "
-        "whether on a per component basis or using the entire app layout.\n"
-        "On a component level, components can move or be removed before they cause interference. "
-        "For example, a floating action button (FAB) can disappear or move off screen before a "
-        "user picks up a card, or it can move if a snackbar appears.\n"
-        "On the layout level, design your app layout to minimize opportunities for interference. "
-        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
-        "when a user tries to pick up one of cards.\n\n"
-    </string>
+    <string name="parameter">Parameter</string>
 
 
+    <string name="qr_action">QR Scan</string>
+    <!-- TODO: Remove or change this placeholder text -->
+   <string name="qr_title">Search devices</string>
+    <string name="qr_toast">Please take a photo of the device\'s QR code</string>
 </resources>
 

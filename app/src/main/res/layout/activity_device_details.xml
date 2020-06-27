@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/device_toolbar"
+            android:id="@+id/device_details_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
@@ -56,10 +56,22 @@
                 android:layout_below="@+id/device_name"
                 android:layout_alignStart="@id/device_name"
                 android:layout_alignBottom="@id/device_icon"
-                android:layout_alignParentEnd="true"
                 android:layout_marginTop="6dp"
                 android:text="device room"
                 android:textColor="@color/textColorPrimary" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/stt_button"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/device_icon"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="16dp"
+                android:clickable="true"
+                android:src="@drawable/ic_baseline_mic_24"
+                app:fabCustomSize="40dp"
+                app:fabSize="auto"
+                app:tint="@color/textColorPrimary" />
 
         </RelativeLayout>
 
@@ -74,6 +86,8 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linearLayout"
-        app:layout_constraintVertical_bias="0.0"></androidx.fragment.app.FragmentContainerView>
+        app:layout_constraintVertical_bias="0.0">
+
+    </androidx.fragment.app.FragmentContainerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

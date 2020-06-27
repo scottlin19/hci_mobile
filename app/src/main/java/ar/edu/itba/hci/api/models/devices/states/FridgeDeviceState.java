@@ -1,4 +1,5 @@
 package ar.edu.itba.hci.api.models.devices.states;
+import android.content.res.Resources;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -8,6 +9,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+
+import ar.edu.itba.hci.MainActivity;
+import ar.edu.itba.hci.R;
+import ar.edu.itba.hci.api.notifications.NotificationBroadcastReceiver;
 
 public class FridgeDeviceState extends DeviceState {
 
@@ -116,18 +121,28 @@ public class FridgeDeviceState extends DeviceState {
     }
 
     @Override
-    public String[] compare(DeviceState deviceState) {
+    public String[] compare(DeviceState deviceState, Resources resources) {
         FridgeDeviceState param_dev = (FridgeDeviceState) deviceState;
         ArrayList<String> ret_desc = new ArrayList<>();
+        String fridTemp, change, mode, freezerTemp;
 
-        if(!getFreezerTemperature().equals(param_dev.getFreezerTemperature()))
-            ret_desc.add(String.format("Freezer temperature changed to: %s", param_dev.getFreezerTemperature()));
+        change = resources.getString(R.string.changed_to);
 
-        if(!getMode().equals(param_dev.getMode()))
-            ret_desc.add(String.format("Mode changed to: %s", param_dev.getMode()));
+        if(!getFreezerTemperature().equals(param_dev.getFreezerTemperature())){
+            fridTemp = resources.getString(R.string.fridgeTemp);
+            ret_desc.add(String.format("%s %s: %s", fridTemp, change, param_dev.getFreezerTemperature()));
+        }
 
-        if(!getTemperature().equals(param_dev.getTemperature()))
-            ret_desc.add(String.format("Temperature changed to: %s", param_dev.getTemperature()));
+        if(!getMode().equals(param_dev.getMode())){
+            int id = resources.getIdentifier(param_dev.getMode(), "string", NotificationBroadcastReceiver.PACKAGE_NAME);
+            mode = resources.getString(R.string.mode);
+            ret_desc.add(String.format("%s %s: %s", mode, change, id == 0 ? param_dev.getMode() : resources.getString(id)));
+        }
+
+        if(!getTemperature().equals(param_dev.getTemperature())){
+            freezerTemp = resources.getString(R.string.freezerTemp);
+            ret_desc.add(String.format("%s %s: %s", freezerTemp, change, param_dev.getTemperature()));
+        }
 
         return  ret_desc.toArray(new String[0]);
     }

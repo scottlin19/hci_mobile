@@ -1,15 +1,22 @@
 package ar.edu.itba.hci.ui.devices.actions;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +28,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -52,6 +62,11 @@ import retrofit2.Response;
 
 public class VacuumActions extends Fragment {
 
+    private static final String TAG = "SpeechRecognizer";
+    private static final int REQUEST_RECORD_AUDIO = 1;
+    private SpeechRecognizer speechRecognizer;
+    private FloatingActionButton sttButton;
+
     private final int MODES = 2;
     private Button[] btns = new Button[MODES];
     private int[] btn_id = {R.id.mop_btn,R.id.vacuum_btn};
@@ -65,6 +80,8 @@ public class VacuumActions extends Fragment {
     TextView batteryLevel;
     TextView errorTextView;
     SwitchMaterial switchMaterial;
+    Button rechargeBtn;
+    Spinner spinner;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -112,22 +129,9 @@ public class VacuumActions extends Fragment {
 @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-    ApiClient.getInstance().getDevice(device.getId(), new Callback<Result<Device>>() {
-        @Override
-        public void onResponse(Call<Result<Device>> call, Response<Result<Device>> response) {
-            device = response.body().getResult();
-            state = (VacuumDeviceState) device.getState();
-        }
 
-        @Override
-        public void onFailure(Call<Result<Device>> call, Throwable t) {
-            Log.e("update device", t.getLocalizedMessage());
-            if(fetcherHandler != null && !fetcherHandler.isCancelled()) {
-                fetcherHandler.cancel(true);
-            }
-        }
-    });
-        switchMaterial = (SwitchMaterial) getView().findViewById(R.id.switchMaterial);
+
+    switchMaterial = (SwitchMaterial) getView().findViewById(R.id.switchMaterial);
     if(device.getState().getStatus().equals("active")){
         switchMaterial.setChecked(true);
     }
@@ -165,7 +169,7 @@ public class VacuumActions extends Fragment {
 
 //        updateView();
 
-        Button rechargeBtn = (Button) getView().findViewById(R.id.recharge_btn);
+        rechargeBtn = (Button) getView().findViewById(R.id.recharge_btn);
         rechargeBtn.setOnClickListener(v ->{
             Object[] params = {};
             registerAction("dock",params);
@@ -177,13 +181,13 @@ public class VacuumActions extends Fragment {
         initBtns();
     getInitialMode(device.getState().getMode());
 
-    Spinner spinner = (Spinner) getView().findViewById(R.id.rooms_spinner);
+    spinner = (Spinner) getView().findViewById(R.id.rooms_spinner);
 
         RoomsViewModel roomsViewModel = new ViewModelProvider(this).get(RoomsViewModel.class);
         roomsViewModel.getRooms().observe(getViewLifecycleOwner(), rooms -> {
             this.rooms = rooms;
             List<String> roomNames = rooms.stream().map(Room::getName).collect(Collectors.toList());
-            roomNames.add("No room selected");
+            roomNames.add(getResources().getString(R.string.noRoomSelected));
             ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_spinner_item,roomNames);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
@@ -198,7 +202,7 @@ public class VacuumActions extends Fragment {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     String id = null;
-                    if(!roomNames.get(i).equals("No room selected")) {
+                    if(!roomNames.get(i).equals(getResources().getString(R.string.noRoomSelected))) {
                         id = rooms.stream().filter(room -> room.getName().equals(roomNames.get(i))).map(room -> room.getId()).collect(Collectors.toList()).get(0);
                     }
                     System.out.println(id);
@@ -211,9 +215,40 @@ public class VacuumActions extends Fragment {
 
                 }
             });
-    });
+
+            this.speechRecognizer = SpeechRecognizer.createSpeechRecognizer(getContext());
+            this.speechRecognizer.setRecognitionListener(new VacuumRecognitionListener());
+            sttButton = getActivity().findViewById(R.id.stt_button);
+            if(sttButton != null) {
+                sttButton.setOnClickListener(v -> {
+                    if (ContextCompat.checkSelfPermission(getContext(),
+                            Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+
+                        ActivityCompat.requestPermissions(getActivity(),
+                                new String[]{Manifest.permission.RECORD_AUDIO},
+                                REQUEST_RECORD_AUDIO);
+                    } else {
+                        startRecognizer();
+                    }
+                });
+            }
+
+        });
+
         updater();
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    private void startRecognizer() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE,
+                Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
+        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3);
+        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS,3000);
+        sttButton.setColorFilter(Color.RED);
+        speechRecognizer.startListening(intent);
     }
 
     private void getInitialMode(String deviceMode) {
@@ -247,7 +282,7 @@ public class VacuumActions extends Fragment {
         };
         for(int i = 0; i < MODES; i++){
             btns[i] = (Button) getView().findViewById(btn_id[i]);
-            btns[i].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            btns[i].setBackgroundColor(ContextCompat.getColor(getContext(),R.color.colorPrimary));
             btns[i].setOnClickListener(v -> {
                 Button btn = (Button) getView().findViewById(v.getId());
                 changeFocus(btn_unfocus, btn);
@@ -302,6 +337,7 @@ public class VacuumActions extends Fragment {
         if(fetcherHandler != null && !fetcherHandler.isCancelled()) {
             fetcherHandler.cancel(true);
         }
+        speechRecognizer.destroy();
     }
 
     public void updater() {
@@ -365,5 +401,144 @@ public class VacuumActions extends Fragment {
             batteryLevel.setCompoundDrawablesWithIntrinsicBounds(0,0,icons[2],0);
         }
 
+    }
+
+    private class VacuumRecognitionListener implements RecognitionListener{
+
+        private String[] sstStatus = {
+                getResources().getString(R.string.sstTurnOn).toLowerCase(),
+                getResources().getString(R.string.sstTurnOff).toLowerCase(),
+        };
+
+        private String[] sstModes = {
+                getResources().getString(R.string.sstMode,getResources().getString(R.string.mopMode)).toLowerCase(),
+                getResources().getString(R.string.sstMode,getResources().getString(R.string.vacuumMode)).toLowerCase()
+        };
+
+        private  List<String> roomNames;
+
+
+        public VacuumRecognitionListener() {
+            super();
+            roomNames = rooms.stream().map(Room::getName).collect(Collectors.toList());
+            roomNames.add(getResources().getString(R.string.noRoomSelected));
+
+        }
+
+        @Override
+        public void onReadyForSpeech(Bundle params) {
+
+        }
+
+        @Override
+        public void onBeginningOfSpeech() {
+
+        }
+
+        @Override
+        public void onRmsChanged(float rmsdB) {
+
+        }
+
+        @Override
+        public void onBufferReceived(byte[] buffer) {
+
+        }
+
+        @Override
+        public void onEndOfSpeech() {
+
+        }
+
+        @Override
+        public void onError(int error) {
+            Log.d(TAG, "error " + error);
+
+            String msg;
+            switch (error) {
+                case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
+                    msg = "No speech input";
+                    break;
+                case SpeechRecognizer.ERROR_NO_MATCH:
+                    msg = "No recognition result matched";
+                    break;
+                case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
+                    msg = "Insufficient permissions";
+                    break;
+                default:
+                    msg = "Unexpected error " + error;
+                    break;
+            }
+            System.out.println(msg);
+            sttButton.setColorFilter(ContextCompat.getColor(getContext(),R.color.textColorPrimary));
+            Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onResults(Bundle results) {
+            Log.d(TAG, "onResults " + results);
+            ArrayList<String> data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+            sttButton.setColorFilter(ContextCompat.getColor(getContext(),R.color.textColorPrimary));
+            String lower = data.get(0).toLowerCase();
+            System.out.println(lower);
+            if(!compareSSTStatus(lower,sstStatus)
+                    && !compareDock(lower)
+                    && !compareSSTButton(lower,sstModes,btns,MODES) && !compareSSTLocation(lower)){
+                Toast.makeText(getContext(),getResources().getString(R.string.sstNotRecognized), Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(getContext(), getResources().getString(R.string.sstSuccess), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        private boolean compareSSTLocation(String lower) {
+            for (int i = 0; i < roomNames.size() ; i++){
+                if(lower.equals(getResources().getString(R.string.sstLocation,roomNames.get(i)).toLowerCase())){
+                    spinner.setSelection(i);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private boolean compareDock(String toFind) {
+            if(toFind.equals(getResources().getString(R.string.dock).toLowerCase())){
+                rechargeBtn.callOnClick();
+                return true;
+            }
+            return false;
+        }
+
+        private boolean compareSSTStatus(String toFind, String[] sstStatus) {
+            for(int i = 0 ; i < 2; i ++){
+                if(toFind.equals(sstStatus[i])){
+                    if((!switchMaterial.isChecked() && i == 0) || (switchMaterial.isChecked() && i == 1)) {
+                        switchMaterial.performClick();
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private boolean compareSSTButton(String toFind,String[] sstStrings, Button[] btns, int amount) {
+            for(int i = 0; i < amount; i++){
+                if(toFind.equals(sstStrings[i])){
+                    btns[i].callOnClick();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public void onPartialResults(Bundle partialResults) {
+
+        }
+
+        @Override
+        public void onEvent(int eventType, Bundle params) {
+
+        }
     }
 }

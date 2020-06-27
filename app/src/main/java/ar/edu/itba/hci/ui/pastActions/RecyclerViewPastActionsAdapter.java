@@ -9,11 +9,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DateFormat;
 import java.util.List;
 import java.util.Optional;
 
 import ar.edu.itba.hci.R;
 import ar.edu.itba.hci.api.models.Device;
+import ar.edu.itba.hci.api.models.IconAdapter;
 import ar.edu.itba.hci.api.models.PastAction;
 
 public class RecyclerViewPastActionsAdapter extends RecyclerView.Adapter<RecyclerViewPastActionsAdapter.PastActionVH> {
@@ -21,11 +23,13 @@ public class RecyclerViewPastActionsAdapter extends RecyclerView.Adapter<Recycle
     List<PastAction> actionList;
     List<Device> deviceList;
     private Context context;
+    private DateFormat dateFormat;
 
     public RecyclerViewPastActionsAdapter(Context context,List<PastAction> actionList, List<Device> deviceList) {
         this.context = context;
         this.actionList = actionList;
         this.deviceList = deviceList;
+        this.dateFormat = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.DEFAULT,context.getResources().getConfiguration().getLocales().get(0));
     }
 
     @NonNull
@@ -40,7 +44,33 @@ public class RecyclerViewPastActionsAdapter extends RecyclerView.Adapter<Recycle
     @Override
     public void onBindViewHolder(@NonNull PastActionVH holder, int position) {
         PastAction pastAction = actionList.get(position);
-        holder.actionItem.setText(actionAdapter(pastAction));
+        int actId;
+        String devName, actionName;
+        String devIcon = null;
+
+        Optional<Device> dev = deviceList.stream().filter(d -> d.getId().equals(pastAction.getDeviceId())).findFirst();
+        if(dev.isPresent()){
+            devName = dev.get().getName();
+            devIcon = dev.get().getMeta().getIcon();
+        }
+        else devName = "NOT_FOUND";
+
+        actId = context.getResources().getIdentifier(pastAction.getAction(), "string", context.getPackageName());
+        if(actId == 0) actionName = pastAction.getAction();
+        else actionName = context.getResources().getString(actId);
+
+        holder.device.setText(devName);
+        holder.device.setCompoundDrawablesWithIntrinsicBounds(IconAdapter.getIntSmallIcon(devIcon),0,0,0);
+
+        holder.date.setText(String.format("%s: %s", context.getResources().getString(R.string.date), dateFormat.format(pastAction.getTimestamp())));
+        holder.action.setText(String.format("%s: %s", context.getResources().getString(R.string.action), actionName));
+
+        if(pastAction.getParams() == null || pastAction.getParams().size() == 0)
+            holder.params.setVisibility(View.GONE);
+        else {
+            holder.params.setVisibility(View.VISIBLE);
+            holder.params.setText(String.format("%s: %s", context.getResources().getString(R.string.parameter), pastAction.getParams().get(0)));
+        }
     }
 
     @Override
@@ -50,45 +80,20 @@ public class RecyclerViewPastActionsAdapter extends RecyclerView.Adapter<Recycle
 
     class PastActionVH extends RecyclerView.ViewHolder{
 
-        private TextView actionItem;
+        private TextView device,date,action,params;
+
 
         public PastActionVH(@NonNull View itemView) {
             super(itemView);
 
-            actionItem = itemView.findViewById(R.id.past_action_item);
+            device = itemView.findViewById(R.id.past_action_device);
+            date = itemView.findViewById(R.id.past_action_date);
+            action = itemView.findViewById(R.id.past_action_action);
+            params = itemView.findViewById(R.id.past_action_params);
+
+
         }
     }
 
-    private String actionAdapter(PastAction pastAction) {
-        StringBuilder str = new StringBuilder();
-        int actId;
-        String devName, actionName, param;
 
-        Optional<Device> dev = deviceList.stream().filter(d -> d.getId().equals(pastAction.getDeviceId())).findFirst();
-        if(dev.isPresent()) devName = dev.get().getName();
-        else devName = "NOT_FOUND";
-
-        actId = context.getResources().getIdentifier(pastAction.getAction(), "string", context.getPackageName());
-        if(actId == 0) actionName = pastAction.getAction();
-        else actionName = context.getResources().getString(actId);
-
-        if(pastAction.getParams() == null || pastAction.getParams().length == 0) param = "--";
-        else param = pastAction.getParams()[0];
-
-        str.append(context.getResources().getString(R.string.device))
-                .append(": ")
-                .append(devName)
-                .append(" - ")
-                .append(context.getResources().getString(R.string.action))
-                .append(": ")
-                .append(actionName)
-                .append(" - ")
-                .append("Params: ")
-                .append(param)
-                .append(" - ")
-                .append(context.getResources().getString(R.string.date))
-                .append(": ")
-                .append(pastAction.getTimestamp());
-        return str.toString();
-    }
 }

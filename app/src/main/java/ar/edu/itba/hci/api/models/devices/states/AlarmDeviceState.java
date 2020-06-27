@@ -1,5 +1,6 @@
 package ar.edu.itba.hci.api.models.devices.states;
 
+import android.content.res.Resources;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -9,6 +10,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+
+import ar.edu.itba.hci.MainActivity;
+import ar.edu.itba.hci.R;
+import ar.edu.itba.hci.api.notifications.NotificationBroadcastReceiver;
 
 public class AlarmDeviceState extends DeviceState {
     @SerializedName("status")
@@ -67,13 +72,19 @@ public class AlarmDeviceState extends DeviceState {
     }
 
     @Override
-    public String[] compare(DeviceState deviceState) {
+    public String[] compare(DeviceState deviceState, Resources resources) {
         AlarmDeviceState param_dev = (AlarmDeviceState) deviceState;
         ArrayList<String> ret_desc = new ArrayList<>();
 
-        if(!getStatus().equals(param_dev.getStatus()))
-            ret_desc.add(String.format("Status changed to: %s", param_dev.getStatus()));
+        String status, change;
 
+        change = resources.getString(R.string.changed_to);
+
+        if(!getStatus().equals(param_dev.getStatus())){
+            int id = resources.getIdentifier(param_dev.getStatus(), "string", NotificationBroadcastReceiver.PACKAGE_NAME);
+            status = resources.getString(R.string.status);
+            ret_desc.add(String.format("%s %s: %s", status, change, id == 0 ? param_dev.getStatus() : resources.getString(id)));
+        }
         return ret_desc.toArray(new String[0]);
     }
 }

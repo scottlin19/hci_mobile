@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -41,10 +42,12 @@ public class PastActionsViewModel extends ViewModel {
                 if (response.isSuccessful()) {
                     List<PastAction> result = response.body().getResult();
                     if (result != null) {
+                        System.out.println("PAST ACTIONS: "+result);
                         filterActions(result);
+                        System.out.println("FILTERED PAST ACTIONS: "+result);
                     }
                 } else {
-                    Log.e("Past Actions", response.errorBody().toString());
+                    Log.e("Past Actions response", response.errorBody().toString());
                 }
             }
 
@@ -69,7 +72,7 @@ public class PastActionsViewModel extends ViewModel {
                     for(Device d : devices) {
                         filteredActions.addAll(rawActions.stream().filter(pa -> pa.getDeviceId().equals(d.getId())).collect(Collectors.toList()));
                     }
-
+                    filteredActions.sort(Comparator.reverseOrder());
                     actionsList.setValue(filteredActions);
                     System.out.println(String.format("filtered size: %d", filteredActions.size()));
 

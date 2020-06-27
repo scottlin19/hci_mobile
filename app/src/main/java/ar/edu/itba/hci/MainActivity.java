@@ -33,6 +33,7 @@ import com.google.gson.Gson;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.crypto.spec.DESedeKeySpec;
 
@@ -40,6 +41,7 @@ import ar.edu.itba.hci.api.ApiClient;
 import ar.edu.itba.hci.api.Result;
 import ar.edu.itba.hci.api.models.Device;
 import ar.edu.itba.hci.api.notifications.NotificationBroadcastReceiver;
+import ar.edu.itba.hci.api.notifications.SharedPreferencesHelper;
 import ar.edu.itba.hci.ui.devices.DeviceDetailsActivity;
 import ar.edu.itba.hci.ui.routines.RoutinesFragment;
 import retrofit2.Call;
@@ -111,35 +113,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor =sharedPreferences.edit();
-
-        ApiClient.getInstance().getDevices(new Callback<Result<List<Device>>>() {
-            @Override
-            public void onResponse(Call<Result<List<Device>>> call, Response<Result<List<Device>>> response) {
-                if(response.isSuccessful()){
-                    List<Device> deviceList = response.body().getResult();
-                    Set<String> deviceSet = new HashSet<>();
-                    Gson gson = new Gson();
-                    deviceList.forEach(device ->{
-                        deviceSet.add(gson.toJson(device));
-                    });
-                    editor.putStringSet("devices",deviceSet);
-                    editor.apply();
-              }
-            }
-
-            @Override
-            public void onFailure(Call<Result<List<Device>>> call, Throwable t) {
-
-            }
-        });
-        //Toast.makeText(getApplicationContext(), "On Pause", Toast.LENGTH_SHORT).show();
+        SharedPreferencesHelper.refreshSavedPreferences(getApplicationContext());
     }
+
+
 
     @Override
     protected void onStop() {
         super.onStop();
 //        Toast.makeText(getApplicationContext(), "On Stop", Toast.LENGTH_SHORT).show();
     }
+
+
 }

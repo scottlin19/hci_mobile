@@ -1,5 +1,6 @@
 package ar.edu.itba.hci.api.models.devices.states;
 
+import android.content.res.Resources;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,7 +12,10 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
+import ar.edu.itba.hci.MainActivity;
+import ar.edu.itba.hci.R;
 import ar.edu.itba.hci.api.models.devices.SpeakerDevice;
+import ar.edu.itba.hci.api.notifications.NotificationBroadcastReceiver;
 
 public class SpeakerDeviceState extends DeviceState {
     @SerializedName("status")
@@ -126,21 +130,24 @@ public class SpeakerDeviceState extends DeviceState {
     }
 
     @Override
-    public String[] compare(DeviceState deviceState) {
+    public String[] compare(DeviceState deviceState, Resources resources) {
         SpeakerDeviceState param_dev = (SpeakerDeviceState) deviceState;
         ArrayList<String> ret_desc = new ArrayList<>();
+        String status, change, genre;
+        int id;
 
-        if(!getStatus().equals(param_dev.getStatus()))
-            ret_desc.add(String.format("Status changed to: %s", param_dev.getStatus()));
+        change = resources.getString(R.string.changed_to);
 
-        if(!getGenre().equals(param_dev.getGenre()))
-            ret_desc.add(String.format("Genre changed to: %s", param_dev.getGenre()));
+        if(!getStatus().equals(param_dev.getStatus())) {
+            id = resources.getIdentifier(param_dev.getStatus(), "string", NotificationBroadcastReceiver.PACKAGE_NAME);
+            status = resources.getString(R.string.status);
+            ret_desc.add(String.format("%s %s: %s", status, change, id == 0 ? param_dev.getStatus() : resources.getString(id)));
+        }
 
-        if((getSong() == null && param_dev.getSong() != null) || (getSong() != null && !getSong().equals(param_dev.getSong())))
-            ret_desc.add(String.format("Song changed to: %s", param_dev.getSong()));
-
-        if(!getVolume().equals(param_dev.getVolume()))
-            ret_desc.add(String.format("Volume changed to: %s", param_dev.getVolume()));
+        if(!getGenre().equals(param_dev.getGenre())){
+            genre = resources.getString(R.string.genre);
+            ret_desc.add(String.format("%s %s: %s", genre, change, param_dev.getGenre()));
+        }
 
         return  ret_desc.toArray(new String[0]);
     }

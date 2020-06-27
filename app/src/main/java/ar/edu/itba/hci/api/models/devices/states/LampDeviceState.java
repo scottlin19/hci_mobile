@@ -1,5 +1,6 @@
 package ar.edu.itba.hci.api.models.devices.states;
 
+import android.content.res.Resources;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -9,6 +10,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+
+import ar.edu.itba.hci.MainActivity;
+import ar.edu.itba.hci.R;
+import ar.edu.itba.hci.api.notifications.NotificationBroadcastReceiver;
 
 public class LampDeviceState extends DeviceState {
     @SerializedName("status")
@@ -106,18 +111,29 @@ public class LampDeviceState extends DeviceState {
     }
 
     @Override
-    public String[] compare(DeviceState deviceState) {
+    public String[] compare(DeviceState deviceState, Resources resources) {
         LampDeviceState param_dev = (LampDeviceState) deviceState;
         ArrayList<String> ret_desc = new ArrayList<>();
+        String status, change, color, bright;
+        int id;
 
-        if(!getStatus().equals(param_dev.getStatus()))
-            ret_desc.add(String.format("Status changed to: %s", param_dev.getStatus()));
+        change = resources.getString(R.string.changed_to);
 
-        if(!getBrightness().equals(param_dev.getBrightness()))
-            ret_desc.add(String.format("Brightness changed to: %s", param_dev.getBrightness()));
+        if(!getStatus().equals(param_dev.getStatus())) {
+            id = resources.getIdentifier(param_dev.getStatus(), "string", NotificationBroadcastReceiver.PACKAGE_NAME);
+            status = resources.getString(R.string.status);
+            ret_desc.add(String.format("%s %s: %s", status, change, id == 0 ? param_dev.getStatus() : resources.getString(id)));
+        }
 
-        if(!getColor().equals(param_dev.getColor()))
-            ret_desc.add(String.format("Color changed to: %s", param_dev.getColor()));
+        if(!getBrightness().equals(param_dev.getBrightness())){
+            bright = resources.getString(R.string.brigthness);
+            ret_desc.add(String.format("%s %s: %s", bright, change, param_dev.getBrightness()));
+        }
+
+        if(!getColor().equals(param_dev.getColor())){
+            color = resources.getString(R.string.color);
+            ret_desc.add(String.format("%s %s: %s", color, change, param_dev.getColor()));
+        }
 
         return  ret_desc.toArray(new String[0]);
     }

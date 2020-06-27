@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.util.Log;
@@ -49,17 +50,7 @@ import ar.edu.itba.hci.api.models.devices.OvenDevice;
 import ar.edu.itba.hci.api.models.devices.SpeakerDevice;
 import ar.edu.itba.hci.api.models.devices.VacuumDevice;
 import ar.edu.itba.hci.api.models.devices.states.DeviceState;
-import ar.edu.itba.hci.database.wrapper.AcDeviceWrapper;
-import ar.edu.itba.hci.database.wrapper.AlarmDeviceWrapper;
-import ar.edu.itba.hci.database.wrapper.BlindsDeviceWrapper;
-import ar.edu.itba.hci.database.wrapper.DeviceWrapper;
-import ar.edu.itba.hci.database.wrapper.DoorDeviceWrapper;
-import ar.edu.itba.hci.database.wrapper.FaucetDeviceWrapper;
-import ar.edu.itba.hci.database.wrapper.FridgeDeviceWrapper;
-import ar.edu.itba.hci.database.wrapper.LampDeviceWrapper;
-import ar.edu.itba.hci.database.wrapper.OvenDeviceWrapper;
-import ar.edu.itba.hci.database.wrapper.SpeakerDeviceWrapper;
-import ar.edu.itba.hci.database.wrapper.VacuumDeviceWrapper;
+
 import ar.edu.itba.hci.ui.devices.DeviceDetailsActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -69,11 +60,12 @@ import retrofit2.Response;
 public class NotificationBroadcastReceiver extends BroadcastReceiver {
 
     public static final String CHANNEL_ID = "General notifications";
-
     public static final String DEVICE_NOTIFICATION = "ar.edu.itba.hci.DEVICE_NOTIFICATION";
+    public static String PACKAGE_NAME;
 
     private NotificationManager manager;
     private NotificationCompat.Builder builder;
+    private Resources resources;
 
 
     @Override
@@ -81,6 +73,7 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
 
         System.out.println("//////////////////////////////////////////////////// BROADCAST RECEIVER /////////////////////////////////////////////////");
         manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        PACKAGE_NAME = intent.getPackage();
 
         // Register the channel with the system (required by Android 8.0 - Oreo)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -91,10 +84,7 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
             channel.setDescription(description);
             manager.createNotificationChannel(channel);
         }
-
-
-
-
+        resources = context.getResources();
         notificationsDispatcher(context);
         //manager.notify(SPEAKER_NOTIFICATION_ID, builder.build());
     }
@@ -146,10 +136,17 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
     }
 
     public void notificationBuilder(Context context,@NonNull DeviceState savedDevice, @NonNull Device fetchedDevice, Class<? extends DeviceState> stateClass) {
-        String[] descriptions = stateClass.cast(savedDevice).compare(fetchedDevice.getState());
+        String[] descriptions = stateClass.cast(savedDevice).compare(fetchedDevice.getState(), resources);
+
+
         if (descriptions != null && descriptions.length != 0) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < descriptions.length; i++) {
+                sb.append(descriptions[i] + '\n');
+            }
+            sb.setLength(sb.length() - 1);
             Intent notificationIntent = new Intent(context, DeviceDetailsActivity.class);
-            notificationIntent.putExtra("device",fetchedDevice.getId());
+            notificationIntent.putExtra("device", fetchedDevice.getId());
             notificationIntent.setAction("dummy_action_" + fetchedDevice.getId());
 
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
@@ -161,18 +158,17 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
 
             // Set notification channel id (required by Android 8.0 - Oreo)
             builder = new NotificationCompat.Builder(context.getApplicationContext(), CHANNEL_ID)
-//                TODO: esto comentado habría que sacarlo, ya está contemplado en notificationBuilder
-
                     .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.appicon))
-                    .setContentIntent(contentIntent);
-            builder.setContentTitle(fetchedDevice.getName())
-                    .setSmallIcon(IconAdapter.getIntIcon(fetchedDevice.getMeta().getIcon()));
-            for (String desc : descriptions) {
-                builder.setContentText(desc);
-                manager.notify(fetchedDevice.getId().hashCode(), builder.build());
-            }
-        } else
+                    .setContentIntent(contentIntent)
+                    .setContentTitle(fetchedDevice.getName())
+                    .setSmallIcon(IconAdapter.getIntIcon(fetchedDevice.getMeta().getIcon()))
+                    .setAutoCancel(true)
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(sb));
+            manager.notify(fetchedDevice.getId().hashCode(), builder.build());
+
+
             Log.v("Notification", String.format("no changes on %s", fetchedDevice.getName()));
+        }
     }
 
     public void notificationsDispatcher(Context context) {
@@ -182,7 +178,7 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         Set<String> devicesJson = sharedPreferences.getStringSet("devices", null);
-        System.out.println("Devices json: " + devicesJson);
+      /*  System.out.println("Devices json: " + devicesJson);*/
         //System.out.println(String.format("Devices json size: %d", devicesJson.size()));
         List<Device> savedDevices = new ArrayList<>();
 
@@ -190,7 +186,7 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
         Gson gson = new Gson();
         if (devicesJson != null) {
             devicesJson.forEach(d -> {
-                System.out.println("Device particular:" + d);
+
                 Device device = getDeviceFromJson(d);
                 System.out.println(device);
                 savedDevices.add(device);
@@ -204,7 +200,7 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
                 public void onResponse(Call<Result<List<Device>>> call, Response<Result<List<Device>>> response) {
                     List<Device> fetchedDevices = response.body().getResult();
                     List<Device> auxList;
-                    System.out.println("FETCHED DEVICES: "+fetchedDevices);
+
 
                     //                fetchedDevices.stream().filter(d -> d.getMeta().getNotifStatus()).close();
                     // final Class<?> objectsType = state.getClass();
@@ -262,7 +258,7 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
                         } else
                             Log.e("Notification", "device not found!!");
                     }
-                    saveToSharedPreferences(context,fetchedDevices);
+                    SharedPreferencesHelper.saveToSharedPreferences(context,fetchedDevices);
                 }
 
                 @Override
@@ -274,7 +270,7 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
     }
 
 
-    private void saveToSharedPreferences(Context context,List<Device> deviceList){
+/*    private void saveToSharedPreferences(Context context,List<Device> deviceList){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
@@ -287,7 +283,7 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
 
         editor.putStringSet("devices", devicesSet);
         editor.apply();
-    }
+    }*/
 
 
 }
