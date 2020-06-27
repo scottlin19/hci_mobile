@@ -2,7 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ar.edu.itba.hci">
 
-    <uses-feature android:name="android.hardware.camera2"/>
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -15,21 +19,33 @@
         android:roundIcon="@mipmap/appicon_round"
         android:supportsRtl="true"
         android:theme="@style/LightTheme"
+        android:installLocation="auto"
        >
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <activity
             android:name=".ui.pastActions.PastActionsActivity"
             android:label="@string/title_activity_past_actions"
+            android:launchMode="singleTask"
             android:theme="@style/LightTheme.NoActionBar" />
         <activity
             android:name=".ui.devices.DeviceDetailsActivity"
-            android:launchMode="singleTop"
-
+            android:launchMode="singleTask"
+            android:parentActivityName=".MainActivity"
               >
 
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-        <!--    <meta-data
+
+            <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ar.edu.itba.hci.MainActivity"/>-->
+                android:value="ar.edu.itba.hci.MainActivity"/>
         </activity>
         <activity
             android:name=".ui.rooms.RoomScreen"
@@ -61,6 +77,9 @@
                 <action android:name="ar.edu.itba.hci.DEVICE_NOTIFICATION" />
             </intent-filter>
         </receiver>
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="barcode" />
     </application>
 
 </manifest>

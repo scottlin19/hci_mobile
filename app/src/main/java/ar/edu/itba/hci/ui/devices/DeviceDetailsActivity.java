@@ -8,15 +8,21 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import ar.edu.itba.hci.MainActivity;
 import ar.edu.itba.hci.R;
@@ -72,7 +78,7 @@ public class DeviceDetailsActivity extends AppCompatActivity {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     String message = "Device updated";
-                    Toast.makeText(DeviceDetailsActivity.this, message, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(DeviceDetailsActivity.this, message, Toast.LENGTH_LONG).show();
                     abortBroadcast();
 
                 }
@@ -253,5 +259,27 @@ public class DeviceDetailsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        ImageButton sstHelp = findViewById(R.id.sst_help_btn);
+        sstHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String device_type = getStringResourceByName(device.getType().getName());
+                String device_msg = getStringResourceByName(device.getType().getName().concat("SSTCommands"));
+                new MaterialAlertDialogBuilder(DeviceDetailsActivity.this)
+                        .setTitle(getResources().getString(R.string.sstDialogTitle,device_type))
+                        .setMessage(device_msg)
+                        .setPositiveButton("Ok",null)
+                        .show();
+            }
+        });
 
+    }
+
+    private String getStringResourceByName(String aString) {
+        int resId = getResources().getIdentifier(aString, "string", this.getPackageName());
+        return getString(resId);
+    }
 }

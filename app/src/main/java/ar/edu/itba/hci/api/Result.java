@@ -3,8 +3,6 @@ package ar.edu.itba.hci.api;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class Result<T> {
     @SerializedName("result")
     @Expose

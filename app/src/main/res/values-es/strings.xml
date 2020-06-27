@@ -58,6 +58,7 @@
     <string name="vacuumMode">aspirar</string>
     <string name="sstLocation">Cambiar la ubicación %1s</string>
     <string name="noRoomSelected">no hay habitación asignada</string>
+    <string name="vacuumSSTCommands">Prender\nApagar\nAcoplar\nEstablecer el modo [trapear/aspirar]\nCambiar la ubicación [habitación]</string>
 
 
     <!-- ALARM-->
@@ -71,7 +72,9 @@
     <string name="securityCode">Codigo de seguridad</string>
     <string name="newSecurityCode">Nuevo codigo de seguridad</string>
     <string name="change">CAMBIAR</string>
-
+    <string name="alarmSSTCommands">Modo presente\nModo ausente\nDesarmar\n(Primero debe ingresar el código de seguridad)</string>
+    <string name="wrongcode">Código erróneo, inténtelo nuevamente</string>
+    <string name="missingcode">Por favor, primero inserte el código de seguridad</string>
     <!--SPEAKER-->
     <string name="setVolume">Cambiar volumen</string>
     <string name="play">Reproducir</string>
@@ -88,6 +91,9 @@
     <string name="latina">Latina</string>
     <string name="sstVolume">establecer el volumen %1$d</string>
     <string name="sstGenre">establecer el género %1$s</string>
+    <string name="speakerSSTCommands">Establecer el género [clásica/country/danza/pop/latina]\nEstablecer el volumen [0–100]\nReproducir\nResumir\nParar\nPróxima canción\nCanción anterior</string>
+
+    <string name="sstDialogTitle">%1$s Comandos Voz a Texto</string>
 
 
     <!--OVEN-->
@@ -120,13 +126,25 @@
     <string name="grilloffsst">parrilla apagada</string>
     <string name="convectionoffsst">convección apagada</string>
     <string name="convectionnormalsst">convección normal</string>
-    <string name="convectionecosst">convección grande</string>
+    <string name="convectionecosst">convección eco</string>
+    <string name="ovenSSTCommands">Encender\nApagar\nEstablecer la temperatura [90-200] grados\nCalor convencional\nCalor abajo\nCalor arriba\nParrilla grande\nParrilla eco\nParrilla apagada\nConvección normal\nConvección eco\nConvección apagada</string>
+
     <!-- FAUCET -->
-    <string name="open">Abrir</string>
-    <string name="close">Cerrar</string>
+    <string name="open">abrir</string>
+    <string name="close">cerrar</string>
     <string name="dispense">Dispensar</string>
     <string name="dispensesst">dispensar</string>
     <string name="dispensing">Dispensando..</string>
+    <string name="faucetSSTCommands">Abrir\nCerrar\nDispensar [0-100] [unidades]</string>
+    <string name="millis">mililitros</string>
+    <string name="centis">centilitros</string>
+    <string name="decis">decilitros</string>
+    <string name="liters">litros</string>
+    <string name="decas">decalitros</string>
+    <string name="hectos">hectolitros</string>
+    <string name="kilos">kilolitros</string>
+    <string name="dispenseamountsst">dispensar %1$d %2$s</string>
+
     <!--BLINDS-->
     <string name="setLevel">Fijar nivel</string>
     <string name="closed">Cerrado</string>
@@ -137,6 +155,7 @@
     <string name="curr_level">Nivel actual</string>
     <string name="curr_status">Estado actual</string>
     <string name="setlevelsst">fijar nivel a %1$d</string>
+    <string name="blindsSSTCommands">Abrir\nCerrar\nFijar nivel a [0-100]</string>
     <!--LAMP-->
     <string name="setColor">Cambiar color</string>
     <string name="setBrightness">Fijar brillo</string>
@@ -150,7 +169,7 @@
     <string name="gamer">violeta</string>
     <string name="sstColor">establecer el color %1$s</string>
     <string name="sstBrightness">establecer el brillo %1$d</string>
-
+    <string name="lampSSTCommands">Prender\nApagar\nEstablecer el color [rojo/azul/verde/amarillo/violeta/blanco]\nEstablecer el brillo [0–100]</string>
 
     <!--AC-->
     <string name="setVerticalSwing">Fijar desplazamiento vertical</string>
@@ -174,10 +193,12 @@
     <string name="sstHorizSwingAuto">establecer el desplazamiento horizontal automático</string>
     <string name="sstFanSpeed">establecer la velocidad del ventilador %1$d%%</string>
     <string name="sstFanSpeedAuto">establecer la velocidad del ventilador automático</string>
+    <string name="acSSTCommands">Prender\nApagar\nEstablecer la temperatura [18–38] grados\nEstablecer el desplazamiento vertical automático\nestablecer el desplazamiento vertical [22/45/67/90] grados\nEstablecer el desplazamiento horizontal automático\nEstablecer el desplazamiento horizontal [-90/-45/0/45/90] grados\nEstablecer la velocidad del ventilador automático\nEstablecer la velocidad del ventilador [25/50/75/100] porciento</string>
 
     <!--DOOR-->
     <string name="lock">Bloquear</string>
     <string name="unlock">Desbloquear</string>
+    <string name="doorSSTCommands">Abrir\nCerrar\nBloquear\nDesbloquear</string>
 
 
     <!--REFRIGERATOR-->
@@ -189,6 +210,7 @@
     <string name="vacation">vacación</string>
     <string name="sstFreezerTemperature">Establecer la temperatura del freezer %1$d grados</string>
     <string name="sstFreezerTemperatureMinus">Establecer la temperatura del freezer menos %1$d grados</string>
+    <string name="refrigeratorSSTCommands">Establecer la temperatura del freezer [–20 a –8] grados\nEstablecer la temperatura [2–8] grados\nEstablecer el modo [defecto/vacación/fiesta]</string>
 
 
     <string name="device">Dispositivo</string>
@@ -204,4 +226,9 @@
 
     <string name="qr_title">Buscar dispositivos</string>
     <string name="qr_toast">Por favor saque una foto del código QR del dispositivo</string>
+    <string name="qr_device_not_found_1">Dispositivo con ID:</string>
+    <string name="qr_device_not_found_2">no fue encontrado.</string>
+    <string name="qr_scan_failed">No se encontró un código QR, por favor intente de nuevo.</string>
+    <string name="qr_wait">Esperando que el detector de código de barras sea operacional ...</string>
+    <string name="error_message">Algo ha salido mal :(</string>
 </resources>

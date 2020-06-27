@@ -131,7 +131,7 @@ public class OvenActions extends Fragment {
                     msg = "Insufficient permissions";
                     break;
                 default:
-                    msg = "Wait for speech recognition to end " + error;
+                    msg = "Wait for speech recognition to end ";
                     break;
             }
             System.out.println(msg);
@@ -144,7 +144,7 @@ public class OvenActions extends Fragment {
             speechButton.setColorFilter(ContextCompat.getColor(getContext(),R.color.textColorPrimary));
             ArrayList<String> result = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
             String newStatus = null;
-
+            System.out.println(result.get(0).toLowerCase());
             if(result != null && result.size() > 0) {
                 String action = result.get(0).toLowerCase();
                 if(action.equals(getString(R.string.turnonsst))){
@@ -183,7 +183,7 @@ public class OvenActions extends Fragment {
                     return;
                 }
 
-                if (action == "turnOn" || action == "turnOff") {
+                if (action.equals("turnOn") || action.equals("turnOff")) {
                     String finalNewStatus = newStatus;
                     ApiClient.getInstance().executeAction(device.getId(), action, new Object[0], new Callback<Result<Object>>() {
                         @Override
@@ -467,4 +467,9 @@ public class OvenActions extends Fragment {
         });
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        speechRecognizer.destroy();
+    }
 }

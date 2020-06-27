@@ -1,15 +1,14 @@
 package ar.edu.itba.hci.api;
+
+import androidx.annotation.Nullable;
+
 import java.util.List;
-import java.util.Objects;
 
 import ar.edu.itba.hci.api.models.Device;
 import ar.edu.itba.hci.api.models.PastAction;
 import ar.edu.itba.hci.api.models.Room;
 import ar.edu.itba.hci.api.models.Routine;
-import ar.edu.itba.hci.api.models.devices.states.DeviceState;
-import ar.edu.itba.hci.api.models.devices.states.DoorDeviceState;
 import ar.edu.itba.hci.api.models.devices.states.SpeakerDeviceState;
-import ar.edu.itba.hci.api.models.devices.states.SpeakerSong;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -49,6 +48,9 @@ public interface ApiService {
 
     @GET("devices/logs/limit/{limit}/offset/{offset}")
     Call<Result<List<PastAction>>> getLogs(@Path("limit") Integer limit, @Path("offset") Integer offset);
+
+    @GET("devices/logs/limit/null/offset/null")
+    Call<Result<List<PastAction>>> getLogs();
 
 
     @PUT("devices/{deviceId}/{actionName}")

@@ -2,19 +2,13 @@ package ar.edu.itba.hci.api.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import androidx.room.Embedded;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
-
-import ar.edu.itba.hci.R;
 
 public class Room implements Parcelable {
 

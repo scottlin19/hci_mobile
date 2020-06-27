@@ -5,13 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
 import android.os.Handler;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -30,19 +23,26 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import ar.edu.itba.hci.R;
 import ar.edu.itba.hci.api.ApiClient;
 import ar.edu.itba.hci.api.Result;
 import ar.edu.itba.hci.api.models.Device;
 import ar.edu.itba.hci.api.models.devices.states.FaucetDeviceState;
-import ar.edu.itba.hci.api.models.devices.states.OvenDeviceState;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,7 +59,7 @@ public class FaucetActions extends Fragment {
     private static final String ARG_PARAM = "device";
 
     // TODO: Rename and change types of parameters
-    final String[] units = {"ml","cl","dl","l","dal","hl","kl"};
+    final String[] units = {"ml", "cl", "dl", "l", "dal", "hl", "kl"};
     private Device<FaucetDeviceState> device;
     private FloatingActionButton speechButton;
     private FaucetDeviceState state;
@@ -76,10 +76,10 @@ public class FaucetActions extends Fragment {
     private TextView unitText;
     private SpeechRecognizer speechRecognizer;
     private TextView qtyText;
+
     public FaucetActions() {
         // Required empty public constructor
     }
-
 
 
     private void startRecognizer() {
@@ -89,7 +89,7 @@ public class FaucetActions extends Fragment {
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
         intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3);
-        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS,3000);
+        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 3000);
         speechButton.setColorFilter(Color.RED);
         speechRecognizer.startListening(intent);
 
@@ -139,7 +139,7 @@ public class FaucetActions extends Fragment {
                     msg = "Insufficient permissions";
                     break;
                 default:
-                    msg = "Wait for speech recognition to end " + error;
+                    msg = "Wait for speech recognition to end ";
                     break;
             }
             System.out.println(msg);
@@ -154,26 +154,66 @@ public class FaucetActions extends Fragment {
             String newStatus = null;
             if (result != null && result.size() > 0) {
                 String action = result.get(0).toLowerCase();
-                if(action.equals(getString(R.string.open))){
+                System.out.println(action);
+                if (action.equals(getString(R.string.open))) {
+                    action = "open";
                     newStatus = "opened";
-                }else if(action.equals(getString(R.string.close))){
+                } else if (action.equals(getString(R.string.close))) {
+                    action = "close";
                     newStatus = "closed";
-                }else if(action.equals(getString(R.string.dispensesst))){
-                    dispenseButton.performClick();
+                }
+                if(newStatus != null){
+                    String finalNewStatus = newStatus;
+                    ApiClient.getInstance().executeAction(device.getId(), action, new Object[0], new Callback<Result<Object>>() {
+                        @Override
+                        public void onResponse(Call<Result<Object>> call, Response<Result<Object>> response){
+                            state.setStatus(finalNewStatus);
+                            viewHandler();
+                        }
+
+                        @Override
+                        public void onFailure(Call<Result<Object>> call, Throwable t){
+                            Log.e("Switch state err", t.getLocalizedMessage());
+                        }
+                    });
                     return;
                 }
-                String finalNewStatus = newStatus;
-                ApiClient.getInstance().executeAction(device.getId(), action, new Object[0], new Callback<Result<Object>>() {
-                    @Override
-                    public void onResponse(Call<Result<Object>> call, Response<Result<Object>> response) {
-                        state.setStatus(finalNewStatus);
-                        viewHandler();
+                Map<String, String> unitMap = new HashMap<String, String>() {
+                    {
+                        put(getString(R.string.millis), "ml");
+                        put(getString(R.string.centis), "cl");
+                        put(getString(R.string.decis), "dl");
+                        put(getString(R.string.liters), "l");
+                        put(getString(R.string.decas), "dal");
+                        put(getString(R.string.hectos), "hl");
+                        put(getString(R.string.kilos), "kl");
                     }
+                };
+                String[] unitNames = {getString(R.string.millis), getString(R.string.centis), getString(R.string.decis), getString(R.string.liters), getString(R.string.decas), getString(R.string.hectos), getString(R.string.kilos)};
+                for (int i = 0; i <= 100; i++) {
+                    for (int j = 0; j < 7; j++) {
+                        if (action.equals(getResources().getString(R.string.dispenseamountsst, i, unitNames[j]))) {
+                            if(dispenseButton.getVisibility() == View.VISIBLE) {
+                                Object[] params = {i, unitMap.get(unitNames[j])};
+                                ApiClient.getInstance().executeAction(device.getId(), "dispense", params, new Callback<Result<Object>>() {
+                                    @Override
+                                    public void onResponse(Call<Result<Object>> call, Response<Result<Object>> response) {
+                                        if (response.isSuccessful()) {
+                                            return;
+                                        }
+                                    }
 
-                    @Override
-                    public void onFailure(Call<Result<Object>> call, Throwable t) {
+                                    @Override
+                                    public void onFailure(Call<Result<Object>> call, Throwable t) {
+                                        Log.e("DISPENSE ERROR", "Errror trying to dispense");
+                                    }
+                                });
+                            }else {
+                                Toast.makeText(getContext(), "Wrong security code, please try again", Toast.LENGTH_LONG).show();
+                            }
+                        }
                     }
-                });
+                }
             }
         }
 
@@ -187,6 +227,9 @@ public class FaucetActions extends Fragment {
 
         }
     }
+
+
+
 
         public static FaucetActions newInstance(Device param1) {
         FaucetActions fragment = new FaucetActions();
@@ -249,6 +292,7 @@ public class FaucetActions extends Fragment {
     public void onPause() {
         super.onPause();
         this.stateHandler.removeCallbacksAndMessages(null);
+        speechRecognizer.destroy();
     }
 
     @Override
@@ -318,7 +362,7 @@ public class FaucetActions extends Fragment {
         View root = inflater.inflate(R.layout.fragment_faucet_actions, container, false);
 
         stateHandler = new Handler();
-        int delay = 500;
+        int delay = 1000;
         stateHandler.post(new Runnable(){
             @Override
             public void run(){
@@ -377,4 +421,6 @@ public class FaucetActions extends Fragment {
         });
         return root;
     }
+
+
 }

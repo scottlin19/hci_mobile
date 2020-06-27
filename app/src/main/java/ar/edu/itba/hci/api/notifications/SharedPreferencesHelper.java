@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import ar.edu.itba.hci.api.ApiClient;
 import ar.edu.itba.hci.api.Result;
@@ -48,7 +47,7 @@ public class SharedPreferencesHelper {
                 if (response.isSuccessful()) {
                     List<Device> devicesList = new ArrayList<>();
 
-                    System.out.println("DEVICES "+response.body().getResult());
+                    //System.out.println("DEVICES "+response.body().getResult());
                     response.body().getResult().forEach(device->{
                         Boolean notif;
                         if((notif = device.getMeta().getNotif_status()) == null){

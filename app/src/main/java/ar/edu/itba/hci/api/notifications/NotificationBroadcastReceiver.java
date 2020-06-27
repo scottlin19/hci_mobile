@@ -4,7 +4,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
-import android.bluetooth.BluetoothClass;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +14,6 @@ import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.NavUtils;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
@@ -26,15 +24,12 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import ar.edu.itba.hci.MainActivity;
 import ar.edu.itba.hci.R;
 import ar.edu.itba.hci.api.ApiClient;
-import ar.edu.itba.hci.api.DeviceDeserializer;
 import ar.edu.itba.hci.api.Result;
 import ar.edu.itba.hci.api.models.Device;
 import ar.edu.itba.hci.api.models.DeviceType;
@@ -50,7 +45,7 @@ import ar.edu.itba.hci.api.models.devices.OvenDevice;
 import ar.edu.itba.hci.api.models.devices.SpeakerDevice;
 import ar.edu.itba.hci.api.models.devices.VacuumDevice;
 import ar.edu.itba.hci.api.models.devices.states.DeviceState;
-
+import ar.edu.itba.hci.api.models.devices.states.VacuumDeviceState;
 import ar.edu.itba.hci.ui.devices.DeviceDetailsActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -164,6 +159,15 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
                     .setSmallIcon(IconAdapter.getIntIcon(fetchedDevice.getMeta().getIcon()))
                     .setAutoCancel(true)
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(sb));
+
+//            if(descriptions != null && stateClass.equals(VacuumDeviceState.class)){
+//                for(int i = 0 ; i < descriptions.length ; i++){
+//                    if(descriptions[i].contains(resources.getString(R.string.low_battery))){
+//                        Intent rechargeIntent = new Intent(context,DeviceDetailsActivity.class);
+//                        builder.addAction(R.drawable.ic_baseline_flash_on_24,resources.getString(R.string.recharge),)
+//                    }
+//                }
+//            }
             manager.notify(fetchedDevice.getId().hashCode(), builder.build());
 
 
@@ -173,13 +177,9 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
 
     public void notificationsDispatcher(Context context) {
 
-        //TODO: get saved devices from the local database
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-        SharedPreferences.Editor editor = sharedPreferences.edit();
 
         Set<String> devicesJson = sharedPreferences.getStringSet("devices", null);
-      /*  System.out.println("Devices json: " + devicesJson);*/
-        //System.out.println(String.format("Devices json size: %d", devicesJson.size()));
         List<Device> savedDevices = new ArrayList<>();
 
 
@@ -201,10 +201,6 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
                     List<Device> fetchedDevices = response.body().getResult();
                     List<Device> auxList;
 
-
-                    //                fetchedDevices.stream().filter(d -> d.getMeta().getNotifStatus()).close();
-                    // final Class<?> objectsType = state.getClass();
-
                     for (Device savedDevice : savedDevices) {
                         auxList = fetchedDevices.stream().filter(d -> d.getId().equals(savedDevice.getId())).collect(Collectors.toList());
                         if (auxList.size() != 0) {
@@ -214,45 +210,36 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
                             switch (savedDevice.getType().getId()) {
                                 case "go46xmbqeomjrsjr":
                                     devState = ((LampDevice) savedDevice).getState();
-                                    stateClass = ((LampDevice) savedDevice).getState().getClass();
                                     break;
                                 case "c89b94e8581855bc":
                                     devState = ((SpeakerDevice) savedDevice).getState();
-                                    stateClass = ((SpeakerDevice) savedDevice).getState().getClass();
                                     break;
                                 case "ofglvd9gqx8yfl3l":
                                     devState = ((VacuumDevice) savedDevice).getState();
-                                    stateClass = ((VacuumDevice) savedDevice).getState().getClass();
                                     break;
                                 case "rnizejqr2di0okho":
                                     devState = ((FridgeDevice) savedDevice).getState();
-                                    stateClass = ((FridgeDevice) savedDevice).getState().getClass();
                                     break;
                                 case "im77xxyulpegfmv8":
                                     devState = ((OvenDevice) savedDevice).getState();
-                                    stateClass = ((OvenDevice) savedDevice).getState().getClass();
                                     break;
                                 case "dbrlsh7o5sn8ur4i":
                                     devState = ((FaucetDevice) savedDevice).getState();
-                                    stateClass = ((FaucetDevice) savedDevice).getState().getClass();
                                     break;
                                 case "eu0v2xgprrhhg41g":
                                     devState = ((BlindsDevice) savedDevice).getState();
-                                    stateClass = ((BlindsDevice) savedDevice).getState().getClass();
                                     break;
                                 case "li6cbv5sdlatti0j":
                                     devState = ((AcDevice) savedDevice).getState();
-                                    stateClass = ((AcDevice) savedDevice).getState().getClass();
                                     break;
                                 case "mxztsyjzsrq7iaqc":
                                     devState = ((AlarmDevice) savedDevice).getState();
-                                    stateClass = ((AlarmDevice) savedDevice).getState().getClass();
                                     break;
                                 case "lsf78ly0eqrjbz91":
                                     devState = ((DoorDevice) savedDevice).getState();
-                                    stateClass = ((DoorDevice) savedDevice).getState().getClass();
                                     break;
                             }
+                            stateClass = devState.getClass();
 
                             notificationBuilder(context,devState, auxList.get(0), stateClass);
                         } else

@@ -1,26 +1,10 @@
 package ar.edu.itba.hci.ui.devices.actions;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentContainerView;
-
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -32,6 +16,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -39,7 +29,6 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -390,8 +379,8 @@ public class AcActions extends Fragment {
         private String[] sstHSwings = {
                 getResources().getString(R.string.sstHorizSwingAuto).toLowerCase(),
                 getResources().getString(R.string.sstHorizSwingSymbol,-90).toLowerCase(),
-                getResources().getString(R.string.sstHorizSwingSymbol,-45).toLowerCase(),
                 getResources().getString(R.string.sstHorizSwing,-90).toLowerCase(),
+                getResources().getString(R.string.sstHorizSwingSymbol,-45).toLowerCase(),
                 getResources().getString(R.string.sstHorizSwing,-45).toLowerCase(),
                 getResources().getString(R.string.sstHorizSwing,0).toLowerCase(),
                 getResources().getString(R.string.sstHorizSwing,45).toLowerCase(),
@@ -460,22 +449,43 @@ public class AcActions extends Fragment {
             ArrayList<String> data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
             sttButton.setColorFilter(ContextCompat.getColor(getContext(),R.color.textColorPrimary));
             System.out.println("data: "+ data.get(0));
-//            Arrays.asList(sstFSpeeds).forEach(v -> System.out.println(v));
             if(!compareSSTStatus(data.get(0).toLowerCase(),sstStatus)
                     && !compareSSTTemp(data.get(0).toLowerCase())
                     && !compareSSTButton(data.get(0).toLowerCase(),sstModes,mode_btn,MODEAMOUNT)
                     && !compareSSTButton(data.get(0).toLowerCase(),sstVSwings,vs_btn,VSAMOUNT)
-                    && !compareSSTButton(data.get(0).toLowerCase(),sstHSwings,hs_btn,sstHSwings.length)
+                    && !compareSSTHSButton(data.get(0).toLowerCase())
                     && !compareSSTButton(data.get(0).toLowerCase(),sstFSpeeds,fs_btn,FSAMOUNT)){
                 Toast.makeText(getContext(),getResources().getString(R.string.sstNotRecognized), Toast.LENGTH_SHORT).show();
             }
-            Toast.makeText(getContext(),getResources().getString(R.string.sstSuccess),Toast.LENGTH_SHORT).show();
+            else {
+                Toast.makeText(getContext(), getResources().getString(R.string.sstSuccess), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        private boolean compareSSTHSButton(String toFind) {
+            for(int i = 0; i < sstHSwings.length; i++){
+                if(toFind.equals(sstHSwings[i])){
+                    if(i == 0){
+                        hs_btn[0].callOnClick();
+                    }
+                    else if(i == 1 || i == 2) {
+                        hs_btn[1].callOnClick();
+                    }
+                    else if(i == 3 || i == 4){
+                        hs_btn[2].callOnClick();
+                    }
+                    else{
+                        hs_btn[i - 2].callOnClick();
+                    }
+                    return true;
+                }
+            }
+            return false;
         }
 
         private boolean compareSSTTemp(String toFind) {
             for(int i = 18; i <= 38; i++){
                 if(toFind.equals(getResources().getString(R.string.sstTemperature,i).toLowerCase())){
-                    System.out.println(getResources().getString(R.string.sstTemperature,i).toLowerCase());
                     slider.setValue(i);
                     slider.callOnClick();
                     return true;

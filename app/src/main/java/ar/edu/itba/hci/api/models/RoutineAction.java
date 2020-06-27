@@ -1,15 +1,9 @@
 package ar.edu.itba.hci.api.models;
 
-import android.content.res.Resources;
-
-import androidx.annotation.NonNull;
-
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import ar.edu.itba.hci.MainActivity;
-import ar.edu.itba.hci.R;
+import java.util.List;
 
 public class RoutineAction {
 

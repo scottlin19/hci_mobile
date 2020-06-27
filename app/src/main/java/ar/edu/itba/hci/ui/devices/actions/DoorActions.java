@@ -96,7 +96,7 @@ public class DoorActions extends Fragment {
         this.speechRecognizer = SpeechRecognizer.createSpeechRecognizer(getContext());
         this.speechRecognizer.setRecognitionListener(new DoorRecognitionListener());
         sttButton = getActivity().findViewById(R.id.stt_button);
-        if(sttButton != null) {
+        if (sttButton != null) {
             sttButton.setOnClickListener(v -> {
                 if (ContextCompat.checkSelfPermission(getContext(),
                         Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
@@ -116,22 +116,21 @@ public class DoorActions extends Fragment {
         updateDevice();
         switchStatus.setOnCheckedChangeListener((buttonView, isChecked) -> {
             String action;
-            if(isChecked) {
+            if (isChecked) {
                 action = "close";
-            }
-            else {
+            } else {
                 action = "open";
 
             }
 
             ApiClient.getInstance().executeAction(device.getId(), action, new Object[0], new Callback<Result<Object>>() {
                 @Override
-                public void onResponse(@NonNull Call<Result<Object>> call,@NonNull Response<Result<Object>> response) {
+                public void onResponse(@NonNull Call<Result<Object>> call, @NonNull Response<Result<Object>> response) {
                     updateDevice();
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<Result<Object>> call,@NonNull Throwable t) {
+                public void onFailure(@NonNull Call<Result<Object>> call, @NonNull Throwable t) {
                     Log.e("switch status", t.getLocalizedMessage());
                 }
             });
@@ -139,21 +138,20 @@ public class DoorActions extends Fragment {
 
         switchLock.setOnCheckedChangeListener((buttonView, isChecked) -> {
             String action;
-            if(isChecked) {
+            if (isChecked) {
                 action = "lock";
-            }
-            else {
+            } else {
                 action = "unlock";
             }
 
             ApiClient.getInstance().executeAction(device.getId(), action, new Object[0], new Callback<Result<Object>>() {
                 @Override
-                public void onResponse(@NonNull Call<Result<Object>> call,@NonNull Response<Result<Object>> response) {
+                public void onResponse(@NonNull Call<Result<Object>> call, @NonNull Response<Result<Object>> response) {
                     updateDevice();
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<Result<Object>> call,@NonNull Throwable t) {
+                public void onFailure(@NonNull Call<Result<Object>> call, @NonNull Throwable t) {
                     Log.e("switch lock", t.getLocalizedMessage());
                 }
             });
@@ -161,21 +159,19 @@ public class DoorActions extends Fragment {
     }
 
     public void viewHandler() {
-        if(state == null) return;
-        if(state.getStatus().equals("closed")) {
+        if (state == null) return;
+        if (state.getStatus().equals("closed")) {
             switchStatus.setChecked(true);
             statusText.setText(getResources().getString(R.string.closed));
-        }
-        else {
+        } else {
             switchStatus.setChecked(false);
             statusText.setText(getResources().getString(R.string.opened));
         }
 
-        if(state.getLock().equals("locked")) {
+        if (state.getLock().equals("locked")) {
             switchLock.setChecked(true);
             lockImg.setImageResource(R.drawable.ic_outline_lock_24);
-        }
-        else {
+        } else {
             switchLock.setChecked(false);
             lockImg.setImageResource(R.drawable.ic_outline_lock_open_24);
         }
@@ -184,7 +180,7 @@ public class DoorActions extends Fragment {
     public void updateDevice() {
         ApiClient.getInstance().getDevice(device.getId(), new Callback<Result<Device>>() {
             @Override
-            public void onResponse(@NonNull Call<Result<Device>> call,@NonNull Response<Result<Device>> response) {
+            public void onResponse(@NonNull Call<Result<Device>> call, @NonNull Response<Result<Device>> response) {
                 device = response.body().getResult();
                 state = (DoorDeviceState) device.getState();
                 viewHandler();
@@ -196,6 +192,7 @@ public class DoorActions extends Fragment {
             }
         });
     }
+
     private void startRecognizer() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE,
@@ -203,7 +200,7 @@ public class DoorActions extends Fragment {
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
         intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3);
-        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS,3000);
+        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 3000);
         sttButton.setColorFilter(Color.RED);
         speechRecognizer.startListening(intent);
     }
@@ -214,7 +211,7 @@ public class DoorActions extends Fragment {
         speechRecognizer.destroy();
     }
 
-    private class DoorRecognitionListener implements RecognitionListener{
+    private class DoorRecognitionListener implements RecognitionListener {
 
         private String[] sstStatus = {
                 getResources().getString(R.string.close).toLowerCase(),
@@ -271,7 +268,7 @@ public class DoorActions extends Fragment {
                     break;
             }
             System.out.println(msg);
-            sttButton.setColorFilter(ContextCompat.getColor(getContext(),R.color.textColorPrimary));
+            sttButton.setColorFilter(ContextCompat.getColor(getContext(), R.color.textColorPrimary));
             Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
         }
 
@@ -279,23 +276,22 @@ public class DoorActions extends Fragment {
         public void onResults(Bundle results) {
             Log.d(TAG, "onResults " + results);
             ArrayList<String> data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-            sttButton.setColorFilter(ContextCompat.getColor(getContext(),R.color.textColorPrimary));
+            sttButton.setColorFilter(ContextCompat.getColor(getContext(), R.color.textColorPrimary));
             String lower = data.get(0).toLowerCase();
             System.out.println(lower);
-            if(!compareSwitch(lower,sstStatus,switchStatus) && !compareSwitch(lower,sstLock,switchLock)){
-                Toast.makeText(getContext(),getResources().getString(R.string.sstNotRecognized), Toast.LENGTH_SHORT).show();
-            }
-            else{
+            if (!compareSwitch(lower, sstStatus, switchStatus) && !compareSwitch(lower, sstLock, switchLock)) {
+                Toast.makeText(getContext(), getResources().getString(R.string.sstNotRecognized), Toast.LENGTH_SHORT).show();
+            } else {
                 Toast.makeText(getContext(), getResources().getString(R.string.sstSuccess), Toast.LENGTH_SHORT).show();
 
             }
 
         }
 
-        private boolean compareSwitch(String toFind, String[] sstStrings,SwitchMaterial s) {
-            for(int i = 0 ; i < 2; i ++){
-                if(toFind.equals(sstStrings[i])){
-                    if((!s.isChecked() && i == 0) || (s.isChecked() && i == 1)) {
+        private boolean compareSwitch(String toFind, String[] sstStrings, SwitchMaterial s) {
+            for (int i = 0; i < 2; i++) {
+                if (toFind.equals(sstStrings[i])) {
+                    if ((!s.isChecked() && i == 0) || (s.isChecked() && i == 1)) {
                         s.performClick();
                     }
                     return true;

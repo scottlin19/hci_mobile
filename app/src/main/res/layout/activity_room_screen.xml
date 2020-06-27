@@ -23,7 +23,7 @@
             app:contentScrim="@color/colorPrimaryDark"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:statusBarScrim="@color/colorPrimaryDark"
-            app:toolbarId="@+id/device_toolbar">
+            app:toolbarId="@+id/device_details_toolbar">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/room_screen_toolbar"

@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import ar.edu.itba.hci.api.ApiClient;
 import ar.edu.itba.hci.api.Result;
@@ -22,7 +21,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PastActionsViewModel extends ViewModel {
-    private final Integer LIMIT = 1000;
+    private final Integer LIMIT = 10000;
     private final Integer OFFSET = 0;
     MutableLiveData<List<PastAction>> actionsList;
     MutableLiveData<List<Device>> deviceList;
@@ -42,12 +41,12 @@ public class PastActionsViewModel extends ViewModel {
                 if (response.isSuccessful()) {
                     List<PastAction> result = response.body().getResult();
                     if (result != null) {
-                        System.out.println("PAST ACTIONS: "+result);
+                        System.out.println("PAST ACTIONS: " + result);
                         filterActions(result);
-                        System.out.println("FILTERED PAST ACTIONS: "+result);
+                        System.out.println("FILTERED PAST ACTIONS: " + result);
                     }
                 } else {
-                    Log.e("Past Actions response", response.errorBody().toString());
+                    Log.e("Past Actions response", response.message());
                 }
             }
 
@@ -57,6 +56,7 @@ public class PastActionsViewModel extends ViewModel {
             }
         });
     }
+
     @SuppressLint("DefaultLocale")
     private void filterActions(List<PastAction> rawActions) {
         System.out.println(String.format("raw size: %d", rawActions.size()));
@@ -64,20 +64,19 @@ public class PastActionsViewModel extends ViewModel {
 
             @Override
             public void onResponse(Call<Result<List<Device>>> call, Response<Result<List<Device>>> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     List<PastAction> filteredActions = new ArrayList<>();
                     List<Device> devices = response.body().getResult();
                     deviceList.setValue(devices);
 
-                    for(Device d : devices) {
+                    for (Device d : devices) {
                         filteredActions.addAll(rawActions.stream().filter(pa -> pa.getDeviceId().equals(d.getId())).collect(Collectors.toList()));
                     }
                     filteredActions.sort(Comparator.reverseOrder());
                     actionsList.setValue(filteredActions);
                     System.out.println(String.format("filtered size: %d", filteredActions.size()));
 
-                }
-                else {
+                } else {
                     Log.e("Filter Actions", response.errorBody().toString());
                 }
             }
@@ -89,9 +88,13 @@ public class PastActionsViewModel extends ViewModel {
         });
     }
 
-    public LiveData<List<PastAction>> getActions(){ return actionsList; }
+    public LiveData<List<PastAction>> getActions() {
+        return actionsList;
+    }
 
-    public LiveData<List<Device>> getDevices() { return deviceList; }
+    public LiveData<List<Device>> getDevices() {
+        return deviceList;
+    }
 
 }
 

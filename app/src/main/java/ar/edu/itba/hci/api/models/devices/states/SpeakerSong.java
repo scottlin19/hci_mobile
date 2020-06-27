@@ -3,13 +3,10 @@ package ar.edu.itba.hci.api.models.devices.states;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-
 import androidx.room.Ignore;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.sql.SQLOutput;
 
 public class SpeakerSong extends DeviceState implements Parcelable {
     @SerializedName("title")

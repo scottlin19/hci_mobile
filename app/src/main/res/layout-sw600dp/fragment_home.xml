@@ -6,57 +6,57 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:addStatesFromChildren="false"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/button_rooms"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="-4dp"
-            android:layout_marginTop="-10dp"
-            android:layout_marginRight="-4dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:minHeight="150dp"
-            android:text="@string/title_rooms"
-            android:textColor="#FFFFFF"
-            android:textSize="25sp" />
+            android:addStatesFromChildren="false"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/button_devices"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="-4dp"
-            android:layout_marginTop="-12dp"
-            android:layout_marginRight="-4dp"
-            android:backgroundTint="@color/colorPrimaryDark"
-            android:minHeight="150dp"
-            android:text="@string/title_devices"
-            android:textColor="#FFFFFF"
-            android:textSize="25sp" />
+            <Button
+                android:id="@+id/button_rooms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="-4dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginRight="-4dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:minHeight="150dp"
+                android:text="@string/title_rooms"
+                android:textColor="#FFFFFF"
+                android:textSize="25sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:text="@string/favoriteTitle"
-            android:textAlignment="center"
-            android:textSize="25sp" />
+            <Button
+                android:id="@+id/button_devices"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="-4dp"
+                android:layout_marginTop="-12dp"
+                android:layout_marginRight="-4dp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:minHeight="150dp"
+                android:text="@string/title_devices"
+                android:textColor="#FFFFFF"
+                android:textSize="25sp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_fav"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:text="@string/favoriteTitle"
+                android:textAlignment="center"
+                android:textSize="25sp" />
 
-    </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_fav"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

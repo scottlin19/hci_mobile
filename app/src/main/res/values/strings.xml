@@ -42,6 +42,8 @@
     <string name="battery_level">Battery Level</string>
     <string name="low_battery">Low Battery</string>
 
+    <string name="sstDialogTitle">%1$s Speech To Text Commands</string>
+
 
     <string name="sstNotRecognized">Couldn\'t recognize your command, please try again.</string>
     <string name="sstSuccess">Command executed.</string>
@@ -67,6 +69,7 @@
     <string name="mopMode">mop</string>
     <string name="vacuumMode">vacuum</string>
     <string name="sstLocation">Change location to %1s</string>
+    <string name="vacuumSSTCommands">Turn on\nTurn off\nDock\nSet mode to [mop/vacuum]\nChange location to [room]</string>
 
     <!-- ALARM-->
     <string name="changeSecurityCode">Change security code</string>
@@ -79,7 +82,9 @@
     <string name="securityCode">Security code</string>
     <string name="newSecurityCode">New security code</string>
     <string name="change">CHANGE</string>
-
+    <string name="alarmSSTCommands">Arm stay\nArm away\nDisarm\n(Must input security code first!)</string>
+    <string name="wrongcode">Wrong security code, please try again</string>
+    <string name="missingcode">Please insert security code first</string>
     <!--SPEAKER-->
     <string name="setVolume">Set volume</string>
     <string name="play">Play</string>
@@ -93,10 +98,12 @@
     <string name="country">Country</string>
     <string name="dance">Dance</string>
     <string name="pop">Pop</string>
+    <string name="rock">Rock</string>
     <string name="latina">Latina</string>
     <string name="genre">Genre</string>
     <string name="sstVolume">set volume %1$d</string>
     <string name="sstGenre">set genre %1$s</string>
+    <string name="speakerSSTCommands">Set genre [classical/country/dance/pop/latina]\nSet volume [0–100]\nPlay\nResume\nStop\nNext song\nPrevious song</string>
 
 
     <!--OVEN-->
@@ -129,14 +136,23 @@
     <string name="grilloffsst">grill off</string>
     <string name="convectionoffsst">convection large</string>
     <string name="convectionnormalsst">convection normal</string>
-    <string name="convectionecosst">convection large</string>
-
+    <string name="convectionecosst">convection eco</string>
+    <string name="ovenSSTCommands">Turn on\nTurn off\nSet temperature to [90–200] degrees\nHeat conventional\nHeat bottom\nHeat top\nGrill large\nGrill eco\nGrill off\nConvection normal\nConvection eco\nConvection off</string>
     <!-- FAUCET -->
     <string name="open">open</string>
     <string name="close">close</string>
     <string name="dispense">Dispense</string>
     <string name="dispensesst">dispense</string>
     <string name="dispensing">Dispensing..</string>
+    <string name="faucetSSTCommands">Open\nClose\nDispense [0–100] [units]</string>
+    <string name="millis">milliliters</string>
+    <string name="centis">centiliters</string>
+    <string name="decis">deciliters</string>
+    <string name="liters">liters</string>
+    <string name="decas">decaliters</string>
+    <string name="hectos">hectoliters</string>
+    <string name="kilos">kiloliters</string>
+    <string name="dispenseamountsst">dispense %1$d %2$s</string>
     <!--BLINDS-->
     <string name="setLevel">Set level</string>
     <string name="closed">Closed</string>
@@ -148,6 +164,7 @@
     <string name="curr_status">Current status</string>
     <string name="level">Level</string>
     <string name="setlevelsst">set level to %1$d</string>
+    <string name="blindsSSTCommands">Open\nClose\nSet level to [0–100]</string>
     <!--LAMP-->
     <string name="setColor">Set color</string>
     <string name="setBrightness">Set brightness</string>
@@ -160,7 +177,8 @@
     <string name="white">white</string>
     <string name="gamer">purple</string>
     <string name="sstColor">set color %1$s</string>
-    <string name="sstBrightness">set color %1$d</string>
+    <string name="sstBrightness">set brightness %1$d</string>
+    <string name="lampSSTCommands">Turn on\nTurn off\nSet color [red/blue/green/yellow/purple/white]\nSet brightness [0–100]</string>
 
 
     <!--AC-->
@@ -181,6 +199,7 @@
     <string name="sstHorizSwingAuto">set horizontal swing to auto</string>
     <string name="sstFanSpeed">set fan speed to %1$d%%</string>
     <string name="sstFanSpeedAuto">set fan speed to auto</string>
+    <string name="acSSTCommands">Turn on\nTurn off\nSet temperature to [18–38] degrees\nSet vertical swing to auto\nSet vertical swing to [22/45/67/90] degrees\nSet horizontal swing to auto\nSet horizontal swing to [-90/-45/0/45/90] degrees\nSet fan speed to auto\nSet fan speed to [25/50/75/100] percent</string>
 
 
     <!--DOOR-->
@@ -188,6 +207,7 @@
     <string name="unlock">Unlock</string>
     <string name="lock_status">Lock status</string>
     <string name="unlocked">Unlocked</string>
+    <string name="doorSSTCommands">Open\nClose\nLock\nUnlock</string>
 
 
     <!--REFRIGERATOR-->
@@ -199,6 +219,7 @@
     <string name="vacation">vacation</string>
     <string name="sstFreezerTemperature">set freezer temperature to %1$d degrees</string>
     <string name="sstFreezerTemperatureMinus">set freezer temperature to minus %1$d degrees</string>
+    <string name="refrigeratorSSTCommands">Set freezer temperature to [–20 to –8] degrees\nSet temperature to [2–8] degrees\nSet mode to [default/vacation/party]</string>
 
     <string name="device">Device</string>
     <string name="action">Action</string>
@@ -213,7 +234,13 @@
 
     <string name="qr_action">QR Scan</string>
     <!-- TODO: Remove or change this placeholder text -->
-   <string name="qr_title">Search devices</string>
+    <string name="qr_title">Search devices</string>
+    <string name="qr_device_not_found_1">Device with ID:</string>
+    <string name="qr_device_not_found_2">was not found</string>
+    <string name="qr_scan_failed">Couldn\'t find a QR code, please try again.</string>
     <string name="qr_toast">Please take a photo of the device\'s QR code</string>
+    <string name="qr_wait">Waiting for barcode detector to be operational...</string>
+    <string name="error_message">Something went wrong :(</string>
+    <!-- TODO: Remove or change this placeholder text -->
 </resources>
 

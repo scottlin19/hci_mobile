@@ -1,52 +1,22 @@
 package ar.edu.itba.hci;
 
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.os.Build;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.AttributeSet;
-import android.view.View;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.app.NotificationCompat;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
-import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.gson.Gson;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.crypto.spec.DESedeKeySpec;
-
-import ar.edu.itba.hci.api.ApiClient;
-import ar.edu.itba.hci.api.Result;
-import ar.edu.itba.hci.api.models.Device;
 import ar.edu.itba.hci.api.notifications.NotificationBroadcastReceiver;
 import ar.edu.itba.hci.api.notifications.SharedPreferencesHelper;
-import ar.edu.itba.hci.ui.devices.DeviceDetailsActivity;
-import ar.edu.itba.hci.ui.routines.RoutinesFragment;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     NavHostFragment navHostFragment;
@@ -78,29 +48,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-//    private void createNotificationChannel(){
-//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-//            CharSequence name = "Notifications";
-//            String description = "Notifications Description";
-//            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-//            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,name,importance);
-//            channel.setDescription(description);
-//            channel.enableLights(true);
-//            channel.setLightColor(Color.GREEN);
-//            channel.enableVibration(true);
-//            channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
-//            channel.setVibrationPattern(new long[]{100,200,300,400,500,400,300,200,400});
-//
-//            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-//            notificationManager.createNotificationChannel(channel);
-//
-//        }
-//    }
 
     private void startAlert() {
         Intent intent = new Intent(NotificationBroadcastReceiver.DEVICE_NOTIFICATION);
@@ -117,12 +64,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-//        Toast.makeText(getApplicationContext(), "On Stop", Toast.LENGTH_SHORT).show();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println("main activity on result");
+        super.onActivityResult(requestCode, resultCode, data);
     }
-
-
 }

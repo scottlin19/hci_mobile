@@ -7,17 +7,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
-
 import ar.edu.itba.hci.R;
-import ar.edu.itba.hci.api.models.Device;
-import ar.edu.itba.hci.api.models.PastAction;
 
 public class PastActionsActivity extends AppCompatActivity {
 
     private PastActionsViewModel pastActionsViewModel;
-    private List<PastAction> actionList;
-    private List<Device> deviceList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +25,9 @@ public class PastActionsActivity extends AppCompatActivity {
 
 
         pastActionsViewModel = new ViewModelProvider(this).get(PastActionsViewModel.class);
-        pastActionsViewModel.getActions().observe(this, actionList -> {
-            this.actionList = actionList;
-            pastActionsViewModel.getDevices().observe(this, devices -> {
-                this.deviceList = devices;
-                final RecyclerViewPastActionsAdapter adapter = new RecyclerViewPastActionsAdapter(this, actionList, devices);
-                rv.setAdapter(adapter);
-            });
-        });
+        pastActionsViewModel.getActions().observe(this, actionList -> pastActionsViewModel.getDevices().observe(this, devices -> {
+            final RecyclerViewPastActionsAdapter adapter = new RecyclerViewPastActionsAdapter(this, actionList, devices);
+            rv.setAdapter(adapter);
+        }));
     }
 }

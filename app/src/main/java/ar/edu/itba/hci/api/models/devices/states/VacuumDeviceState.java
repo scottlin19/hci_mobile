@@ -2,7 +2,6 @@ package ar.edu.itba.hci.api.models.devices.states;
 
 import android.content.res.Resources;
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import androidx.room.Embedded;
 import androidx.room.Ignore;
@@ -13,10 +12,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import ar.edu.itba.hci.MainActivity;
 import ar.edu.itba.hci.R;
-import ar.edu.itba.hci.api.models.devices.VacuumDevice;
-import ar.edu.itba.hci.api.models.devices.states.VacuumLocation;
 import ar.edu.itba.hci.api.notifications.NotificationBroadcastReceiver;
 
 public class VacuumDeviceState extends  DeviceState{

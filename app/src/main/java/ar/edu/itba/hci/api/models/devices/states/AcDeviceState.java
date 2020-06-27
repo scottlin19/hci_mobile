@@ -3,14 +3,13 @@ package ar.edu.itba.hci.api.models.devices.states;
 import android.content.res.Resources;
 import android.os.Parcel;
 
-import androidx.room.ColumnInfo;
 import androidx.room.Ignore;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
-import java.util.List;
+
 import ar.edu.itba.hci.R;
 import ar.edu.itba.hci.api.notifications.NotificationBroadcastReceiver;
 

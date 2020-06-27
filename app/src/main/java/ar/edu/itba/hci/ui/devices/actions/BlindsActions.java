@@ -361,4 +361,10 @@ public class BlindsActions extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        speechRecognizer.destroy();
+    }
 }

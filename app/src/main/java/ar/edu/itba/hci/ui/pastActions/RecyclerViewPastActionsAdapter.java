@@ -12,11 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.text.DateFormat;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import ar.edu.itba.hci.R;
 import ar.edu.itba.hci.api.models.Device;
 import ar.edu.itba.hci.api.models.IconAdapter;
 import ar.edu.itba.hci.api.models.PastAction;
+import okhttp3.internal.Util;
 
 public class RecyclerViewPastActionsAdapter extends RecyclerView.Adapter<RecyclerViewPastActionsAdapter.PastActionVH> {
 
@@ -25,7 +27,7 @@ public class RecyclerViewPastActionsAdapter extends RecyclerView.Adapter<Recycle
     private Context context;
     private DateFormat dateFormat;
 
-    public RecyclerViewPastActionsAdapter(Context context,List<PastAction> actionList, List<Device> deviceList) {
+    public RecyclerViewPastActionsAdapter(Context context, List<PastAction> actionList, List<Device> deviceList) {
         this.context = context;
         this.actionList = actionList;
         this.deviceList = deviceList;

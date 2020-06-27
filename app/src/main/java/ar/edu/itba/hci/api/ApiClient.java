@@ -13,7 +13,6 @@ import ar.edu.itba.hci.api.models.Device;
 import ar.edu.itba.hci.api.models.PastAction;
 import ar.edu.itba.hci.api.models.Room;
 import ar.edu.itba.hci.api.models.Routine;
-import ar.edu.itba.hci.api.models.devices.states.SpeakerDeviceState;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,6 +27,7 @@ public class ApiClient {
     private static ApiClient instance = null;
     // Use IP 10.0.2.2 instead of 127.0.0.1 when running Android emulator in the
     // same computer that runs the API.
+    //192.168.0.7
     private final String BaseURL = "http://10.0.2.2:8080/api/";
 
     private ApiClient() {
@@ -106,8 +106,14 @@ public class ApiClient {
         return call;
     }
 
-    public Call<Result<List<PastAction>>> getLogs(Integer limit, @Nullable Integer offset, Callback<Result<List<PastAction>>> callback) {
+    public Call<Result<List<PastAction>>> getLogs( Integer limit, @Nullable Integer offset, Callback<Result<List<PastAction>>> callback) {
         Call<Result<List<PastAction>>> call = this.service.getLogs(limit, offset);
+        call.enqueue(callback);
+        return call;
+    }
+
+    public Call<Result<List<PastAction>>> getLogs(Callback<Result<List<PastAction>>> callback) {
+        Call<Result<List<PastAction>>> call = this.service.getLogs();
         call.enqueue(callback);
         return call;
     }
