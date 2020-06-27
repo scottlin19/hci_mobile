@@ -37,6 +37,10 @@
     <string name="battery_level">Nivel de Batería</string>
     <string name="unexpected_error">error inesperado</string>
     <string name="fetch_device_error">error actualizando el dispositivo</string>
+
+    <string name="sstNoPermission">No hay permisos suficientes</string>
+    <string name="sstNoInput">No se registró ningún dictado</string>
+    <string name="sstStopped">Se paró la grabación</string>
     <string name="sstNotRecognized">No se ha reconocido el comando, pruebe nuevamente.</string>
     <string name="sstSuccess">Comando ejecutado.</string>
 
@@ -89,9 +93,10 @@
     <string name="dance">Danza</string>
     <string name="pop">Pop</string>
     <string name="latina">Latina</string>
+    <string name="rock">Rock</string>
     <string name="sstVolume">establecer el volumen %1$d</string>
     <string name="sstGenre">establecer el género %1$s</string>
-    <string name="speakerSSTCommands">Establecer el género [clásica/country/danza/pop/latina]\nEstablecer el volumen [0–100]\nReproducir\nResumir\nParar\nPróxima canción\nCanción anterior</string>
+    <string name="speakerSSTCommands">Establecer el género [clásica/country/danza/pop/rock/latina]\nEstablecer el volumen [0–100]\nReproducir\nResumir\nParar\nPróxima canción\nCanción anterior</string>
 
     <string name="sstDialogTitle">%1$s Comandos Voz a Texto</string>
 
@@ -231,4 +236,5 @@
     <string name="qr_scan_failed">No se encontró un código QR, por favor intente de nuevo.</string>
     <string name="qr_wait">Esperando que el detector de código de barras sea operacional ...</string>
     <string name="error_message">Algo ha salido mal :(</string>
+    <string name="mop">Trapear</string>
 </resources>

@@ -77,13 +77,11 @@ public class DeviceDetailsActivity extends AppCompatActivity {
             broadcastReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    String message = "Device updated";
-//                    Toast.makeText(DeviceDetailsActivity.this, message, Toast.LENGTH_LONG).show();
-                    abortBroadcast();
-
+                        deviceDetailsViewModel.loadDevice();
+                        abortBroadcast();
                 }
-
             };
+
         }
         IntentFilter filter = new IntentFilter(NotificationBroadcastReceiver.DEVICE_NOTIFICATION);
         filter.setPriority(2);

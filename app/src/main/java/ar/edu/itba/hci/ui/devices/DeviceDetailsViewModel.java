@@ -25,7 +25,7 @@ public class DeviceDetailsViewModel extends ViewModel implements ViewModelProvid
         loadDevice();
     }
 
-    private void loadDevice() {
+    public void loadDevice() {
         ApiClient.getInstance().getDevice(devId, new Callback<Result<Device>>() {
             @Override
             public void onResponse(Call<Result<Device>> call, Response<Result<Device>> response) {
@@ -50,5 +50,6 @@ public class DeviceDetailsViewModel extends ViewModel implements ViewModelProvid
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         return (T) new DeviceDetailsViewModel(devId);
+
     }
 }

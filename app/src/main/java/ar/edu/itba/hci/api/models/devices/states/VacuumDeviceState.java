@@ -146,7 +146,7 @@ public class VacuumDeviceState extends  DeviceState{
 
         if(param_dev.getBatteryLevel() <= 5) {
             batt = resources.getString(R.string.low_battery);
-            ret_desc.add(String.format("%s: %%%s", batt, param_dev.getBatteryLevel()));
+            ret_desc.add(String.format("%s: %s%%", batt, param_dev.getBatteryLevel()));
         }
             VacuumLocation vl = getLocation(), param_dev_vl = param_dev.getLocation();
             boolean compareLocation = Objects.equals(vl, param_dev_vl);

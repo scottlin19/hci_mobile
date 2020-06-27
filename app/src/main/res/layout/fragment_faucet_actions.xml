@@ -20,6 +20,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -45,7 +46,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <Space
-                    android:layout_width="30dp"
+                    android:layout_width="20dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
 

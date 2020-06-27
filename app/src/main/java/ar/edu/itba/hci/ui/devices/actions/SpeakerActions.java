@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,6 +74,7 @@ public class SpeakerActions extends Fragment {
     private List<String> playList;
     private ImageButton playButton, stopButton, nextButton, prevButton;
     private TextView songTitle, songAuthor, songProgress, songDuration;
+    private ProgressBar progressBar;
 
     private Slider volumeSlider;
     private Handler handler;
@@ -137,6 +139,7 @@ public class SpeakerActions extends Fragment {
         songTitle = root.findViewById(R.id.song_title);
         songProgress = root.findViewById(R.id.song_progress);
         songDuration = root.findViewById(R.id.song_duration);
+        progressBar = root.findViewById(R.id.progress_bar);
 
         if (this.device.getState().getSong() != null) {
             this.song = this.device.getState().getSong();
@@ -312,6 +315,7 @@ public class SpeakerActions extends Fragment {
                 "country",
                 "dance",
                 "latina",
+                "rock",
                 "pop",
         };
         Context context = getContext();
@@ -385,12 +389,12 @@ public class SpeakerActions extends Fragment {
                                     songAuthor.setText(newSong.getArtist());
                                     songTitle.setText(newSong.getTitle());
                                     songDuration.setText(newSong.getDuration());
-                                    songProgress.setText("0:00");
+                                    songProgress.setText(newSong.getProgress());
+                                    System.out.println(newSong.getProgress());
                                 }
                                 song = newSong;
                                 songProgress.setText(song.getProgress());
-
-
+                                updateProgressBar();
                             }
                             ;
 
@@ -484,16 +488,13 @@ public class SpeakerActions extends Fragment {
             String msg;
             switch (error) {
                 case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
-                    msg = "No speech input";
-                    break;
-                case SpeechRecognizer.ERROR_NO_MATCH:
-                    msg = "No recognition result matched";
+                    msg = getResources().getString(R.string.sstNoInput);
                     break;
                 case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
-                    msg = "Insufficient permissions";
+                    msg = getResources().getString(R.string.sstNoPermission);
                     break;
                 default:
-                    msg = "Unexpected error " + error;
+                    msg = getResources().getString(R.string.sstStopped);
                     break;
             }
             System.out.println(msg);
@@ -606,4 +607,19 @@ public class SpeakerActions extends Fragment {
 
         }
     }
+
+    private void updateProgressBar(){
+
+        String[] duration = song.getDuration().split(":",2);
+
+        String[] currentProgress = song.getProgress().split(":",2);
+
+        int currentSeconds = Integer.parseInt(currentProgress[0]) * 60 + Integer.parseInt(currentProgress[1]);
+
+        int durationSeconds = Integer.parseInt(duration[0]) * 60 + Integer.parseInt(duration[1]);
+
+        progressBar.setProgress(100 * currentSeconds/durationSeconds);
+
+    }
+
 }

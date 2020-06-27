@@ -145,16 +145,13 @@ public class AlarmActions extends Fragment {
             String msg;
             switch (error) {
                 case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
-                    msg = "No speech input";
-                    break;
-                case SpeechRecognizer.ERROR_NO_MATCH:
-                    msg = "No recognition result matched";
+                    msg = getResources().getString(R.string.sstNoInput);
                     break;
                 case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
-                    msg = "Insufficient permissions";
+                    msg = getResources().getString(R.string.sstNoPermission);
                     break;
                 default:
-                    msg = "Wait for speech recognition to end";
+                    msg = getResources().getString(R.string.sstStopped);
                     break;
             }
             System.out.println(msg);

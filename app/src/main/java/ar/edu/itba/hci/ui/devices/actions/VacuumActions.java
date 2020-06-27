@@ -12,7 +12,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -48,7 +47,6 @@ import ar.edu.itba.hci.api.Result;
 import ar.edu.itba.hci.api.models.Device;
 import ar.edu.itba.hci.api.models.Room;
 import ar.edu.itba.hci.api.models.devices.states.VacuumDeviceState;
-import ar.edu.itba.hci.ui.rooms.RecyclerViewRoomsAdapter;
 import ar.edu.itba.hci.ui.rooms.RoomsViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -252,6 +250,7 @@ public class VacuumActions extends Fragment {
     }
 
     private void getInitialMode(String deviceMode) {
+        System.out.println(deviceMode);
         String aux = deviceMode.concat("Mode");
         String wanted = getStringResourceByName(aux);
         System.out.println("wanted: " + wanted);
@@ -457,16 +456,13 @@ public class VacuumActions extends Fragment {
             String msg;
             switch (error) {
                 case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
-                    msg = "No speech input";
-                    break;
-                case SpeechRecognizer.ERROR_NO_MATCH:
-                    msg = "No recognition result matched";
+                    msg = getResources().getString(R.string.sstNoInput);
                     break;
                 case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
-                    msg = "Insufficient permissions";
+                    msg = getResources().getString(R.string.sstNoPermission);
                     break;
                 default:
-                    msg = "Unexpected error " + error;
+                    msg = getResources().getString(R.string.sstStopped);
                     break;
             }
             System.out.println(msg);

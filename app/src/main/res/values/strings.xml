@@ -44,7 +44,9 @@
 
     <string name="sstDialogTitle">%1$s Speech To Text Commands</string>
 
-
+    <string name="sstNoPermission">Insufficient permissions</string>
+    <string name="sstNoInput">No speech input</string>
+    <string name="sstStopped">Stopped listenning</string>
     <string name="sstNotRecognized">Couldn\'t recognize your command, please try again.</string>
     <string name="sstSuccess">Command executed.</string>
     <string name="sstTurnOn">turn on</string>
@@ -70,6 +72,7 @@
     <string name="vacuumMode">vacuum</string>
     <string name="sstLocation">Change location to %1s</string>
     <string name="vacuumSSTCommands">Turn on\nTurn off\nDock\nSet mode to [mop/vacuum]\nChange location to [room]</string>
+    <string name="mop">mop</string>
 
     <!-- ALARM-->
     <string name="changeSecurityCode">Change security code</string>
@@ -103,7 +106,7 @@
     <string name="genre">Genre</string>
     <string name="sstVolume">set volume %1$d</string>
     <string name="sstGenre">set genre %1$s</string>
-    <string name="speakerSSTCommands">Set genre [classical/country/dance/pop/latina]\nSet volume [0–100]\nPlay\nResume\nStop\nNext song\nPrevious song</string>
+    <string name="speakerSSTCommands">Set genre [classical/country/dance/pop/rock/latina]\nSet volume [0–100]\nPlay\nResume\nStop\nNext song\nPrevious song</string>
 
 
     <!--OVEN-->
